@@ -11,6 +11,8 @@ function main() {
     createCamera();
     createControls();
     createLights();
+    createFloor();
+    createSkyBox();
     loadModels();
     createRenderer();
 
@@ -29,10 +31,25 @@ function createCamera() {
 }
 
 function createControls() {
-    
+
 }
 
 function createLights() {
+
+}
+
+function createFloor(){
+    let floorMaterial = new THREE.MeshBasicMaterial();
+    let floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
+    let floor = new THREE.Mesh(floorGeometry, floorMaterial);
+
+    floor.position.x = Math.PI /2;
+    floor.position.y = -0.5
+    scene.add(floor)
+
+}
+
+function createSkyBox(){
 
 }
 
