@@ -72,9 +72,15 @@ function createRenderer() {
 }
 
 function update() {
-
+    const delta = clock.getDelta();
+  
+    for ( const mixer of mixers ) {
+  
+      mixer.update( delta );
+  
+    }
 }
 
 function render() {
-
+    renderer.render( scene, camera );
 }
