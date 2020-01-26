@@ -44,14 +44,16 @@ function createFloor(){
     let floor = new THREE.Mesh(floorGeometry, floorMaterial);
 
     floor.position.x = Math.PI /2;
-    floor.position.y = -0.5
-    scene.add(floor)
-
+    floor.position.y = -0.5;
+    scene.add(floor);
 }
 
 function createSkyBox(){
-
-}
+    let skyBoxGeometry = new THREE.CubeGeometry(10000,10000,10000);
+    let skyBoxMaterial = new THREE.MeshBasicMaterial({color: rgb(135,206,235),side:THREE.BackSide});
+    let skyBox = new THREE.Mesh(skyBoxGeometry,skyBoxMaterial);
+    scene.add(skyBox);
+    }
 
 function createRenderer() {
 
