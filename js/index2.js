@@ -29,7 +29,7 @@ function createCamera() {
 }
 
 function createControls() {
-
+    
 }
 
 function createLights() {
