@@ -57,7 +57,18 @@ function createLights() {
 }
 
 function createRenderer() {
-
+    // create a WebGLRenderer and set its width and height
+    renderer = new THREE.WebGLRenderer( { antialias: true } );
+    renderer.setSize( container.clientWidth, container.clientHeight );
+  
+    renderer.setPixelRatio( window.devicePixelRatio );
+  
+    renderer.gammaFactor = 2.2;
+    renderer.gammaOutput = true;
+  
+    renderer.physicallyCorrectLights = true;
+  
+    container.appendChild( renderer.domElement );
 }
 
 function update() {
