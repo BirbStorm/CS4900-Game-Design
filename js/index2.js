@@ -3,7 +3,8 @@ let controls;
 let scene;
 let renderer;
 let container;
-
+const mixers = []
+const clock = new THREE.Clock();
 function main() {
     container = document.querySelector('#game');
     scene = new THREE.Scene();
@@ -23,39 +24,38 @@ function main() {
 }
 function loadModels(){
     const loader = new THREE.GLTFLoader();
-
+    loader.load('../models/Flamingo.glb', 
+    (model, pos = new THREE.Vector3(0,0,2.5)) => {
+      const soldier = model.scene.children[0]
+      scene.add(soldier)
+      console.log(scene)
+      soldier.position.copy(pos)
+    }, 
+    () => {}, 
+    (error) => console.log(error))
 }
 function createCamera() {
     camera = new THREE.PerspectiveCamera( 35, container.clientWidth / container.clientHeight, 1, 100 );
-    camera.position.set( -1.5, 1.5, 6.5 );
+    camera.position.set( 0.25, -0.25, 6.5 );
+    scene.add(camera)
 }
 
 function createControls() {
-
+  controls = new THREE.OrbitControls( camera, container );
 }
 
 function createLights() {
     const color = 0xFFFFFF;
-    const intensity = 1;
+    const intensity = 5;
     const light = new THREE.AmbientLight(color, intensity);
     scene.add(light);
+    // const ambientLight = new THREE.HemisphereLight( 0xddeeff, 0x0f0e0d, 5 );
 
-    class ColorGUIHelper {
-      constructor(object, prop) {
-        this.object = object;
-        this.prop = prop;
-      }
-      get value() {
-        return `#${this.object[this.prop].getHexString()}`;
-      }
-      set value(hexString) {
-        this.object[this.prop].set(hexString);
-      }
-    }
+    const mainLight = new THREE.DirectionalLight( 0xffffff, 5 );
+    mainLight.position.set( 10, 10, 10 );
+  
+    scene.add(  mainLight );
 
-    const gui = new GUI();
-    gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
-    gui.add(light, 'intensity', 0, 2, 0.01);
 }
 
 function createFloor(){
@@ -69,10 +69,10 @@ function createFloor(){
 }
 
 function createSkyBox(){
-    let skyBoxGeometry = new THREE.CubeGeometry(10000,10000,10000);
-    let skyBoxMaterial = new THREE.MeshBasicMaterial({color: rgb(135,206,235),side:THREE.BackSide});
-    let skyBox = new THREE.Mesh(skyBoxGeometry,skyBoxMaterial);
-    scene.add(skyBox);
+    // let skyBoxGeometry = new THREE.CubeGeometry(10000,10000,10000);
+    // let skyBoxMaterial = new THREE.MeshBasicMaterial({color: 0xffffff,side:THREE.BackSide});
+    // let skyBox = new THREE.Mesh(skyBoxGeometry,skyBoxMaterial);
+    // scene.add(skyBox);
     }
 
 function createRenderer() {
@@ -103,3 +103,18 @@ function update() {
 function render() {
     renderer.render( scene, camera );
 }
+
+function onWindowResize() {
+
+  camera.aspect = container.clientWidth / container.clientHeight;
+
+  // update the camera's frustum
+  camera.updateProjectionMatrix();
+
+  renderer.setSize( container.clientWidth, container.clientHeight );
+
+}
+
+window.addEventListener( 'resize', onWindowResize );
+
+main()
