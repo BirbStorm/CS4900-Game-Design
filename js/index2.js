@@ -6,6 +6,7 @@ let container;
 let keyboard = new THREEx.KeyboardState();
 const mixers = []
 const clock = new THREE.Clock();
+let pika;
 function main() {
     container = document.querySelector('#game');
     scene = new THREE.Scene();
@@ -16,13 +17,13 @@ function main() {
 	//THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0)});
 	//also go back for the bubble example
 	
+    loadModels();
 
     createCamera();
     createControls();
     createLights();
     createFloor();
     createSkyBox();
-    loadModels();
     createRenderer();
 	
 
@@ -38,6 +39,7 @@ function loadModels(){
       const pika = model.scene
       pika.position.copy(pos)
       scene.add(pika)
+      pika.name = "pika"
       console.log(pika)
     }, 
     () => {}, 
@@ -54,39 +56,12 @@ function createCamera() {
 	camera.lookAt(scene.position);
 	
 	
-	var relativeCameraOffset = new THREE.Vector3(0,50,200);
 
-	var cameraOffset = relativeCameraOffset.applyMatrix4(pika.matrixWorld );
-
-	camera.position.x = cameraOffset.x;
-	camera.position.y = cameraOffset.y;
-	camera.position.z = cameraOffset.z;
-	camera.lookAt( pika.position );
 }
 
 function createControls() {
   controls = new THREE.OrbitControls( camera, container );
   THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0)});
-  
-  	var delta = clock.getDelta(); //Time in seconds
-	var moveDist = 200 * delta; //Moving the model 200px per second.
-	var rotateAngle = Math.PI / 2 * delta; //90 degrees a second
-	
-	if(keyboard.pressed("W"))
-		pika.translateZ(-moveDist);
-	if(keyboard.pressed("S"))
-		pika.translateZ(moveDist);
-	if(keyboard.pressed("A"))
-		pika.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
-	if(keyboard.pressed("D"))
-		pika.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
-	if ( keyboard.pressed("Q") )
-		MovingCube.translateX( -moveDistance );
-	if ( keyboard.pressed("E") )
-		MovingCube.translateX(  moveDistance );	
-	
-	if(keyboard.pressed("R"))
-		pika.position.set(0,25,0);
 
 }
 
@@ -167,7 +142,43 @@ function onWindowResize() {
 }
 
 
+function controlUpdate() {
+    console.log(keyboard)
+    pika = scene.getObjectByName("pika")
+    const delta = clock.getDelta();
+  
+    var moveDist = 200 * delta; //Moving the model 200px per second.
+    var rotateAngle = Math.PI / 2 * delta; //90 degrees a second
+  
+    if(keyboard.pressed("W"))
+        pika.translateZ(moveDist);
+      if(keyboard.pressed("S"))
+        pika.translateZ(-moveDist);
+      if(keyboard.pressed("A"))
+        pika.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
+      if(keyboard.pressed("D"))
+        pika.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
+      if ( keyboard.pressed("Q") )
+        pika.translateX( -moveDist );
+      if ( keyboard.pressed("E") )
+        pika.translateX(  moveDist );	
+      
+      if(keyboard.pressed("R"))
+        pika.position.set(0,25,0);
 
-window.addEventListener( 'resize', onWindowResize );
+    var relativeCameraOffset = new THREE.Vector3(0,25,-20);
+
+	var cameraOffset = relativeCameraOffset.applyMatrix4(pika.matrixWorld );
+
+	camera.position.x = cameraOffset.x;
+	camera.position.y = cameraOffset.y;
+	camera.position.z = cameraOffset.z;
+	camera.lookAt( pika.position );
+      }
+  
+  
+  
+  window.addEventListener( 'resize', onWindowResize );
+  window.addEventListener("keydown", controlUpdate)
 
 main()
