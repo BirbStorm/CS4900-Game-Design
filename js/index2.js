@@ -3,12 +3,19 @@ let controls;
 let scene;
 let renderer;
 let container;
+let keyboard = new THREEx.KeyboardState();
 const mixers = []
 const clock = new THREE.Clock();
-
 function main() {
     container = document.querySelector('#game');
     scene = new THREE.Scene();
+	
+	
+	
+	//Not sure where I'm gonna put it yet but
+	//THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0)});
+	//also go back for the bubble example
+	
 
     createCamera();
     createControls();
@@ -17,6 +24,7 @@ function main() {
     createSkyBox();
     loadModels();
     createRenderer();
+	
 
     renderer.setAnimationLoop( () => {
         update();
@@ -34,15 +42,6 @@ function loadModels(){
     }, 
     () => {}, 
     (error) => console.log(error))
-    loader.load('../models/soldier1.gltf', 
-    (model, pos = new THREE.Vector3(10,0,0)) => {
-      const pika = model.scene
-      pika.position.copy(pos)
-      scene.add(pika)
-      console.log(pika)
-    }, 
-    () => {}, 
-    (error) => console.log(error))
 
 }
 function createCamera() {
@@ -53,18 +52,38 @@ function createCamera() {
 
 function createControls() {
   controls = new THREE.OrbitControls( camera, container );
+  
+  	var delta = clock.getDelta(); //Time in seconds
+	var moveDist = 200 * delta; //Moving the model 200px per second.
+	var rotateAngle = Math.PI / 2 * delta; //90 degrees a second
+	
+	if(keyboard.pressed("W"))
+		pika.translateZ(-moveDist);
+	if(keyboard.pressed("S"))
+		pika.translateZ(moveDist);
+	if(keyboard.pressed("A"))
+		pika.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
+	if(keyboard.pressed("D"))
+		pika.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
+	if ( keyboard.pressed("Q") )
+		MovingCube.translateX( -moveDistance );
+	if ( keyboard.pressed("E") )
+		MovingCube.translateX(  moveDistance );	
+	
+	if(keyboard.pressed("R"))
+		pika.position.set(0,25,0);
+
 }
 
 function createLights() {
     const color = 0xFFFFFF;
-    const intensity = 500;
+    const intensity = 1;
     const light = new THREE.AmbientLight(color, intensity);
-    light.position.set(5,5,10)
     scene.add(light);
     // const ambientLight = new THREE.HemisphereLight( 0xddeeff, 0x0f0e0d, 5 );
 
-    const mainLight = new THREE.DirectionalLight( 0xffffff, 5 );
-    mainLight.position.set( 5, 5, 10 );
+    const mainLight = new THREE.DirectionalLight( 0xffffff, 1 );
+    mainLight.position.set( 10, 10, 10 );
   
     scene.add(  mainLight );
 
@@ -79,15 +98,14 @@ function createFloor(){
     let floor = new THREE.Mesh(floorGeometry, floorMaterial);
 
     floor.position.x = Math.PI /2;
-    floor.position.y = 3;
+    floor.position.y = -0.5;
     scene.add(floor);
 	floor.rotation.x = Math.PI / 2;
-
 }
 
 function createSkyBox(){
     // let skyBoxGeometry = new THREE.CubeGeometry(10000,10000,10000);
-    // let skyBoxMaterial = new THREE.MeshBasicMaterial({color: 0xffffff,side:THREE.BackSide});
+    // let skyBoxMaterial = new THREE.MeshBasicMaterial({color: 0x9999ff,side:THREE.BackSide});
     // let skyBox = new THREE.Mesh(skyBoxGeometry,skyBoxMaterial);
     // scene.add(skyBox);
     scene.fog = new THREE.FogExp2(0x9999ff, 0.00025)
@@ -132,6 +150,8 @@ function onWindowResize() {
   renderer.setSize( container.clientWidth, container.clientHeight );
 
 }
+
+
 
 window.addEventListener( 'resize', onWindowResize );
 
