@@ -5,6 +5,7 @@ let renderer;
 let container;
 const mixers = []
 const clock = new THREE.Clock();
+
 function main() {
     container = document.querySelector('#game');
     scene = new THREE.Scene();
@@ -56,13 +57,14 @@ function createControls() {
 
 function createLights() {
     const color = 0xFFFFFF;
-    const intensity = 1;
+    const intensity = 500;
     const light = new THREE.AmbientLight(color, intensity);
+    light.position.set(5,5,10)
     scene.add(light);
     // const ambientLight = new THREE.HemisphereLight( 0xddeeff, 0x0f0e0d, 5 );
 
-    const mainLight = new THREE.DirectionalLight( 0xffffff, 1 );
-    mainLight.position.set( 10, 10, 10 );
+    const mainLight = new THREE.DirectionalLight( 0xffffff, 5 );
+    mainLight.position.set( 5, 5, 10 );
   
     scene.add(  mainLight );
 
@@ -77,8 +79,10 @@ function createFloor(){
     let floor = new THREE.Mesh(floorGeometry, floorMaterial);
 
     floor.position.x = Math.PI /2;
-    floor.position.y = -0.5;
+    floor.position.y = 3;
     scene.add(floor);
+	floor.rotation.x = Math.PI / 2;
+
 }
 
 function createSkyBox(){
