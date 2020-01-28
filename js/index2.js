@@ -45,13 +45,28 @@ function loadModels(){
 
 }
 function createCamera() {
-    camera = new THREE.PerspectiveCamera( 45, container.clientWidth / container.clientHeight, 0.1, 10000 );
+    pika = scene.getObjectByName("pika");
+	
+	camera = new THREE.PerspectiveCamera( 45, container.clientWidth / container.clientHeight, 0.1, 10000 );
     camera.position.set( 0.25, -0.25, 10 );
-    scene.add(camera)
+    scene.add(camera);
+
+	camera.lookAt(scene.position);
+	
+	
+	var relativeCameraOffset = new THREE.Vector3(0,50,200);
+
+	var cameraOffset = relativeCameraOffset.applyMatrix4(pika.matrixWorld );
+
+	camera.position.x = cameraOffset.x;
+	camera.position.y = cameraOffset.y;
+	camera.position.z = cameraOffset.z;
+	camera.lookAt( pika.position );
 }
 
 function createControls() {
   controls = new THREE.OrbitControls( camera, container );
+  THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0)});
   
   	var delta = clock.getDelta(); //Time in seconds
 	var moveDist = 200 * delta; //Moving the model 200px per second.
