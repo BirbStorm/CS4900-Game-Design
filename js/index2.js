@@ -94,11 +94,11 @@ function createFloor(){
 }
 
 function createSkyBox(){
-    // let skyBoxGeometry = new THREE.CubeGeometry(10000,10000,10000);
-    // let skyBoxMaterial = new THREE.MeshBasicMaterial({color: 0x9999ff,side:THREE.BackSide});
-    // let skyBox = new THREE.Mesh(skyBoxGeometry,skyBoxMaterial);
-    // scene.add(skyBox);
-    scene.fog = new THREE.FogExp2(0x9999ff, 0.00025)
+    let skyBoxGeometry = new THREE.CubeGeometry(10000,10000,10000);
+    let skyBoxMaterial = new THREE.MeshBasicMaterial({color: 0x3fbbf0,side:THREE.BackSide});
+    let skyBox = new THREE.Mesh(skyBoxGeometry,skyBoxMaterial);
+    scene.add(skyBox);
+    scene.fog = new THREE.FogExp2(0x3fbbf0, 0.00025)
     }
 
 function createRenderer() {
