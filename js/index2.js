@@ -8,51 +8,46 @@ const mixers = []
 const clock = new THREE.Clock();
 let pika;
 function main() {
-    container = document.querySelector('#game');
-    scene = new THREE.Scene();
-	
-	
-	
-	//Not sure where I'm gonna put it yet but
-	//THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0)});
-	//also go back for the bubble example
-	
-    loadModels();
+  //sets container to the div within the HTML file
+  container = document.querySelector('#game');
+  scene = new THREE.Scene();
 
-    createCamera();
-    createControls();
-    createLights();
-    createFloor();
-    createSkyBox();
-    createRenderer();
-	
 
-    renderer.setAnimationLoop( () => {
-        update();
-        render();
-    });
+  loadModels();
+
+  createCamera();
+  createControls();
+  createLights();
+  createFloor();
+  createSkyBox();
+  createRenderer();
+
+
+  renderer.setAnimationLoop( () => {
+      update();
+      render();
+  });
 }
 function loadModels(){
-    const loader = new THREE.GLTFLoader();
-    loader.load('../models/pika.glb', 
-    (model, pos = new THREE.Vector3(0,0,0)) => {
-      const pika = model.scene
-      pika.position.copy(pos)
-      scene.add(pika)
-      pika.name = "pika"
-      console.log(pika)
-    }, 
-    () => {}, 
-    (error) => console.log(error))
+//basic model loader for GLTF files
+  const loader = new THREE.GLTFLoader();
+  loader.load('../models/pika.glb', 
+  (model, pos = new THREE.Vector3(0,0,0)) => {
+    const pika = model.scene
+    pika.position.copy(pos)
+    scene.add(pika)
+    pika.name = "pika"
+    console.log(pika)
+  }, 
+  () => {}, 
+  (error) => console.log(error))
 
 }
 function createCamera() {
-    pika = scene.getObjectByName("pika");
-	
+  //creates initial camera
 	camera = new THREE.PerspectiveCamera( 45, container.clientWidth / container.clientHeight, 0.1, 10000 );
-    camera.position.set( 0.25, -0.25, 10 );
-    scene.add(camera);
-
+  camera.position.set( 0.25, -0.25, 10 );
+  scene.add(camera);
 	camera.lookAt(scene.position);
 	
 	
@@ -62,25 +57,26 @@ function createCamera() {
 function createControls() {
   controls = new THREE.OrbitControls( camera, container );
   THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0)});
-
 }
 
 function createLights() {
     const color = 0xFFFFFF;
-    const intensity = 1;
+    const intensity = 5;
     const light = new THREE.AmbientLight(color, intensity);
     scene.add(light);
     // const ambientLight = new THREE.HemisphereLight( 0xddeeff, 0x0f0e0d, 5 );
 
-    const mainLight = new THREE.DirectionalLight( 0xffffff, 1 );
-    mainLight.position.set( 10, 10, 10 );
-  
-    scene.add(  mainLight );
+    const mainLight = new THREE.DirectionalLight( 0xffffff, 2 );
+    mainLight.position.set( 10, 20, 20 );
+    const hemiLight = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 5)
+    hemiLight.position.set(10,10,-10)
+    scene.add(   mainLight,hemiLight );
 
 }
 
 function createFloor(){
-    let floorTexture = new THREE.ImageUtils.loadTexture('../models/checkerboard.jpg')
+    //creates a basic floor for testing purposes
+    let floorTexture = new THREE.ImageUtils.loadTexture('../models/textures/checkerboard.jpg')
     floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
     floorTexture.repeat.set(10,10)
     let floorMaterial = new THREE.MeshBasicMaterial({map: floorTexture, side: THREE.DoubleSide});
@@ -94,6 +90,7 @@ function createFloor(){
 }
 
 function createSkyBox(){
+    //creates a skybox around play area
     let skyBoxGeometry = new THREE.CubeGeometry(10000,10000,10000);
     let skyBoxMaterial = new THREE.MeshBasicMaterial({color: 0x3fbbf0,side:THREE.BackSide});
     let skyBox = new THREE.Mesh(skyBoxGeometry,skyBoxMaterial);
@@ -131,50 +128,55 @@ function render() {
 }
 
 function onWindowResize() {
-
+  //this function resets the camera size based on changing window size
   camera.aspect = container.clientWidth / container.clientHeight;
 
   // update the camera's frustum
   camera.updateProjectionMatrix();
-
   renderer.setSize( container.clientWidth, container.clientHeight );
 
 }
 
 
 function controlUpdate() {
-    console.log(keyboard)
-    pika = scene.getObjectByName("pika")
-    const delta = clock.getDelta();
-  
-    var moveDist = 200 * delta; //Moving the model 200px per second.
-    var rotateAngle = Math.PI / 2 * delta; //90 degrees a second
-  
-    if(keyboard.pressed("W"))
-        pika.translateZ(moveDist);
-      if(keyboard.pressed("S"))
-        pika.translateZ(-moveDist);
-      if(keyboard.pressed("A"))
-        pika.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
-      if(keyboard.pressed("D"))
-        pika.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
-      if ( keyboard.pressed("Q") )
-        pika.translateX( -moveDist );
-      if ( keyboard.pressed("E") )
-        pika.translateX(  moveDist );	
-      
-      if(keyboard.pressed("R"))
-        pika.position.set(0,25,0);
+  //this was done with help from http://stemkoski.github.io/Three.js/Chase-Camera.html
+  console.log(keyboard)
+  pika = scene.getObjectByName("pika")
+  const delta = clock.getDelta();
 
-    var relativeCameraOffset = new THREE.Vector3(0,25,-20);
+  var moveDist = 200 * delta; //Moving the model 200px per second.
+  var rotateAngle = Math.PI / 2 * delta; //90 degrees a second
 
+  //Basic movement of player
+  if(keyboard.pressed("W"))
+      pika.translateZ(moveDist);
+  if(keyboard.pressed("S"))
+    pika.translateZ(-moveDist);
+  if(keyboard.pressed("A"))
+    pika.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
+  if(keyboard.pressed("D"))
+    pika.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
+  if ( keyboard.pressed("Q") )
+    pika.translateX( -moveDist );
+  if ( keyboard.pressed("E") )
+    pika.translateX(  moveDist );	
+
+
+  //Resets player to origin
+  if(keyboard.pressed("R"))
+    pika.position.set(0,0,0);
+
+  //creates a vector of camera position behind player if player was at origin and applies
+  //matrix against players current position in the world
+  var relativeCameraOffset = new THREE.Vector3(0,5,-20);
 	var cameraOffset = relativeCameraOffset.applyMatrix4(pika.matrixWorld );
-
+  
+  //sets camera position and has camera looking at player
 	camera.position.x = cameraOffset.x;
 	camera.position.y = cameraOffset.y;
 	camera.position.z = cameraOffset.z;
 	camera.lookAt( pika.position );
-      }
+}
   
   
   
