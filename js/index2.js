@@ -1,3 +1,5 @@
+import { createCamera } from './camera.js';
+
 let camera;
 let controls;
 let scene;
@@ -17,14 +19,16 @@ function main() {
 
   loadModels();
 
-  createCamera();
+  camera = createCamera(container.clientWidth,container.clientHeight);
+  scene.add(camera)
   createControls();
   createLights();
   createFloor();
   createSkyBox();
   createRenderer();
 
-
+  var axesHelper = new THREE.AxesHelper( 1 );
+  scene.add( axesHelper );
   renderer.setAnimationLoop( () => {
       update();
       render();
@@ -46,14 +50,7 @@ function loadModels(){
   (error) => console.log(error))
 
 }
-function createCamera() {
-  //creates initial camera
-	camera = new THREE.PerspectiveCamera( 45, container.clientWidth / container.clientHeight, 0.1, 100000 );
-  camera.position.set( 0.25, -0.25, 10 );
-  scene.add(camera);
-	camera.lookAt(scene.position);
 
-}
 
 function createControls() {
   controls = new THREE.OrbitControls( camera, container );
@@ -198,5 +195,4 @@ function controlUpdate() {
   
 window.addEventListener( 'resize', onWindowResize );
 window.addEventListener("keydown", controlUpdate)
-
 main()
