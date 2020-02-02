@@ -1,5 +1,5 @@
 import { createCamera } from './camera.js';
-
+import { Terrain } from './terrain.js'
 let camera;
 let controls;
 let scene;
@@ -85,7 +85,9 @@ function createFloor(){
     floor.position.x = Math.PI /2;
     floor.position.y = -0.5;
     scene.add(floor);
-	floor.rotation.x = Math.PI / 2;
+  floor.rotation.x = Math.PI / 2;
+  
+  scene.add(Terrain())
 }
 
 function createSkyBox(){
