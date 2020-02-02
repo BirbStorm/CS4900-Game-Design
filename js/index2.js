@@ -78,9 +78,9 @@ function createFloor(){
     //creates a basic floor for testing purposes
     let floorTexture = new THREE.ImageUtils.loadTexture('../assets/textures/checkerboard.jpg')
     floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
-    floorTexture.repeat.set(10,10)
+    floorTexture.repeat.set(100,100)
     let floorMaterial = new THREE.MeshBasicMaterial({map: floorTexture, side: THREE.DoubleSide});
-    let floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
+    let floorGeometry = new THREE.PlaneGeometry(8192, 8192, 10, 10);
     let floor = new THREE.Mesh(floorGeometry, floorMaterial);
 
     floor.position.x = Math.PI /2;

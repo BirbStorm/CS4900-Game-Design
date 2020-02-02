@@ -4,16 +4,16 @@ export function Terrain() {
     let terrainScene = THREE.Terrain({
         easing: THREE.Terrain.Linear,
         frequency: 3.5,
-        heightmap: THREE.Terrain.DiamondSquare,
+        heightmap: THREE.Terrain.HillIsland,
         material: new THREE.MeshBasicMaterial({color: 0x5566aa}),
-        maxHeight: 100,
+        maxHeight: 1000,
         minHeight: -100,
         steps: 1,
         useBufferGeometry: false,
         xSegments: xS,
-        xSize: 2048,
+        xSize: 8192,
         ySegments: yS,
-        ySize: 2048,
+        ySize: 8192,
     });
     // Assuming you already have your global scene, add the terrain to it
 
