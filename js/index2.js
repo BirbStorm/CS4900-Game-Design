@@ -52,6 +52,7 @@ function loadModels(){
 }
 
 
+
 function createControls() {
   controls = new THREE.OrbitControls( camera, container );
   THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0)});
