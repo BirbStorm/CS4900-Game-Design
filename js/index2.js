@@ -1,5 +1,5 @@
 import { createCamera } from './camera.js';
-
+import { Terrain } from './terrain.js'
 let camera;
 let controls;
 let scene;
@@ -50,17 +50,6 @@ function loadModels(){
   (error) => console.log(error))
 
 }
-<<<<<<< HEAD
-function createCamera() {
-  //creates initial camera
-	camera = new THREE.PerspectiveCamera( 45, container.clientWidth / container.clientHeight, 0.1, 100000 );
-  camera.position.set( 0.25, -0.25, 10 );
-  camera.setViewOffset(container.clientWidth, container.clientHeight, 200, 0, container.clientWidth, container.clientHeight); //Creates an offset to the camera so the model isn't in the way
-  camera.updateProjectionMatrix();
-  scene.add(camera);
-	camera.lookAt(scene.position);
-=======
->>>>>>> master
 
 
 function createControls() {
@@ -86,17 +75,19 @@ function createLights() {
 
 function createFloor(){
     //creates a basic floor for testing purposes
-    let floorTexture = new THREE.ImageUtils.loadTexture('../assets/textures/checkerboard.jpg')
+    let floorTexture = new THREE.TextureLoader().load('../assets/textures/checkerboard.jpg')
     floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
-    floorTexture.repeat.set(10,10)
+    floorTexture.repeat.set(100,100)
     let floorMaterial = new THREE.MeshBasicMaterial({map: floorTexture, side: THREE.DoubleSide});
-    let floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
+    let floorGeometry = new THREE.PlaneGeometry(8192, 8192, 10, 10);
     let floor = new THREE.Mesh(floorGeometry, floorMaterial);
 
     floor.position.x = Math.PI /2;
     floor.position.y = -0.5;
     scene.add(floor);
-	floor.rotation.x = Math.PI / 2;
+  floor.rotation.x = Math.PI / 2;
+  
+  scene.add(Terrain())
 }
 
 function createSkyBox(){
@@ -138,7 +129,6 @@ function createRenderer() {
   renderer.setPixelRatio( window.devicePixelRatio );
 
   renderer.gammaFactor = 2.2;
-  renderer.gammaOutput = true;
 
   renderer.physicallyCorrectLights = true;
 
@@ -205,5 +195,5 @@ function controlUpdate() {
   
   
 window.addEventListener( 'resize', onWindowResize );
-window.addEventListener("keydown", controlUpdate)
+window.addEventListener( "keydown", controlUpdate )
 main()
