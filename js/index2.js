@@ -61,6 +61,69 @@ function loadModels(){
 
 }
 
+// function createControls() {
+    // controls = new THREE.OrbitControls(camera, container);
+
+
+    // let forward = false;
+    // let backward = false;
+    // let left = false;
+    // let right = false;
+    // let canJump = false;
+    // let prevTime = performance.now();
+    // let velocity = new THREE.Vector3();
+    // let direction = new THREE.Vector3();
+
+    // let onKeyDown = function (event) {
+    //     switch (event.keyCode) {
+    //         case 38: // up
+    //         case 87: // w
+    //             forward = true;
+    //             break;
+    //         case 37: // left
+    //         case 65: // a
+    //             left = true;
+    //             break;
+    //         case 40: // down
+    //         case 83: // s
+    //             backward = true;
+    //             break;
+    //         case 39: // right
+    //         case 68: // d
+    //             right = true;
+    //             break;
+    //         case 32: // space bar
+    //             if (canJump === true) velocity.y += 350;
+    //             canJump = false;
+    //             break;
+
+    //     }
+    // };
+
+    // let onKeyUp = function (event) {
+    //     switch (event.keyCode) {
+    //         case 38: // up
+    //         case 87: // w
+    //             forward = false;
+    //             break;
+    //         case 37: // left
+    //         case 65: // a
+    //             left = false;
+    //             break;
+    //         case 40: // down
+    //         case 83: // s
+    //             backward = false;
+    //             break;
+    //         case 39: // right
+    //         case 68: // d
+    //             right = false;
+    //             break;
+    //     }
+    // }
+
+    // document.addEventListener('keydown', onKeyDown, false);
+    // document.addEventListener('keyup', onKeyUp, false);
+//}
 
 function createLights() {
     const color = 0xFFFFFF;
