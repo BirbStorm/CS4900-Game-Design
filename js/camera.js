@@ -1,10 +1,11 @@
-let container = document.querySelector('#game');
-export function createCamera(width, height) {
+let container = document.body;
+let camera
+export function createCamera() {
     //creates initial camera
-    let camera = new THREE.PerspectiveCamera( 45, width / height, 0.1, 100000 );
+    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 100000 );
     camera.position.set( 0.25, -0.25, 10 );
-    camera.setViewOffset(container.clientWidth, container.clientHeight, 200, 0, container.clientWidth, container.clientHeight);
+    camera.setViewOffset(window.innerWidth, window.innerHeight, 200, 0, window.innerWidth, window.innerHeight);
     camera.updateProjectionMatrix();
     return camera;
   
-  }
+}

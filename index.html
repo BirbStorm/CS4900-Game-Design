@@ -8,16 +8,25 @@
 </head>
  
 <body>
- <div id="game">
     <!--This is where our game will be -->
+<div id="blocker">
+    <div id="menu">
+        <span>Click to play</span>
+        <br>
+            Move: WASD
+        <br>
+            Jump: SPACE
+        <br>
+            Look: MOUSE                
+        </div>   
 </div>
 <script src='js/lib/three.min.js'></script>
 <script src='js/lib/loaders/THREE.Terrain.min.js'></script>
-<script src='js/lib/controls/OrbitControls.js'></script>
 
 <script src='js/lib/controls/THREEx.KeyboardState.js'></script>
 <script src='js/lib/controls/THREEx.FullScreen.js'></script>
-<!-- <script src='js/FirstPersonControls.js'></script> -->
+<script src='js/lib/controls/PointerLockControls.js'></script>
+
 <script src='js/lib/loaders/GLTFLoader.js'></script>
 
 <script type="module" src="js/index2.js"></script>
