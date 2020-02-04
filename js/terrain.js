@@ -1,11 +1,14 @@
 export function Terrain() {
 
     let xS = 63, yS = 63;
+    let mntTexture = new THREE.TextureLoader().load('../assets/textures/ground.jpg');
+    mntTexture.wrapS = mntTexture.wrapT = THREE.RepeatWrapping;
+    mntTexture.repeat.set(16,16);
     let terrainScene = THREE.Terrain({
         easing: THREE.Terrain.Linear,
         frequency: 3.5,
         heightmap: THREE.Terrain.HillIsland,
-        material: new THREE.MeshBasicMaterial({color: 0x5566aa}),
+        material: new THREE.MeshBasicMaterial({map:mntTexture,side: THREE.DoubleSide}),
         maxHeight: 1000,
         minHeight: -100,
         steps: 1,
