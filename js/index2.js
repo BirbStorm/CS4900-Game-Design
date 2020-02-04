@@ -75,7 +75,7 @@ function createLights() {
 
 function createFloor(){
     //creates a basic floor for testing purposes
-    let floorTexture = new THREE.TextureLoader().load('../assets/textures/checkerboard.jpg')
+    let floorTexture = new THREE.TextureLoader().load('../assets/textures/waterpic.jpg')
     floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
     floorTexture.repeat.set(100,100)
     let floorMaterial = new THREE.MeshBasicMaterial({map: floorTexture, side: THREE.DoubleSide});
