@@ -1,5 +1,8 @@
 import { createCamera } from './camera.js';
 import { Terrain } from './terrain.js'
+import * as controlsHelper from './controls.js'
+
+
 let camera;
 let controls;
 let scene;
@@ -8,20 +11,25 @@ let container;
 let keyboard = new THREEx.KeyboardState();
 const mixers = []
 const clock = new THREE.Clock();
+const blocker = document.querySelector('#blocker')
 let pika;
-
+const menu = document.getElementById( 'menu')
 
 function main() {
   //sets container to the div within the HTML file
-  container = document.querySelector('#game');
+  container = document.body;
   scene = new THREE.Scene();
 
+  menu.addEventListener('click', () => controls.lock(), false)
 
   loadModels();
 
-  camera = createCamera(container.clientWidth,container.clientHeight);
-  scene.add(camera)
-  createControls();
+  camera = createCamera();
+  // scene.add(camera)
+  controls = controlsHelper.createControls(camera);
+  scene.add(controls.getObject())
+  console.log(controls.getObject())
+
   createLights();
   createFloor();
   createSkyBox();
@@ -29,16 +37,18 @@ function main() {
 
   var axesHelper = new THREE.AxesHelper( 1 );
   scene.add( axesHelper );
-  renderer.setAnimationLoop( () => {
-      update();
-      render();
-  });
+
+
+  window.addEventListener( 'resize', onWindowResize );
+  window.addEventListener( "keydown", controlUpdate )
+  document.addEventListener( 'keydown', controlsHelper.onKeyDown, false );
+	document.addEventListener( 'keyup', controlsHelper.onKeyUp, false );
 }
 function loadModels(){
 //basic model loader for GLTF files
 
   const loader = new THREE.GLTFLoader();
-  loader.load('../assets/models/pika.glb', 
+  loader.load('../assets/models/pikaRunning.glb', 
   (model, pos = new THREE.Vector3(0,0,0)) => {
     const pika = model.scene
     pika.position.copy(pos)
@@ -51,11 +61,6 @@ function loadModels(){
 
 }
 
-
-function createControls() {
-  controls = new THREE.OrbitControls( camera, container );
-  THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0)});
-}
 
 function createLights() {
     const color = 0xFFFFFF;
@@ -124,7 +129,7 @@ function createSkyBox(){
 function createRenderer() {
   // create a WebGLRenderer and set its width and height
   renderer = new THREE.WebGLRenderer( { antialias: true } );
-  renderer.setSize( container.clientWidth, container.clientHeight );
+  renderer.setSize( window.innerWidth, window.innerHeight );
 
   renderer.setPixelRatio( window.devicePixelRatio );
 
@@ -132,7 +137,7 @@ function createRenderer() {
 
   renderer.physicallyCorrectLights = true;
 
-  container.appendChild( renderer.domElement );
+  document.body.appendChild( renderer.domElement );
 }
 
 function update() {
@@ -145,17 +150,18 @@ function update() {
   }
 }
 
-function render() {
+function animate() {
+  requestAnimationFrame(animate)
   renderer.render( scene, camera );
 }
 
 function onWindowResize() {
   //this function resets the camera size based on changing window size
-  camera.aspect = container.clientWidth / container.clientHeight;
+  camera.aspect = window.innerWidth / window.innerHeight;
 
   // update the camera's frustum
   camera.updateProjectionMatrix();
-  renderer.setSize( container.clientWidth, container.clientHeight );
+  renderer.setSize( window.innerWidth , window.innerHeight );
 
 }
 
@@ -193,7 +199,6 @@ function controlUpdate() {
 }
   
   
-  
-window.addEventListener( 'resize', onWindowResize );
-window.addEventListener( "keydown", controlUpdate )
+
 main()
+animate()
