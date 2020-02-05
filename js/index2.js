@@ -2,6 +2,9 @@ import { createCamera } from './camera.js';
 import { Terrain } from './terrain.js'
 import * as controlsHelper from './controls.js'
 
+import { modelLoader } from './modelLoader.js'
+
+
 
 let camera;
 let controls;
@@ -39,7 +42,6 @@ function main() {
   var axesHelper = new THREE.AxesHelper( 1 );
   scene.add( axesHelper );
 
-
   window.addEventListener( 'resize', onWindowResize );
   document.addEventListener( 'keydown', controlsHelper.onKeyDown, false );
 	document.addEventListener( 'keyup', controlsHelper.onKeyUp, false );
@@ -58,71 +60,12 @@ function loadModels(){
   }, 
   () => {}, 
   (error) => console.log(error))
+
+  
+  modelLoader('../assets/models/bulbasaur/scene.gltf', new THREE.Vector3(10, 0, 10);
+  modelLoader('../assets/models/charmander/scene.gltf', new THREE.Vector3(-10, 0, -10);
+  modelLoader('../assets/models/squirtle/scene.gltf', new THREE.Vector3(5, 0, 5);
 }
-
-// function createControls() {
-    // controls = new THREE.OrbitControls(camera, container);
-
-
-    // let forward = false;
-    // let backward = false;
-    // let left = false;
-    // let right = false;
-    // let canJump = false;
-    // let prevTime = performance.now();
-    // let velocity = new THREE.Vector3();
-    // let direction = new THREE.Vector3();
-
-    // let onKeyDown = function (event) {
-    //     switch (event.keyCode) {
-    //         case 38: // up
-    //         case 87: // w
-    //             forward = true;
-    //             break;
-    //         case 37: // left
-    //         case 65: // a
-    //             left = true;
-    //             break;
-    //         case 40: // down
-    //         case 83: // s
-    //             backward = true;
-    //             break;
-    //         case 39: // right
-    //         case 68: // d
-    //             right = true;
-    //             break;
-    //         case 32: // space bar
-    //             if (canJump === true) velocity.y += 350;
-    //             canJump = false;
-    //             break;
-
-    //     }
-    // };
-
-    // let onKeyUp = function (event) {
-    //     switch (event.keyCode) {
-    //         case 38: // up
-    //         case 87: // w
-    //             forward = false;
-    //             break;
-    //         case 37: // left
-    //         case 65: // a
-    //             left = false;
-    //             break;
-    //         case 40: // down
-    //         case 83: // s
-    //             backward = false;
-    //             break;
-    //         case 39: // right
-    //         case 68: // d
-    //             right = false;
-    //             break;
-    //     }
-    // }
-
-    // document.addEventListener('keydown', onKeyDown, false);
-    // document.addEventListener('keyup', onKeyUp, false);
-//}
 
 function createLights() {
     const color = 0xFFFFFF;
@@ -230,37 +173,7 @@ function onWindowResize() {
 }
 
 
-// function controlUpdate() {
-//   pika = scene.getObjectByName("pika")
-//   const delta = clock.getDelta();
 
-//   //Basic movement of player
-//   // if(keyboard.pressed("W"))
-//   //     pika.translateZ(moveDist);
-
-//   // if(keyboard.pressed("S"))
-//   //   pika.translateZ(-moveDist);
-//   // if(keyboard.pressed("A"))
-//   //   pika.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
-//   // if(keyboard.pressed("D"))
-//   //   pika.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
-//   // if ( keyboard.pressed("Q") )
-//   //   pika.translateX( -moveDist );
-//   // if ( keyboard.pressed("E") )
-//   //   pika.translateX(  moveDist );	
-
-
-//   //creates a vector of camera position behind player if player was at origin and applies
-//   //matrix against players current position in the world
-//   var relativeCameraOffset = new THREE.Vector3(0,5,-20);
-// 	var cameraOffset = relativeCameraOffset.applyMatrix4(pika.matrixWorld );
-  
-//   //sets camera position and has camera looking at player
-// 	camera.position.x = cameraOffset.x;
-// 	camera.position.y = cameraOffset.y;
-// 	camera.position.z = cameraOffset.z;
-// 	camera.lookAt( pika.position );
-// }
   
   
 
