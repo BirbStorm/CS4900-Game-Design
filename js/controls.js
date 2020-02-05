@@ -98,7 +98,7 @@ export function updateControls() {
         controls.getObject().position.x = cameraOffset.x
         controls.getObject().position.y = cameraOffset.y
         controls.getObject().position.z = cameraOffset.z
-        controls.getObject().lookAt(pika.position)
+        //controls.getObject().lookAt(pika.position)
         prevTime = time;
     }
 }

@@ -1,19 +1,19 @@
-export function modelLoader( path, pos ){
+import { scene } from './index2.js'
+export function modelLoader( path, pos, name ){
 	const loader = new THREE.GLTFLoader();
 	loader.load(path, 
-	(model) => onLoad(model, pos),
+	(model) => onLoad(model, pos, name),
 	() => progress(),
 	(error) => console.log(error))
 }
 
-function onLoad( model, pos ){
-	(model, pos = new THREE.Vector3(0,0,0)) => {
-    const pika = model.scene
-    pika.position.copy(pos)
-    scene.add(pika)
-    pika.name = "pika"
-    console.log(pika)
-  },
+function onLoad( model, pos, name ){
+    const pokemon = model.scene
+    pokemon.position.copy(pos)
+    pokemon.name = name
+    scene.add(pokemon)
+    // console.log(pika)
+
 }
 
 function progress(){

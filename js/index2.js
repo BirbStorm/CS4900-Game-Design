@@ -8,7 +8,7 @@ import { modelLoader } from './modelLoader.js'
 
 let camera;
 let controls;
-let scene;
+export let scene;
 let renderer;
 let container;
 let keyboard = new THREEx.KeyboardState();
@@ -50,21 +50,29 @@ function loadModels(){
 //basic model loader for GLTF files
 
   const loader = new THREE.GLTFLoader();
-  loader.load('../assets/models/animations/pikaRunning.glb', 
-  (model, pos = new THREE.Vector3(0,0,0)) => {
-    const pika = model.scene
-    pika.position.copy(pos)
-    scene.add(pika)
-    pika.name = "pika"
-    console.log(pika)
-  }, 
-  () => {}, 
-  (error) => console.log(error))
-
-  
-  modelLoader('../assets/models/bulbasaur/scene.gltf', new THREE.Vector3(10, 0, 10);
-  modelLoader('../assets/models/charmander/scene.gltf', new THREE.Vector3(-10, 0, -10);
-  modelLoader('../assets/models/squirtle/scene.gltf', new THREE.Vector3(5, 0, 5);
+  // loader.load('../assets/models/Animations/pikaRunning.glb', 
+  // (model, pos = new THREE.Vector3(0,0,0)) => {
+  //   const pika = model.scene
+  //   pika.position.copy(pos)
+  //   scene.add(pika)
+  //   pika.name = "pika"
+  //   console.log(pika)
+  // }, 
+  // () => {}, 
+  // (error) => console.log(error))
+  // loader.load('../assets/models/untitled.glb', 
+  // (model, pos = new THREE.Vector3(0,5,0)) => {
+  //   const pika = model.scene
+  //   pika.position.copy(pos)
+  //   scene.add(pika)
+  //   console.log(pika)
+  // }, 
+  // () => {}, 
+  // (error) => console.log(error))
+  modelLoader('../assets/models/Animations/pikaRunning.glb', new THREE.Vector3(0, 0, 0), 'pika')
+  modelLoader('../assets/models/untitled.glb', new THREE.Vector3(0, 5, 0), 'charmander');
+  // modelLoader('../assets/models/charmander/scene.gltf', new THREE.Vector3(-10, 0, -10));
+  // modelLoader('../assets/models/squirtle/scene.gltf', new THREE.Vector3(5, 0, 5));
 }
 
 function createLights() {
