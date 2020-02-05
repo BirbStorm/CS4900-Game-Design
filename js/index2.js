@@ -1,4 +1,7 @@
 import { createCamera } from './camera.js';
+import { Terrain } from './terrain.js'
+import * as controlsHelper from './controls.js'
+
 
 let camera;
 let controls;
@@ -8,20 +11,26 @@ let container;
 let keyboard = new THREEx.KeyboardState();
 const mixers = []
 const clock = new THREE.Clock();
-let pika;
-
-
+const blocker = document.querySelector('#blocker')
+export let pika;
+const menu = document.getElementById( 'menu')
+let prevTime = performance.now()
 function main() {
   //sets container to the div within the HTML file
-  container = document.querySelector('#game');
+  container = document.body;
   scene = new THREE.Scene();
 
+  menu.addEventListener('click', () => controls.lock(), false)
 
   loadModels();
 
-  camera = createCamera(container.clientWidth,container.clientHeight);
-  scene.add(camera)
-  createControls();
+  camera = createCamera();
+  // scene.add(camera)
+  console.log(pika)
+  controls = controlsHelper.createControls(camera);
+  scene.add(controls.getObject())
+  console.log(controls.getObject())
+
   createLights();
   createFloor();
   createSkyBox();
@@ -29,16 +38,17 @@ function main() {
 
   var axesHelper = new THREE.AxesHelper( 1 );
   scene.add( axesHelper );
-  renderer.setAnimationLoop( () => {
-      update();
-      render();
-  });
+
+
+  window.addEventListener( 'resize', onWindowResize );
+  document.addEventListener( 'keydown', controlsHelper.onKeyDown, false );
+	document.addEventListener( 'keyup', controlsHelper.onKeyUp, false );
 }
 function loadModels(){
 //basic model loader for GLTF files
 
   const loader = new THREE.GLTFLoader();
-  loader.load('../assets/models/pika.glb', 
+  loader.load('../assets/models/animations/pikaRunning.glb', 
   (model, pos = new THREE.Vector3(0,0,0)) => {
     const pika = model.scene
     pika.position.copy(pos)
@@ -48,25 +58,71 @@ function loadModels(){
   }, 
   () => {}, 
   (error) => console.log(error))
-
 }
-<<<<<<< HEAD
-function createCamera() {
-  //creates initial camera
-	camera = new THREE.PerspectiveCamera( 45, container.clientWidth / container.clientHeight, 0.1, 100000 );
-  camera.position.set( 0.25, -0.25, 10 );
-  camera.setViewOffset(container.clientWidth, container.clientHeight, 200, 0, container.clientWidth, container.clientHeight); //Creates an offset to the camera so the model isn't in the way
-  camera.updateProjectionMatrix();
-  scene.add(camera);
-	camera.lookAt(scene.position);
-=======
->>>>>>> master
+
+// function createControls() {
+    // controls = new THREE.OrbitControls(camera, container);
 
 
-function createControls() {
-  controls = new THREE.OrbitControls( camera, container );
-  THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0)});
-}
+    // let forward = false;
+    // let backward = false;
+    // let left = false;
+    // let right = false;
+    // let canJump = false;
+    // let prevTime = performance.now();
+    // let velocity = new THREE.Vector3();
+    // let direction = new THREE.Vector3();
+
+    // let onKeyDown = function (event) {
+    //     switch (event.keyCode) {
+    //         case 38: // up
+    //         case 87: // w
+    //             forward = true;
+    //             break;
+    //         case 37: // left
+    //         case 65: // a
+    //             left = true;
+    //             break;
+    //         case 40: // down
+    //         case 83: // s
+    //             backward = true;
+    //             break;
+    //         case 39: // right
+    //         case 68: // d
+    //             right = true;
+    //             break;
+    //         case 32: // space bar
+    //             if (canJump === true) velocity.y += 350;
+    //             canJump = false;
+    //             break;
+
+    //     }
+    // };
+
+    // let onKeyUp = function (event) {
+    //     switch (event.keyCode) {
+    //         case 38: // up
+    //         case 87: // w
+    //             forward = false;
+    //             break;
+    //         case 37: // left
+    //         case 65: // a
+    //             left = false;
+    //             break;
+    //         case 40: // down
+    //         case 83: // s
+    //             backward = false;
+    //             break;
+    //         case 39: // right
+    //         case 68: // d
+    //             right = false;
+    //             break;
+    //     }
+    // }
+
+    // document.addEventListener('keydown', onKeyDown, false);
+    // document.addEventListener('keyup', onKeyUp, false);
+//}
 
 function createLights() {
     const color = 0xFFFFFF;
@@ -86,17 +142,19 @@ function createLights() {
 
 function createFloor(){
     //creates a basic floor for testing purposes
-    let floorTexture = new THREE.ImageUtils.loadTexture('../assets/textures/checkerboard.jpg')
+    let floorTexture = new THREE.TextureLoader().load('../assets/textures/waterpic.jpg');
     floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
-    floorTexture.repeat.set(10,10)
+    floorTexture.repeat.set(16,16)
     let floorMaterial = new THREE.MeshBasicMaterial({map: floorTexture, side: THREE.DoubleSide});
-    let floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
+    let floorGeometry = new THREE.PlaneGeometry(8192, 8192, 10, 10);
     let floor = new THREE.Mesh(floorGeometry, floorMaterial);
 
     floor.position.x = Math.PI /2;
     floor.position.y = -0.5;
     scene.add(floor);
-	floor.rotation.x = Math.PI / 2;
+  floor.rotation.x = Math.PI / 2;
+  
+  scene.add(Terrain())
 }
 
 function createSkyBox(){
@@ -133,16 +191,15 @@ function createSkyBox(){
 function createRenderer() {
   // create a WebGLRenderer and set its width and height
   renderer = new THREE.WebGLRenderer( { antialias: true } );
-  renderer.setSize( container.clientWidth, container.clientHeight );
+  renderer.setSize( window.innerWidth, window.innerHeight );
 
   renderer.setPixelRatio( window.devicePixelRatio );
 
   renderer.gammaFactor = 2.2;
-  renderer.gammaOutput = true;
 
   renderer.physicallyCorrectLights = true;
 
-  container.appendChild( renderer.domElement );
+  document.body.appendChild( renderer.domElement );
 }
 
 function update() {
@@ -155,55 +212,57 @@ function update() {
   }
 }
 
-function render() {
+function animate() {
+  requestAnimationFrame(animate)
+  pika = scene.getObjectByName("pika")
+  controlsHelper.updateControls()
   renderer.render( scene, camera );
 }
 
 function onWindowResize() {
   //this function resets the camera size based on changing window size
-  camera.aspect = container.clientWidth / container.clientHeight;
+  camera.aspect = window.innerWidth / window.innerHeight;
 
   // update the camera's frustum
   camera.updateProjectionMatrix();
-  renderer.setSize( container.clientWidth, container.clientHeight );
+  renderer.setSize( window.innerWidth , window.innerHeight );
 
 }
 
 
-function controlUpdate() {
-  pika = scene.getObjectByName("pika")
-  const delta = clock.getDelta();
+// function controlUpdate() {
+//   pika = scene.getObjectByName("pika")
+//   const delta = clock.getDelta();
 
-  //Basic movement of player
-  // if(keyboard.pressed("W"))
-  //     pika.translateZ(moveDist);
+//   //Basic movement of player
+//   // if(keyboard.pressed("W"))
+//   //     pika.translateZ(moveDist);
 
-  // if(keyboard.pressed("S"))
-  //   pika.translateZ(-moveDist);
-  // if(keyboard.pressed("A"))
-  //   pika.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
-  // if(keyboard.pressed("D"))
-  //   pika.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
-  // if ( keyboard.pressed("Q") )
-  //   pika.translateX( -moveDist );
-  // if ( keyboard.pressed("E") )
-  //   pika.translateX(  moveDist );	
+//   // if(keyboard.pressed("S"))
+//   //   pika.translateZ(-moveDist);
+//   // if(keyboard.pressed("A"))
+//   //   pika.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
+//   // if(keyboard.pressed("D"))
+//   //   pika.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
+//   // if ( keyboard.pressed("Q") )
+//   //   pika.translateX( -moveDist );
+//   // if ( keyboard.pressed("E") )
+//   //   pika.translateX(  moveDist );	
 
 
-  //creates a vector of camera position behind player if player was at origin and applies
-  //matrix against players current position in the world
-  var relativeCameraOffset = new THREE.Vector3(0,5,-20);
-	var cameraOffset = relativeCameraOffset.applyMatrix4(pika.matrixWorld );
+//   //creates a vector of camera position behind player if player was at origin and applies
+//   //matrix against players current position in the world
+//   var relativeCameraOffset = new THREE.Vector3(0,5,-20);
+// 	var cameraOffset = relativeCameraOffset.applyMatrix4(pika.matrixWorld );
   
-  //sets camera position and has camera looking at player
-	camera.position.x = cameraOffset.x;
-	camera.position.y = cameraOffset.y;
-	camera.position.z = cameraOffset.z;
-	camera.lookAt( pika.position );
-}
+//   //sets camera position and has camera looking at player
+// 	camera.position.x = cameraOffset.x;
+// 	camera.position.y = cameraOffset.y;
+// 	camera.position.z = cameraOffset.z;
+// 	camera.lookAt( pika.position );
+// }
   
   
-  
-window.addEventListener( 'resize', onWindowResize );
-window.addEventListener("keydown", controlUpdate)
+
 main()
+animate()
