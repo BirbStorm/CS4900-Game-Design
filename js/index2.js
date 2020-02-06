@@ -1,5 +1,6 @@
 import { createCamera } from './camera.js';
 import { Terrain } from './terrain.js'
+import { Water } from './water.js'
 import * as controlsHelper from './controls.js'
 
 import { modelLoader } from './modelLoader.js'
@@ -93,12 +94,7 @@ function createLights() {
 
 function createFloor(){
     //creates a basic floor for testing purposes
-    let floorTexture = new THREE.TextureLoader().load('../assets/textures/waterpic.jpg');
-    floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
-    floorTexture.repeat.set(16,16)
-    let floorMaterial = new THREE.MeshBasicMaterial({map: floorTexture, side: THREE.DoubleSide});
-    let floorGeometry = new THREE.PlaneGeometry(8192, 8192, 10, 10);
-    let floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    let floor = Water();
 
     floor.position.x = Math.PI /2;
     floor.position.y = -0.5;
