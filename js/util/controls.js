@@ -1,7 +1,8 @@
-import { pika, isMouseDown } from './index2.js'
+import { pika, isMouseDown } from '../index2.js'
 const container = document.body;
 const menu = document.querySelector('#menu');
 const blocker = document.querySelector('#blocker')
+
 let controls;
 let moveForward = false
 let moveLeft = false
@@ -14,6 +15,10 @@ let oldX = 0
 let prevTime = performance.now();
 let velocity = new THREE.Vector3()
 let direction = new THREE.Vector3()
+let raycaster = new THREE.Raycaster( 
+    new THREE.Vector3(),
+    new THREE.Vector3(0,-1,0),
+    0,10)
 export function createControls(camera){
     controls = new THREE.PointerLockControls( camera, container )
     
@@ -55,8 +60,7 @@ export const onKeyDown = ( event ) => {
     }
 };
 export const onMouseMove = (event) => {
-    if(controls.isLocked && 
-        isMouseDown){
+    if(controls.isLocked){
         const {
             movementX,
             movementY
@@ -75,7 +79,7 @@ export const onMouseMove = (event) => {
             rotateRight = false
         }
         oldX = val
-        console.log(movementX, event)
+        console.log(event)
     }
     else{
         rotateLeft = false
@@ -119,8 +123,7 @@ export function updateControls() {
         if ( rotateRight )  pika.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
 
 
-        controls.moveRight(  velocity.x * delta );
-        controls.moveForward( - velocity.z * delta );
+        
         pika.translateZ(- velocity.z * delta)
         pika.translateX(- velocity.x * delta)
         controls.getObject().position.y += ( velocity.y * delta ); // new behavior
@@ -140,5 +143,6 @@ export function updateControls() {
         velocity = new THREE.Vector3(0,0,0)
         pika.translateZ(  velocity.z );
         pika.translateX(  velocity.x );
+
     }
 }

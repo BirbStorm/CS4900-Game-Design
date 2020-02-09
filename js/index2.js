@@ -1,25 +1,25 @@
-import { createCamera } from './camera.js';
-import { Terrain } from './terrain.js'
-import { Water } from './water.js'
-import * as controlsHelper from './controls.js'
+import { createCamera } from './util/camera.js';
+import { Terrain } from './util/terrain.js'
+import { Water } from './util/water.js'
+import * as controlsHelper from './util/controls.js'
 
-import { modelLoader } from './modelLoader.js'
+import { modelLoader } from './util/modelLoader.js'
 
 
-
-let camera;
-let controls;
 export let scene;
 export let isMouseDown;
+export let pika;
+export let terrain;
+let camera;
+let controls;
 let renderer;
-let container;
 let keyboard = new THREEx.KeyboardState();
+let container;
+
 const mixers = []
 const clock = new THREE.Clock();
 const blocker = document.querySelector('#blocker')
-export let pika;
 const menu = document.getElementById( 'menu')
-let prevTime = performance.now()
 function main() {
   //sets container to the div within the HTML file
   container = document.body;
@@ -80,8 +80,8 @@ function createFloor(){
     floor.position.y = -0.5;
     scene.add(floor);
   floor.rotation.x = Math.PI / 2;
-  
-  scene.add(Terrain())
+  terrain = Terrain()
+  scene.add(terrain)
 }
 
 function createSkyBox(){
@@ -160,6 +160,8 @@ function onWindowResize() {
 
   
   
-
-main()
-animate()
+Ammo().then((AmmoLib) => {
+  Ammo = AmmoLib
+  main()
+  animate()
+})
