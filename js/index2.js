@@ -10,6 +10,7 @@ import { modelLoader } from './modelLoader.js'
 let camera;
 let controls;
 export let scene;
+export let isMouseDown;
 let renderer;
 let container;
 let keyboard = new THREEx.KeyboardState();
@@ -46,7 +47,9 @@ function main() {
   document.addEventListener( 'keydown', controlsHelper.onKeyDown, false );
   document.addEventListener( 'keyup', controlsHelper.onKeyUp, false );
   document.addEventListener("mousemove", controlsHelper.onMouseMove);
-
+  document.addEventListener("mousedown", () => isMouseDown = true);
+  document.addEventListener("mouseup", () => isMouseDown = false);
+  
 }
 function loadModels(){
   modelLoader('../assets/models/Animations/pikaRunning.glb', new THREE.Vector3(0, 0, 0), 'pika')
