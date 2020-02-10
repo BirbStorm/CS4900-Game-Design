@@ -73,12 +73,14 @@ function createLights() {
 }
 
 function createFloor(){
-    //creates a basic floor for testing purposes
-    let floor = Water();
+    // creates a basic floor for testing purposes
+    let flowmap = new THREE.TextureLoader().load('/assets/textures/water/Water_1_M_Flow.jpg')
+    var waterGeometry = new THREE.PlaneBufferGeometry( 20, 20);
 
+    let floor, helper = Water(flowmap, waterGeometry);
     floor.position.x = Math.PI /2;
     floor.position.y = -0.5;
-    scene.add(floor);
+    scene.add(floor, helper);
   floor.rotation.x = Math.PI / 2;
   terrain = Terrain()
   scene.add(terrain)
