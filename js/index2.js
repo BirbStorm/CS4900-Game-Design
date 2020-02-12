@@ -2,19 +2,22 @@ import { createCamera } from './camera.js';
 import { Terrain } from './terrain.js'
 import * as controlsHelper from './controls.js'
 
+import { modelLoader } from './modelLoader.js'
+
+
 
 let camera;
 let controls;
-let scene;
+export let scene;
 let renderer;
 let container;
 let keyboard = new THREEx.KeyboardState();
 const mixers = []
 const clock = new THREE.Clock();
 const blocker = document.querySelector('#blocker')
-let pika;
+export let pika;
 const menu = document.getElementById( 'menu')
-
+let prevTime = performance.now()
 function main() {
   //sets container to the div within the HTML file
   container = document.body;
@@ -26,6 +29,7 @@ function main() {
 
   camera = createCamera();
   // scene.add(camera)
+  console.log(pika)
   controls = controlsHelper.createControls(camera);
   scene.add(controls.getObject())
   console.log(controls.getObject())
@@ -38,9 +42,7 @@ function main() {
   var axesHelper = new THREE.AxesHelper( 1 );
   scene.add( axesHelper );
 
-
   window.addEventListener( 'resize', onWindowResize );
-  window.addEventListener( "keydown", controlUpdate )
   document.addEventListener( 'keydown', controlsHelper.onKeyDown, false );
 	document.addEventListener( 'keyup', controlsHelper.onKeyUp, false );
 }
@@ -48,19 +50,30 @@ function loadModels(){
 //basic model loader for GLTF files
 
   const loader = new THREE.GLTFLoader();
-  loader.load('../assets/models/pikaRunning.glb', 
-  (model, pos = new THREE.Vector3(0,0,0)) => {
-    const pika = model.scene
-    pika.position.copy(pos)
-    scene.add(pika)
-    pika.name = "pika"
-    console.log(pika)
-  }, 
-  () => {}, 
-  (error) => console.log(error))
-
+  // loader.load('../assets/models/Animations/pikaRunning.glb', 
+  // (model, pos = new THREE.Vector3(0,0,0)) => {
+  //   const pika = model.scene
+  //   pika.position.copy(pos)
+  //   scene.add(pika)
+  //   pika.name = "pika"
+  //   console.log(pika)
+  // }, 
+  // () => {}, 
+  // (error) => console.log(error))
+  // loader.load('../assets/models/untitled.glb', 
+  // (model, pos = new THREE.Vector3(0,5,0)) => {
+  //   const pika = model.scene
+  //   pika.position.copy(pos)
+  //   scene.add(pika)
+  //   console.log(pika)
+  // }, 
+  // () => {}, 
+  // (error) => console.log(error))
+  modelLoader('../assets/models/Animations/pikaRunning.glb', new THREE.Vector3(0, 0, 0), 'pika')
+  modelLoader('../assets/models/untitled.glb', new THREE.Vector3(0, 5, 0), 'charmander');
+  // modelLoader('../assets/models/charmander/scene.gltf', new THREE.Vector3(-10, 0, -10));
+  // modelLoader('../assets/models/squirtle/scene.gltf', new THREE.Vector3(5, 0, 5));
 }
-
 
 function createLights() {
     const color = 0xFFFFFF;
@@ -152,6 +165,8 @@ function update() {
 
 function animate() {
   requestAnimationFrame(animate)
+  pika = scene.getObjectByName("pika")
+  controlsHelper.updateControls()
   renderer.render( scene, camera );
 }
 
@@ -166,37 +181,7 @@ function onWindowResize() {
 }
 
 
-function controlUpdate() {
-  pika = scene.getObjectByName("pika")
-  const delta = clock.getDelta();
 
-  //Basic movement of player
-  // if(keyboard.pressed("W"))
-  //     pika.translateZ(moveDist);
-
-  // if(keyboard.pressed("S"))
-  //   pika.translateZ(-moveDist);
-  // if(keyboard.pressed("A"))
-  //   pika.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
-  // if(keyboard.pressed("D"))
-  //   pika.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
-  // if ( keyboard.pressed("Q") )
-  //   pika.translateX( -moveDist );
-  // if ( keyboard.pressed("E") )
-  //   pika.translateX(  moveDist );	
-
-
-  //creates a vector of camera position behind player if player was at origin and applies
-  //matrix against players current position in the world
-  var relativeCameraOffset = new THREE.Vector3(0,5,-20);
-	var cameraOffset = relativeCameraOffset.applyMatrix4(pika.matrixWorld );
-  
-  //sets camera position and has camera looking at player
-	camera.position.x = cameraOffset.x;
-	camera.position.y = cameraOffset.y;
-	camera.position.z = cameraOffset.z;
-	camera.lookAt( pika.position );
-}
   
   
 
