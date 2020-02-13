@@ -8,10 +8,11 @@ export function modelLoader( path, pos, name ){
 }
 
 function onLoad( model, pos, name ){
-    const pokemon = model.scene
-    pokemon.position.copy(pos)
-    pokemon.name = name
-    scene.add(pokemon)
+    const character = model.scene
+    character.scale.set(0.01, 0.01, 0.01)
+    character.position.copy(pos)
+    character.name = name
+    scene.add(character)
     // console.log(pika)
 
 }

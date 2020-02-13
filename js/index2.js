@@ -8,7 +8,7 @@ import { makeTextSprite } from './util/sprites.js'
 
 export let scene;
 export let isMouseDown;
-export let pika;
+export let player;
 export let terrain;
 let width;
 let height;
@@ -72,7 +72,7 @@ function main() {
   
 }
 function loadModels(){
-  modelLoader('../assets/models/Animations/pikaRunning.glb', new THREE.Vector3(0, 0, 0), 'pika')
+  modelLoader('../assets/models/knuckles/knuckles.glb', new THREE.Vector3(0, 0, 0), 'knuckles')
   modelLoader('../assets/models/untitled.glb', new THREE.Vector3(0, 5, 0), 'charmander');
 }
 
@@ -222,7 +222,7 @@ function update() {
 
 function animate() {
   requestAnimationFrame(animate)
-  pika = scene.getObjectByName("pika")
+  player = scene.getObjectByName("knuckles")
   controlsHelper.updateControls()
   //renderer.clear();
   renderer.render( scene, camera );
