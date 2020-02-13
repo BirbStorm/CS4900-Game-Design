@@ -1,6 +1,5 @@
 import { createCamera } from './util/camera.js';
 import { Terrain } from './util/terrain.js'
-import { Water } from './util/water.js'
 import * as controlsHelper from './util/controls.js'
 
 import { modelLoader } from './util/modelLoader.js'
@@ -94,15 +93,29 @@ function createLights() {
 }
 
 function createFloor(){
-    //creates a basic floor for testing purposes
-    let floor = Water();
+  // creates a basic floor for testing purposes
+  let flowMap = new THREE.TextureLoader().load('assets/textures/water/Water_1_M_Flow.jpg')
+  let waterGeometry = new THREE.PlaneBufferGeometry( 8196, 8196);
+  let water = new THREE.Water( waterGeometry, {
+      scale: 2,
+      textureWidth: 8196,
+      textureHeight: 8196,
+      flowMap: flowMap
 
-    floor.position.x = Math.PI /2;
-    floor.position.y = -0.5;
-    scene.add(floor);
-  floor.rotation.x = Math.PI / 2;
-  terrain = Terrain()
-  scene.add(terrain)
+  } );
+  water.position.y = -1;
+  water.rotation.x = Math.PI * - 0.5;
+          
+  var helperGeometry = new THREE.PlaneBufferGeometry( 20, 20 );
+  var helperMaterial = new THREE.MeshBasicMaterial( { map: flowMap } );
+  var helper = new THREE.Mesh( helperGeometry, helperMaterial );
+  helper.position.y = 1.01;
+  helper.rotation.x = Math.PI * - 0.5;
+  helper.visible = false;
+
+  scene.add(water,helper);
+terrain = Terrain()
+scene.add(terrain)
 }
 
 function createSkyBox(){
