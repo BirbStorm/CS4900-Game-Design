@@ -10,6 +10,7 @@ let moveBackward = false
 let moveRight = false
 let rotateLeft = false
 let rotateRight = false
+let sprint = false
 let oldX = 0
 
 let prevTime = performance.now();
@@ -57,6 +58,9 @@ export const onKeyDown = ( event ) => {
         case 68: //d
             moveRight = true
             break
+        case 16: //shift
+            sprint = true
+            break
     }
 };
 export const onMouseMove = (event) => {
@@ -100,6 +104,9 @@ export const onKeyUp = ( event ) => {
         case 68: //d
             moveRight = false
             break
+        case 16: //shift
+            sprint = false
+            break
     }
 }
 
@@ -117,7 +124,15 @@ export function updateControls() {
         direction.x = Number( moveRight ) - Number( moveLeft );
         direction.normalize(); // this ensures consistent movements in all directions
 
-        if ( moveForward || moveBackward ) velocity.z -= (direction.z * 400.0 * delta);
+        if ( moveForward ){
+            if ( sprint ){
+                velocity.z -= (direction.z * 400.0 * delta) * 2;
+            }
+            else{
+                velocity.z -= (direction.z * 400.0 * delta);
+            }
+        }
+        if ( moveBackward ) velocity.z -= (direction.z * 400.0 * delta);
         if ( moveLeft || moveRight ) velocity.x -= -(direction.x * 400.0 * delta);
         if ( rotateLeft )  pika.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
         if ( rotateRight )  pika.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
