@@ -131,16 +131,38 @@ export function updateControls() {
         direction.x = Number( moveRight ) - Number( moveLeft );
         direction.normalize(); // this ensures consistent movements in all directions
 
+        //If both sprint and crouch are pressed, crouch will not be activated
+        if (sprint && crouch){
+            crouch = false;
+        }
+
         if ( moveForward ){
             if ( sprint ){
                 velocity.z -= (direction.z * 400.0 * delta) * 2;
+            }
+            else if (crouch){
+                velocity.z -= (direction.z * 400.0 * delta) * 0.5;
             }
             else{
                 velocity.z -= (direction.z * 400.0 * delta);
             }
         }
-        if ( moveBackward ) velocity.z -= (direction.z * 400.0 * delta);
-        if ( moveLeft || moveRight ) velocity.x -= -(direction.x * 400.0 * delta);
+        if ( moveBackward ){
+            if(crouch){
+                velocity.z -= (direction.z * 400.0 * delta) * 0.5;
+            }
+            else{
+                velocity.z -= (direction.z * 400.0 * delta);
+            }
+        } 
+        if ( moveLeft || moveRight ){
+            if (crouch){
+                velocity.x -= -(direction.x * 400.0 * delta) * 0.5;
+            }
+            else{
+                velocity.x -= -(direction.x * 400.0 * delta);
+            }
+        }
         if ( rotateLeft )  pika.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
         if ( rotateRight )  pika.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
 
