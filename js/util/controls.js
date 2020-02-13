@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import { pika, isMouseDown } from '../index2.js'
 
-=======
 import { player, isMouseDown } from '../index2.js'
->>>>>>> hampus
 const container = document.body;
 const menu = document.querySelector('#menu');
 const blocker = document.querySelector('#blocker')
