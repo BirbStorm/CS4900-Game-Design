@@ -1,8 +1,8 @@
-import { createCamera } from './camera.js';
-import { Terrain } from './terrain.js'
-import * as controlsHelper from './controls.js'
+import { createCamera } from './util/camera.js';
+import { Terrain } from './util/terrain.js'
+import * as controlsHelper from './util/controls.js'
 
-import { modelLoader } from './modelLoader.js'
+import { modelLoader } from './util/modelLoader.js'
 
 
 export let scene;
@@ -80,8 +80,8 @@ function createFloor(){
   let waterGeometry = new THREE.PlaneBufferGeometry( 8196, 8196);
   let water = new THREE.Water( waterGeometry, {
       scale: 2,
-      textureWidth: 8196,
-      textureHeight: 8196,
+      textureWidth: 4096,
+      textureHeight: 4096,
       flowMap: flowMap
 
   } );

@@ -1,6 +1,3 @@
-
-import { pika } from './index2.js'
-
 import { pika, isMouseDown } from '../index2.js'
 
 const container = document.body;
@@ -65,7 +62,7 @@ export const onKeyDown = ( event ) => {
     }
 };
 export const onMouseMove = (event) => {
-    if(controls.isLocked){
+    if(controls.isLocked && isMouseDown){
         const {
             movementX,
             movementY
@@ -131,7 +128,7 @@ export function updateControls() {
         
         pika.translateZ(- velocity.z * delta)
         pika.translateX(- velocity.x * delta)
-        controls.getObject().position.y += ( velocity.y * delta ); // new behavior
+        // controls.getObject().position.y += ( velocity.y * delta ); // new behavior
         if ( controls.getObject().position.y < 5 ) {
             velocity.y = 0;
             controls.getObject().position.y = 5;
