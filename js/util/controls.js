@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import { pika, isMouseDown } from '../index2.js'
 
+=======
+import { player, isMouseDown } from '../index2.js'
+>>>>>>> hampus
 const container = document.body;
 const menu = document.querySelector('#menu');
 const blocker = document.querySelector('#blocker')
@@ -165,13 +169,14 @@ export function updateControls() {
                 velocity.x -= -(direction.x * 400.0 * delta);
             }
         }
-        if ( rotateLeft )  pika.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
-        if ( rotateRight )  pika.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
+        if ( rotateLeft )  player.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
+        if ( rotateRight )  player.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
 
         
         pika.translateZ(- velocity.z * delta)
         pika.translateX(- velocity.x * delta)
         // controls.getObject().position.y += ( velocity.y * delta ); // new behavior
+
         if ( controls.getObject().position.y < 5 ) {
             velocity.y = 0;
             controls.getObject().position.y = 5;
@@ -183,22 +188,17 @@ export function updateControls() {
         else{
             var relativeCameraOffset = new THREE.Vector3(0,5,-20);
         }
-        var cameraOffset = relativeCameraOffset.applyMatrix4(pika.matrixWorld )
+        var cameraOffset = relativeCameraOffset.applyMatrix4(player.matrixWorld )
         controls.getObject().position.x = cameraOffset.x
         controls.getObject().position.y = cameraOffset.y
         controls.getObject().position.z = cameraOffset.z
 
-
-
-        controls.getObject().lookAt(pika.position)
-
-        prevTime = time;
     }
 
-    else if(pika !== undefined){
+    else if(player !== undefined){
         velocity = new THREE.Vector3(0,0,0)
-        pika.translateZ(  velocity.z );
-        pika.translateX(  velocity.x );
+        player.translateZ(  velocity.z );
+        player.translateX(  velocity.x );
 
     }
 
