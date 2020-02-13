@@ -11,6 +11,7 @@ let moveRight = false
 let rotateLeft = false
 let rotateRight = false
 let sprint = false
+let crouch = false
 let oldX = 0
 
 let prevTime = performance.now();
@@ -61,6 +62,9 @@ export const onKeyDown = ( event ) => {
         case 16: //shift
             sprint = true
             break
+        case 17: //control
+            crouch = true
+            break
     }
 };
 export const onMouseMove = (event) => {
@@ -107,6 +111,9 @@ export const onKeyUp = ( event ) => {
         case 16: //shift
             sprint = false
             break
+        case 17: //control
+            crouch = false
+            break
     }
 }
 
@@ -137,7 +144,6 @@ export function updateControls() {
         if ( rotateLeft )  pika.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
         if ( rotateRight )  pika.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
 
-
         
         pika.translateZ(- velocity.z * delta)
         pika.translateX(- velocity.x * delta)
@@ -146,7 +152,13 @@ export function updateControls() {
             velocity.y = 0;
             controls.getObject().position.y = 5;
         }
-        var relativeCameraOffset = new THREE.Vector3(0,5,-20);
+        //Lowers the camera for crouching
+        if (crouch){
+            var relativeCameraOffset = new THREE.Vector3(0,4,-20);
+        }
+        else{
+            var relativeCameraOffset = new THREE.Vector3(0,5,-20);
+        }
         var cameraOffset = relativeCameraOffset.applyMatrix4(pika.matrixWorld )
         controls.getObject().position.x = cameraOffset.x
         controls.getObject().position.y = cameraOffset.y
