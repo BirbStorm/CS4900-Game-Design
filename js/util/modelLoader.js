@@ -1,4 +1,4 @@
-import { scene } from './index2.js'
+import { scene } from '../index2.js'
 export function modelLoader( path, pos, name ){
 	const loader = new THREE.GLTFLoader();
 	loader.load(path, 

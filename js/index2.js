@@ -2,78 +2,60 @@ import { createCamera } from './camera.js';
 import { Terrain } from './terrain.js'
 import * as controlsHelper from './controls.js'
 
-
 import { modelLoader } from './modelLoader.js'
 
 
-
-
-import { modelLoader } from './modelLoader.js'
-
-
-
+export let scene;
+export let isMouseDown;
+export let pika;
+export let terrain;
 let camera;
 let controls;
-export let scene;
 let renderer;
-let container;
 let keyboard = new THREEx.KeyboardState();
+let container;
+
 const mixers = []
 const clock = new THREE.Clock();
 const blocker = document.querySelector('#blocker')
-export let pika;
 const menu = document.getElementById( 'menu')
-let prevTime = performance.now()
+
 function main() {
   //sets container to the div within the HTML file
   container = document.body;
   scene = new THREE.Scene();
 
 
-  menu.addEventListener('click', () => controls.lock(), false)
-
   loadModels();
+  createRenderer();
 
   camera = createCamera();
   // scene.add(camera)
-  console.log(pika)
-  controls = controlsHelper.createControls(camera);
+  console.log(renderer)
+  controls = controlsHelper.createControls(camera, renderer);
   scene.add(controls.getObject())
   console.log(controls.getObject())
 
   createLights();
   createFloor();
   createSkyBox();
-  createRenderer();
 
   var axesHelper = new THREE.AxesHelper( 1 );
   scene.add( axesHelper );
 
   window.addEventListener( 'resize', onWindowResize );
   document.addEventListener( 'keydown', controlsHelper.onKeyDown, false );
-	document.addEventListener( 'keyup', controlsHelper.onKeyUp, false );
+  document.addEventListener( 'keyup', controlsHelper.onKeyUp, false );
+  document.addEventListener("mousemove", controlsHelper.onMouseMove);
+  document.addEventListener("mousedown", () => isMouseDown = true);
+  document.addEventListener("mouseup", () => isMouseDown = false);
+  
 }
 
 function loadModels(){
-//basic model loader for GLTF files
-
-  const loader = new THREE.GLTFLoader();
-  loader.load('../assets/models/animations/pikaRunning.glb', 
-  (model, pos = new THREE.Vector3(0,0,0)) => {
-    const pika = model.scene
-    pika.position.copy(pos)
-    scene.add(pika)
-    pika.name = "pika"
-    console.log(pika)
-  }, 
-  () => {}, 
-  (error) => console.log(error))
-  
-  modelLoader('../assets/models/bulbasaur/scene.gltf', new THREE.Vector3(10, 0, 10);
-  modelLoader('../assets/models/charmander/scene.gltf', new THREE.Vector3(-10, 0, -10);
-  modelLoader('../assets/models/squirtle/scene.gltf', new THREE.Vector3(5, 0, 5);
+  modelLoader('../assets/models/Animations/pikaRunning.glb', new THREE.Vector3(0, 0, 0), 'pika')
+  modelLoader('../assets/models/untitled.glb', new THREE.Vector3(0, 5, 0), 'charmander');
 }
-
 
 
 function createLights() {
@@ -93,20 +75,29 @@ function createLights() {
 }
 
 function createFloor(){
-    //creates a basic floor for testing purposes
-    let floorTexture = new THREE.TextureLoader().load('../assets/textures/waterpic.jpg');
-    floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
-    floorTexture.repeat.set(16,16)
-    let floorMaterial = new THREE.MeshBasicMaterial({map: floorTexture, side: THREE.DoubleSide});
-    let floorGeometry = new THREE.PlaneGeometry(8192, 8192, 10, 10);
-    let floor = new THREE.Mesh(floorGeometry, floorMaterial);
+  // creates a basic floor for testing purposes
+  let flowMap = new THREE.TextureLoader().load('assets/textures/water/Water_1_M_Flow.jpg')
+  let waterGeometry = new THREE.PlaneBufferGeometry( 8196, 8196);
+  let water = new THREE.Water( waterGeometry, {
+      scale: 2,
+      textureWidth: 8196,
+      textureHeight: 8196,
+      flowMap: flowMap
 
-    floor.position.x = Math.PI /2;
-    floor.position.y = -0.5;
-    scene.add(floor);
-  floor.rotation.x = Math.PI / 2;
-  
-  scene.add(Terrain())
+  } );
+  water.position.y = -1;
+  water.rotation.x = Math.PI * - 0.5;
+          
+  var helperGeometry = new THREE.PlaneBufferGeometry( 20, 20 );
+  var helperMaterial = new THREE.MeshBasicMaterial( { map: flowMap } );
+  var helper = new THREE.Mesh( helperGeometry, helperMaterial );
+  helper.position.y = 1.01;
+  helper.rotation.x = Math.PI * - 0.5;
+  helper.visible = false;
+
+  scene.add(water,helper);
+terrain = Terrain()
+scene.add(terrain)
 }
 
 function createSkyBox(){
@@ -181,7 +172,11 @@ function onWindowResize() {
 
 }
 
+  
+  
+Ammo().then((AmmoLib) => {
+  Ammo = AmmoLib
+  main()
+  animate()
+})
 
-
-main()
-animate()
