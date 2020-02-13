@@ -2,6 +2,12 @@ import { createCamera } from './camera.js';
 import { Terrain } from './terrain.js'
 import * as controlsHelper from './controls.js'
 
+
+import { modelLoader } from './modelLoader.js'
+
+
+
+
 import { modelLoader } from './modelLoader.js'
 
 
@@ -22,6 +28,7 @@ function main() {
   //sets container to the div within the HTML file
   container = document.body;
   scene = new THREE.Scene();
+
 
   menu.addEventListener('click', () => controls.lock(), false)
 
@@ -46,34 +53,28 @@ function main() {
   document.addEventListener( 'keydown', controlsHelper.onKeyDown, false );
 	document.addEventListener( 'keyup', controlsHelper.onKeyUp, false );
 }
+
 function loadModels(){
 //basic model loader for GLTF files
 
   const loader = new THREE.GLTFLoader();
-  // loader.load('../assets/models/Animations/pikaRunning.glb', 
-  // (model, pos = new THREE.Vector3(0,0,0)) => {
-  //   const pika = model.scene
-  //   pika.position.copy(pos)
-  //   scene.add(pika)
-  //   pika.name = "pika"
-  //   console.log(pika)
-  // }, 
-  // () => {}, 
-  // (error) => console.log(error))
-  // loader.load('../assets/models/untitled.glb', 
-  // (model, pos = new THREE.Vector3(0,5,0)) => {
-  //   const pika = model.scene
-  //   pika.position.copy(pos)
-  //   scene.add(pika)
-  //   console.log(pika)
-  // }, 
-  // () => {}, 
-  // (error) => console.log(error))
-  modelLoader('../assets/models/Animations/pikaRunning.glb', new THREE.Vector3(0, 0, 0), 'pika')
-  modelLoader('../assets/models/untitled.glb', new THREE.Vector3(0, 5, 0), 'charmander');
-  // modelLoader('../assets/models/charmander/scene.gltf', new THREE.Vector3(-10, 0, -10));
-  // modelLoader('../assets/models/squirtle/scene.gltf', new THREE.Vector3(5, 0, 5));
+  loader.load('../assets/models/animations/pikaRunning.glb', 
+  (model, pos = new THREE.Vector3(0,0,0)) => {
+    const pika = model.scene
+    pika.position.copy(pos)
+    scene.add(pika)
+    pika.name = "pika"
+    console.log(pika)
+  }, 
+  () => {}, 
+  (error) => console.log(error))
+  
+  modelLoader('../assets/models/bulbasaur/scene.gltf', new THREE.Vector3(10, 0, 10);
+  modelLoader('../assets/models/charmander/scene.gltf', new THREE.Vector3(-10, 0, -10);
+  modelLoader('../assets/models/squirtle/scene.gltf', new THREE.Vector3(5, 0, 5);
 }
+
+
 
 function createLights() {
     const color = 0xFFFFFF;
@@ -181,9 +182,6 @@ function onWindowResize() {
 }
 
 
-
-  
-  
 
 main()
 animate()
