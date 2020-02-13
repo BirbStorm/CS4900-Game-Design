@@ -1,7 +1,7 @@
 export function Terrain() {
 
     let xS = 63, yS = 63;
-    let mntTexture = new THREE.TextureLoader().load('../assets/textures/ground.jpg');
+    let mntTexture = new THREE.TextureLoader().load('../assets/textures/grass.jpg');
     mntTexture.wrapS = mntTexture.wrapT = THREE.RepeatWrapping;
     mntTexture.repeat.set(16,16);
     let terrainScene = THREE.Terrain({
