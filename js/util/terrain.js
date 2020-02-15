@@ -4,7 +4,7 @@ export function Terrain() {
 
     let mntTexture = new THREE.TextureLoader().load('../assets/textures/grass.jpg');
     mntTexture.wrapS = mntTexture.wrapT = THREE.RepeatWrapping;
-    mntTexture.repeat.set(16,16);
+    mntTexture.repeat.set(8,8);
     let terrainScene = THREE.Terrain({
         easing: THREE.Terrain.Linear,
         frequency: 3.5,
