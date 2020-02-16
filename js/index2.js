@@ -24,6 +24,7 @@ const mixers = []
 const clock = new THREE.Clock();
 const blocker = document.querySelector('#blocker')
 const menu = document.getElementById( 'menu')
+
 function main() {
   //sets container to the div within the HTML file
   container = document.body;
@@ -71,10 +72,12 @@ function main() {
   document.addEventListener("mouseup", () => isMouseDown = false);
   
 }
+
 function loadModels(){
   modelLoader('../assets/models/knuckles/knuckles.glb', new THREE.Vector3(0, 0, 0), 'knuckles')
   modelLoader('../assets/models/untitled.glb', new THREE.Vector3(0, 5, 0), 'charmander');
 }
+
 
 function createLights() {
     const color = 0xFFFFFF;
@@ -98,8 +101,8 @@ function createFloor(){
   let waterGeometry = new THREE.PlaneBufferGeometry( 8196, 8196);
   let water = new THREE.Water( waterGeometry, {
       scale: 2,
-      textureWidth: 8196,
-      textureHeight: 8196,
+      textureWidth: 4096,
+      textureHeight: 4096,
       flowMap: flowMap
 
   } );
@@ -240,8 +243,6 @@ function onWindowResize() {
 
 }
 
-
-
   
   
 Ammo().then((AmmoLib) => {
@@ -249,3 +250,4 @@ Ammo().then((AmmoLib) => {
   main()
   animate()
 })
+

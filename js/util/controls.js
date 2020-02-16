@@ -21,6 +21,7 @@ let raycaster = new THREE.Raycaster(
     new THREE.Vector3(),
     new THREE.Vector3(0,-1,0),
     0,10)
+
 export function createControls(camera){
     controls = new THREE.PointerLockControls( camera, container )
     
@@ -68,7 +69,7 @@ export const onKeyDown = ( event ) => {
     }
 };
 export const onMouseMove = (event) => {
-    if(controls.isLocked){
+    if(controls.isLocked && isMouseDown){
         const {
             movementX,
             movementY
@@ -170,6 +171,7 @@ export function updateControls() {
         player.translateZ(- velocity.z * delta)
         player.translateX(- velocity.x * delta)
         controls.getObject().position.y += ( velocity.y * delta ); // new behavior
+
         if ( controls.getObject().position.y < 5 ) {
             velocity.y = 0;
             controls.getObject().position.y = 5;
@@ -185,13 +187,16 @@ export function updateControls() {
         controls.getObject().position.x = cameraOffset.x
         controls.getObject().position.y = cameraOffset.y
         controls.getObject().position.z = cameraOffset.z
+
         controls.getObject().lookAt(player.position)
         prevTime = time;
     }
     else if(player !== undefined){
+
         velocity = new THREE.Vector3(0,0,0)
         player.translateZ(  velocity.z );
         player.translateX(  velocity.x );
 
     }
+
 }
