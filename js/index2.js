@@ -4,6 +4,7 @@ import * as controlsHelper from './util/controls.js'
 
 import { modelLoader } from './util/modelLoader.js'
 import { makeTextSprite } from './util/sprites.js'
+import { initPhysics, updatePhysics } from './util/physics.js';
 
 
 export let scene;
@@ -19,7 +20,8 @@ let controls;
 let renderer;
 let keyboard = new THREEx.KeyboardState();
 let container;
-
+let stats;
+export let dynamicObjects = []
 const mixers = []
 const clock = new THREE.Clock();
 const blocker = document.querySelector('#blocker')
@@ -37,6 +39,10 @@ function main() {
   var width = window.innerWidth;
   var height = window.innerHeight;
 
+  stats = new Stats();
+  stats.domElement.style.position = 'absolute';
+  stats.domElement.style.top = '0px';
+  container.appendChild( stats.domElement );
 
   loadModels();
   createRenderer();
@@ -49,18 +55,18 @@ function main() {
 
 
   // scene.add(camera)
-  console.log(renderer)
   controls = controlsHelper.createControls(camera, renderer);
   scene.add(controls.getObject())
-  console.log(controls.getObject())
 
+  terrain = Terrain()
+  scene.add(terrain)
   createLights();
   createFloor();
   createSkyBox();
   //createHUD();
   //createHealthBar();
   //createSprites();
-
+  initPhysics()
   var axesHelper = new THREE.AxesHelper( 1 );
   scene.add( axesHelper );
 
@@ -74,8 +80,8 @@ function main() {
 }
 
 function loadModels(){
-  modelLoader('../assets/models/knuckles/knuckles.glb', new THREE.Vector3(0, 0, 0), 'knuckles')
-  modelLoader('../assets/models/untitled.glb', new THREE.Vector3(0, 5, 0), 'charmander');
+  modelLoader('../assets/models/knuckles/knuckles.glb', new THREE.Vector3(-200, 0, 900), 'knuckles')
+  //modelLoader('../assets/models/untitled.glb', new THREE.Vector3(0, 5, 0), 'charmander');
 }
 
 
@@ -117,8 +123,7 @@ function createFloor(){
   helper.visible = false;
 
   //scene.add(water,helper);
-terrain = Terrain()
-scene.add(terrain)
+  
 }
 
 function createSkyBox(){
@@ -226,8 +231,11 @@ function update() {
 function animate() {
   requestAnimationFrame(animate)
   player = scene.getObjectByName("knuckles")
+  
   controlsHelper.updateControls()
+  stats.update()
   //renderer.clear();
+  //updatePhysics(clock.getDelta())
   renderer.render( scene, camera );
   //renderer.clearDepth();
   //renderer.render(sceneHUD, cameraHUD);

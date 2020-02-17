@@ -1,3 +1,4 @@
+
 export function Terrain() {
 
     let xS = 63, yS = 63;
@@ -10,14 +11,14 @@ export function Terrain() {
         frequency: 3.5,
         heightmap: THREE.Terrain.HillIsland,
         material: new THREE.MeshBasicMaterial({map:mntTexture,side: THREE.DoubleSide}),
-        maxHeight: 1000,
-        minHeight: -100,
+        maxHeight: 100,
+        minHeight: -10,
         steps: 1,
         useBufferGeometry: false,
         xSegments: xS,
-        xSize: 4096,
+        xSize: 2048,
         ySegments: yS,
-        ySize: 4096,
+        ySize: 2048,
     });
     // Assuming you already have your global scene, add the terrain to it
 
@@ -33,6 +34,12 @@ export function Terrain() {
         randomness: Math.random,
     });
     terrainScene.add(decoScene);
-
+    var test = THREE.Terrain.toHeightmap(
+        // terrainScene.children[0] is the most detailed version of the terrain mesh
+        terrainScene.children[0].geometry.vertices,
+        { xSegments: 63, ySegments: 63 }
+    );
+    let data = terrainScene.children[0].geometry.vertices
+    terrainScene.position.copy(new THREE.Vector3(0,0,0))
     return terrainScene
 }

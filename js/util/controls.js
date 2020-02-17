@@ -18,10 +18,7 @@ let oldX = 0
 let prevTime = performance.now();
 let velocity = new THREE.Vector3()
 let direction = new THREE.Vector3()
-let raycaster = new THREE.Raycaster( 
-    new THREE.Vector3(),
-    new THREE.Vector3(0,-1,0),
-    0,10)
+
 
 export function createControls(camera){
     controls = new THREE.PointerLockControls( camera, container )
@@ -120,6 +117,7 @@ export const onKeyUp = ( event ) => {
 
 export function updateControls() {
     if( controls.isLocked ) {
+
         let time = performance.now();
         let delta = ( time - prevTime ) / 1000;
         //console.log(delta)
@@ -179,15 +177,17 @@ export function updateControls() {
         }
         //Lowers the camera for crouching
         if (crouch){
-            var relativeCameraOffset = new THREE.Vector3(0,14,-20);
+            var relativeCameraOffset = new THREE.Vector3(0,4,-10);
         }
         else{
-            var relativeCameraOffset = new THREE.Vector3(0,15,-20);
+            var relativeCameraOffset = new THREE.Vector3(0,5,-10);
         }
         var cameraOffset = relativeCameraOffset.applyMatrix4(player.matrixWorld )
         controls.getObject().position.x = cameraOffset.x
         controls.getObject().position.y = cameraOffset.y
         controls.getObject().position.z = cameraOffset.z
+        controls.getObject().lookAt(player.position)
+        console.log(player.position)
         prevTime = time
 
     }
