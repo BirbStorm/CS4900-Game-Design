@@ -2,14 +2,16 @@
 <!DOCTYPE html>
 <html >
 <head>
-  <meta charset="UTF-8">
-  <title>Three.js Start</title>
-      <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Three.js Start</title>
+    <link rel="shortcut icon" href="/assets/textures/knuckles.png">
+    <link rel="stylesheet" href="style.css">
 </head>
  
 <body>
     <!--This is where our game will be -->
 <div id="blocker">
+    <img src="/assets/textures/unmute.png" style="width:60px;height:60px;" onclick="javascript:toggleMute()" />
     <div id="menu">
         
         <span>Click to play</span>
@@ -20,8 +22,8 @@
         <br>
             Look: Click + Mouse Move                
         <br>
-        <audio autoplay loop>
-            <source src="/assets/music/POL-staff-roll-short.wav" type="audio/wav">
+        <audio id="music" autoplay loop>
+            <source src="/assets/audio/POL-staff-roll-short.wav" type="audio/wav">
         </audio>
     </div>   
 </div>
@@ -32,6 +34,7 @@
 <script src='js/lib/loaders/Reflector.js'></script>
 <script src='js/lib/loaders/Refractor.js'></script>
 
+<script src='js/util/audio.js'></script>
 
 <script src='js/lib/controls/THREEx.KeyboardState.js'></script>
 <script src='js/lib/controls/THREEx.FullScreen.js'></script>
