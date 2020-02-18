@@ -169,7 +169,7 @@ export function updateControls() {
         
         player.translateZ(- velocity.z * delta)
         player.translateX(- velocity.x * delta)
-        // controls.getObject().position.y += ( velocity.y * delta ); // new behavior
+        controls.getObject().position.y += ( velocity.y * delta ); // new behavior
 
         if ( controls.getObject().position.y < 5 ) {
             velocity.y = 0;
@@ -187,12 +187,13 @@ export function updateControls() {
         controls.getObject().position.y = cameraOffset.y
         controls.getObject().position.z = cameraOffset.z
         controls.getObject().lookAt(player.position)
-        console.log(player.position)
-        prevTime = time
+
+        prevTime = time;
 
     }
 
     else if(player !== undefined){
+
         velocity = new THREE.Vector3(0,0,0)
         player.translateZ(  velocity.z );
         player.translateX(  velocity.x );
