@@ -30,7 +30,7 @@ const menu = document.getElementById( 'menu')
 let raycaster;
 
 function main() {
-  const loadingManager = new THREE.LoadingManager( () => {
+  loadingManager = new THREE.LoadingManager( () => {
 
     const loadingScreen = document.getElementById( 'loading-screen' );
     loadingScreen.classList.add( 'fade-out' );
@@ -273,7 +273,11 @@ function onWindowResize() {
 
 }
 
-
+function onTransitionEnd( event ) {
+  console.log('events')
+    event.target.remove();
+    
+}
   
   
 Ammo().then((AmmoLib) => {

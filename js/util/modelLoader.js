@@ -37,11 +37,7 @@ function onLoad( model, pos, name ){
     console.log(physicsWorld, scene)
 
 }
-function onTransitionEnd( event ) {
-    console.log('events')
-      event.target.remove();
-      
-  }
+
 function progress(){
 	
 }
