@@ -257,7 +257,7 @@ function animate() {
   controlsHelper.updateControls()
   stats.update()
   //renderer.clear();
-  updatePhysics(clock.getDelta())
+  //updatePhysics(clock.getDelta())
   renderer.render( scene, camera );
   //renderer.clearDepth();
   //renderer.render(sceneHUD, cameraHUD);
@@ -274,9 +274,7 @@ function onWindowResize() {
 }
 
 function onTransitionEnd( event ) {
-  console.log('events')
-    event.target.remove();
-    
+  event.target.remove();    
 }
   
   

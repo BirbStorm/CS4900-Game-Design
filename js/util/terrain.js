@@ -40,6 +40,19 @@ export function Terrain() {
         { xSegments: 63, ySegments: 63 }
     );
     let data = terrainScene.children[0].geometry
-    console.log(data)
+    console.log(THREE.Terrain.heightmapArray(THREE.Terrain.HillIsland,{
+        easing: THREE.Terrain.Linear,
+        frequency: 3.5,
+        material: new THREE.MeshBasicMaterial({map:mntTexture,side: THREE.DoubleSide}),
+        maxHeight: 100,
+        minHeight: -10,
+        steps: 1,
+        useBufferGeometry: false,
+        xSegments: xS,
+        xSize: 2048,
+        ySegments: yS,
+        ySize: 2048
+    }))
+    console.log(terrainScene.children[0].geometry.vertices)
     return terrainScene
 }

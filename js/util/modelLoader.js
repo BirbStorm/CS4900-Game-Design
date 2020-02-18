@@ -15,10 +15,10 @@ function onLoad( model, pos, name ){
     
     var box = new THREE.Box3().setFromObject( character );
     let test = box.getSize(new THREE.Vector3())
-    console.log(test);
+
     bbox = new Ammo.btBoxShape( new Ammo.btVector3( test.x, test.y, test.z ) );
     bbox.setMargin( 0.05 );
-    console.log(bbox)
+
     character.position.copy(pos)
     character.name = name
     var mass = 3 * 5;
