@@ -1,8 +1,8 @@
-import { scene, dynamicObjects } from '../index2.js'
+import { scene, dynamicObjects, loadingManager } from '../index2.js'
 import { physicsWorld } from './physics.js'
 
 export function modelLoader( path, pos, name ){
-	const loader = new THREE.GLTFLoader();
+	const loader = new THREE.GLTFLoader(loadingManager);
 	loader.load(path, 
 	(model) => onLoad(model, pos, name),
 	() => progress(),
@@ -15,11 +15,10 @@ function onLoad( model, pos, name ){
     
     var box = new THREE.Box3().setFromObject( character );
     let test = box.getSize(new THREE.Vector3())
-    console.log(test);
 
     bbox = new Ammo.btBoxShape( new Ammo.btVector3( test.x, test.y, test.z ) );
     bbox.setMargin( 0.05 );
- 
+
     character.position.copy(pos)
     character.name = name
     var mass = 3 * 5;
@@ -34,7 +33,7 @@ function onLoad( model, pos, name ){
     character.userData.physicsBody = body
     dynamicObjects.push( character )
     scene.add(character)
-    physicsWorld.addRigidBody( body );
+    //physicsWorld.addRigidBody( body );
     console.log(physicsWorld, scene)
 
 }

@@ -3,30 +3,40 @@
 <html >
 <head>
     <meta charset="UTF-8">
-    <title>Three.js Start</title>
+    <title>Knuckle Hunt</title>
     <link rel="shortcut icon" href="/assets/textures/knuckles.png">
     <link rel="stylesheet" href="style.css">
 </head>
  
 <body>
-    <!--This is where our game will be -->
+     <!--This is where our game will be -->
+     <section id="loading-screen">
+
+        <div id="loader"></div>
+    
+    </section> 
 <div id="blocker">
     <img src="/assets/textures/unmute.png" style="width:60px;height:60px;" onclick="javascript:toggleMute()" />
-    <div id="menu">
         
-        <span>Click to play</span>
-        <br>
-            Move: WASD
-        <br>
-            Jump: SPACE
-        <br>
-            Look: Click + Mouse Move                
-        <br>
-        <audio id="music" autoplay loop>
-            <source src="/assets/audio/POL-staff-roll-short.wav" type="audio/wav">
-        </audio>
-    </div>   
+        <div id="menu">
+            
+            <span>Click to play</span>
+            <br>
+                Move: WASD
+            <br>
+                Jump: SPACE
+            <br>
+                Look: Click + Mouse Move                
+            <br>
+            <audio id="music" autoplay loop>
+                <source src="/assets/audio/POL-staff-roll-short.wav" type="audio/wav">
+            </audio>
+        </div>      
+                        
+    </div>  
+   
 </div>
+
 <script src='js/lib/3js.js'></script>
 <script src='js/lib/ammo.js'></script>
 <script src='js/lib/loaders/THREE.Terrain.min.js'></script>
