@@ -57,9 +57,9 @@ function main() {
   createLights();
   createFloor();
   createSkyBox();
-  createHUD();
+  //createHUD();
   //createHealthBar();
-  createSprites();
+  //createSprites();
 
   var axesHelper = new THREE.AxesHelper( 1 );
   scene.add( axesHelper );
@@ -98,7 +98,7 @@ function createLights() {
 function createFloor(){
   // creates a basic floor for testing purposes
   let flowMap = new THREE.TextureLoader().load('assets/textures/water/Water_1_M_Flow.jpg')
-  let waterGeometry = new THREE.PlaneBufferGeometry( 8196, 8196);
+  let waterGeometry = new THREE.PlaneBufferGeometry( 4096, 4096);
   let water = new THREE.Water( waterGeometry, {
       scale: 2,
       textureWidth: 4096,
@@ -116,7 +116,7 @@ function createFloor(){
   helper.rotation.x = Math.PI * - 0.5;
   helper.visible = false;
 
-  scene.add(water,helper);
+  //scene.add(water,helper);
 terrain = Terrain()
 scene.add(terrain)
 }

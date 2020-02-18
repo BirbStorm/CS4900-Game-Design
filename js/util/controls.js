@@ -1,3 +1,4 @@
+
 import { player, isMouseDown } from '../index2.js'
 const container = document.body;
 const menu = document.querySelector('#menu');
@@ -41,7 +42,6 @@ export function createControls(camera){
         menu.style.display = '';
 
     } );
-    controls.addEventListener('mousemove', (event) => console.log(event))
 
     return controls;
 }
@@ -125,6 +125,7 @@ export function updateControls() {
         //console.log(delta)
         let rotateAngle = Math.PI / 4 * delta
         velocity.x -= velocity.x * 10.0 * delta;
+        //console.log(velocity)
         velocity.z -= velocity.z * 10.0 * delta;
         //velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
         
@@ -139,7 +140,7 @@ export function updateControls() {
 
         if ( moveForward ){
             if ( sprint ){
-                velocity.z -= (direction.z * 400.0 * delta) * 2;
+                velocity.z -= (direction.z * 400.0 * delta) * .75;
             }
             else if (crouch){
                 velocity.z -= (direction.z * 400.0 * delta) * 0.5;
@@ -178,19 +179,20 @@ export function updateControls() {
         }
         //Lowers the camera for crouching
         if (crouch){
-            var relativeCameraOffset = new THREE.Vector3(0,4,-20);
+            var relativeCameraOffset = new THREE.Vector3(0,14,-20);
         }
         else{
-            var relativeCameraOffset = new THREE.Vector3(0,5,-20);
+            var relativeCameraOffset = new THREE.Vector3(0,15,-20);
         }
         var cameraOffset = relativeCameraOffset.applyMatrix4(player.matrixWorld )
         controls.getObject().position.x = cameraOffset.x
         controls.getObject().position.y = cameraOffset.y
         controls.getObject().position.z = cameraOffset.z
-
         controls.getObject().lookAt(player.position)
         prevTime = time;
+
     }
+
     else if(player !== undefined){
 
         velocity = new THREE.Vector3(0,0,0)
