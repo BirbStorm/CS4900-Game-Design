@@ -2,8 +2,8 @@ import { terrain, dynamicObjects } from '../index2.js'
 
 // Heightfield parameters
 
-var terrainWidth = 2048;
-var terrainDepth = 2048;
+var terrainWidth = 1024;
+var terrainDepth = 1024;
 var terrainHalfWidth = terrainWidth / 2;
 var terrainHalfDepth = terrainDepth / 2;
 var terrainMaxHeight = 100;
@@ -50,40 +50,6 @@ export function initPhysics() {
 
 }
 
-function generateHeight( width, depth, minHeight, maxHeight ) {
-
-    // Generates the height data (a sinus wave)
-
-    var size = width * depth;
-    var data = new Float32Array( size );
-
-    var hRange = maxHeight - minHeight;
-    var w2 = width / 2;
-    var d2 = depth / 2;
-    var phaseMult = 12;
-
-    var p = 0;
-    for ( var j = 0; j < depth; j ++ ) {
-
-        for ( var i = 0; i < width; i ++ ) {
-
-            var radius = Math.sqrt(
-                Math.pow( ( i - w2 ) / w2, 2.0 ) +
-                    Math.pow( ( j - d2 ) / d2, 2.0 ) );
-
-            var height = ( Math.sin( radius * phaseMult ) + 1 ) * 0.5 * hRange + minHeight;
-
-            data[ p ] = height;
-
-            p ++;
-
-        }
-
-    }
-
-    return data;
-
-}
 
 function createTerrainShape() {
 
@@ -105,13 +71,13 @@ function createTerrainShape() {
     // Copy the javascript height data array to the Ammo one.
     var p = 0;
     var p2 = 0;
+    console.log(heightData)
     for ( var j = 0; j < terrainDepth; j ++ ) {
 
         for ( var i = 0; i < terrainWidth; i ++ ) {
 
             // write 32-bit float data to memory
             Ammo.HEAPF32[ ammoHeightData + p2 >> 2 ] = heightData[ p ];
-
             p ++;
 
             // 4 bytes/float
@@ -148,15 +114,13 @@ function createTerrainShape() {
 export function updatePhysics( deltaTime ) {
 
     physicsWorld.stepSimulation( deltaTime, 10 );
-
+    
     // Update objects
     for ( var i = 0, il = dynamicObjects.length; i < il; i ++ ) {
-
         var objThree = dynamicObjects[ i ];
         var objPhys = objThree.userData.physicsBody;
         var ms = objPhys.getMotionState();
         if ( ms ) {
-            console.log(ms)
             ms.getWorldTransform( transformAux1 );
             var p = transformAux1.getOrigin();
             var q = transformAux1.getRotation();

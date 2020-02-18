@@ -22,12 +22,23 @@ let keyboard = new THREEx.KeyboardState();
 let container;
 let stats;
 export let dynamicObjects = []
+export let loadingManager;
 const mixers = []
 const clock = new THREE.Clock();
 const blocker = document.querySelector('#blocker')
 const menu = document.getElementById( 'menu')
+let raycaster;
 
 function main() {
+  const loadingManager = new THREE.LoadingManager( () => {
+
+    const loadingScreen = document.getElementById( 'loading-screen' );
+    loadingScreen.classList.add( 'fade-out' );
+
+    // optional: remove loader from DOM via event listener
+    loadingScreen.addEventListener( 'transitionend', onTransitionEnd );
+
+} );
   //sets container to the div within the HTML file
   container = document.body;
   scene = new THREE.Scene();
@@ -69,14 +80,25 @@ function main() {
   initPhysics()
   var axesHelper = new THREE.AxesHelper( 1 );
   scene.add( axesHelper );
+  var dir = new THREE.Vector3( 0, -2, 0 );
 
+  //normalize the direction vector (convert to vector of length 1)
+  dir.normalize();
+  
+  var origin = new THREE.Vector3( -200, 0, 900 );
+  var length = 1;
+  var hex = 0xffff00;
+  
+  var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
+  scene.add( arrowHelper );
   window.addEventListener( 'resize', onWindowResize );
   document.addEventListener( 'keydown', controlsHelper.onKeyDown, false );
   document.addEventListener( 'keyup', controlsHelper.onKeyUp, false );
   document.addEventListener("mousemove", controlsHelper.onMouseMove);
   document.addEventListener("mousedown", () => isMouseDown = true);
   document.addEventListener("mouseup", () => isMouseDown = false);
-  
+  raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 10, 0 ), 0, 100 );
+
 }
 
 function loadModels(){
@@ -231,11 +253,11 @@ function update() {
 function animate() {
   requestAnimationFrame(animate)
   player = scene.getObjectByName("knuckles")
-  
+
   controlsHelper.updateControls()
   stats.update()
   //renderer.clear();
-  //updatePhysics(clock.getDelta())
+  updatePhysics(clock.getDelta())
   renderer.render( scene, camera );
   //renderer.clearDepth();
   //renderer.render(sceneHUD, cameraHUD);
@@ -250,6 +272,7 @@ function onWindowResize() {
   renderer.setSize( window.innerWidth , window.innerHeight );
 
 }
+
 
   
   

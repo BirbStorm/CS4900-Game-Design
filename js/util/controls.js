@@ -1,5 +1,5 @@
 
-import { player, isMouseDown } from '../index2.js'
+import { player, isMouseDown, terrain } from '../index2.js'
 const container = document.body;
 const menu = document.querySelector('#menu');
 const blocker = document.querySelector('#blocker')
@@ -14,11 +14,10 @@ let rotateRight = false
 let sprint = false
 let crouch = false
 let oldX = 0
-
+let raycaster
 let prevTime = performance.now();
 let velocity = new THREE.Vector3()
 let direction = new THREE.Vector3()
-
 
 export function createControls(camera){
     controls = new THREE.PointerLockControls( camera, container )
@@ -39,7 +38,7 @@ export function createControls(camera){
         menu.style.display = '';
 
     } );
-
+    raycaster = new THREE.Raycaster(new THREE.Vector3(),new THREE.Vector3(0, -1, 0))
     return controls;
 }
 
@@ -85,7 +84,6 @@ export const onMouseMove = (event) => {
             rotateRight = false
         }
         oldX = val
-        console.log(event)
     }
     else{
         rotateLeft = false
@@ -126,6 +124,11 @@ export function updateControls() {
         //console.log(velocity)
         velocity.z -= velocity.z * 10.0 * delta;
         //velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
+        
+        
+        raycaster.ray.origin.copy( player.position );
+        raycaster.ray.origin.y -= 10;
+        //console.log(raycaster.intersectObject(terrain, true))
         
         direction.z = Number( moveForward ) - Number( moveBackward );
         direction.x = Number( moveRight ) - Number( moveLeft );
@@ -187,16 +190,13 @@ export function updateControls() {
         controls.getObject().position.y = cameraOffset.y
         controls.getObject().position.z = cameraOffset.z
         controls.getObject().lookAt(player.position)
-        console.log(player.position)
         prevTime = time
 
     }
 
     else if(player !== undefined){
         velocity = new THREE.Vector3(0,0,0)
-        player.translateZ(  velocity.z );
-        player.translateX(  velocity.x );
-
     }
+
 
 }

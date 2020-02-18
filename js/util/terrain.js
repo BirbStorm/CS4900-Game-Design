@@ -39,7 +39,7 @@ export function Terrain() {
         terrainScene.children[0].geometry.vertices,
         { xSegments: 63, ySegments: 63 }
     );
-    let data = terrainScene.children[0].geometry.vertices
-    terrainScene.position.copy(new THREE.Vector3(0,0,0))
+    let data = terrainScene.children[0].geometry
+    console.log(data)
     return terrainScene
 }
