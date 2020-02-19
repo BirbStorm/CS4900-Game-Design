@@ -1,4 +1,4 @@
-import { scene, dynamicObjects, loadingManager } from '../index2.js'
+import { scene, dynamicObjects, loadingManager, mixers } from '../index2.js'
 import { physicsWorld } from './physics.js'
 
 export function modelLoader( path, pos, name ){
@@ -33,6 +33,11 @@ function onLoad( model, pos, name ){
     character.userData.physicsBody = body
     dynamicObjects.push( character )
     scene.add(character)
+
+    let mixer = new THREE.AnimationMixer( character );
+    mixers.push(mixer);
+    mixer.clipAction(model.animations[0]).play();
+    
     //physicsWorld.addRigidBody( body );
     console.log(physicsWorld, scene)
 

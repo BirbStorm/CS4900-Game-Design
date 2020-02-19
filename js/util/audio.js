@@ -1,12 +1,13 @@
 let mute = false;
+let music = document.getElementById('music');
 
 function toggleMute(){
     if(mute){
         mute = false;
-        document.getElementById('music').play();
+        music.play();
     }
     else if(!mute){
         mute = true;
-        document.getElementById('music').pause();
+        music.pause();
     }
 }
