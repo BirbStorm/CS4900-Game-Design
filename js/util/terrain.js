@@ -27,7 +27,7 @@ export function Terrain() {
         easing: THREE.Terrain.Linear,
         frequency: 3.5,
         heightmap: THREE.Terrain.HillIsland,
-        material: new THREE.MeshBasicMaterial({map:mntTexture,side: THREE.DoubleSide}),
+        material: new THREE.MeshBasicMaterial({map:material,side: THREE.DoubleSide}),
         maxHeight: 100,
         minHeight: -10,
         steps: 1,
