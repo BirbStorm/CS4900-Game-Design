@@ -9,10 +9,14 @@
   background-color: #000000;
   bottom: 3px;
   border-style: solid;
-  width: 20%;
-  height: 5%;
+  width: 300px;
+  height: 40px;
 }
-
+#hpbar{
+  background-color: red;
+  width:250px;
+  height:30px;
+}
 #blocker {
   position: absolute;
   width: 100%;
