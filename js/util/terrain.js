@@ -1,23 +1,24 @@
+
 export function Terrain() {
 
     let xS = 63, yS = 63;
 
     let mntTexture = new THREE.TextureLoader().load('../assets/textures/grass.jpg');
     mntTexture.wrapS = mntTexture.wrapT = THREE.RepeatWrapping;
-    mntTexture.repeat.set(16,16);
+    mntTexture.repeat.set(8,8);
     let terrainScene = THREE.Terrain({
         easing: THREE.Terrain.Linear,
         frequency: 3.5,
         heightmap: THREE.Terrain.HillIsland,
         material: new THREE.MeshBasicMaterial({map:mntTexture,side: THREE.DoubleSide}),
-        maxHeight: 1000,
-        minHeight: -100,
+        maxHeight: 100,
+        minHeight: -10,
         steps: 1,
         useBufferGeometry: false,
         xSegments: xS,
-        xSize: 8192,
+        xSize: 2048,
         ySegments: yS,
-        ySize: 8192,
+        ySize: 2048,
     });
     // Assuming you already have your global scene, add the terrain to it
 
@@ -33,6 +34,25 @@ export function Terrain() {
         randomness: Math.random,
     });
     terrainScene.add(decoScene);
-
+    var test = THREE.Terrain.toHeightmap(
+        // terrainScene.children[0] is the most detailed version of the terrain mesh
+        terrainScene.children[0].geometry.vertices,
+        { xSegments: 63, ySegments: 63 }
+    );
+    let data = terrainScene.children[0].geometry
+    console.log(THREE.Terrain.heightmapArray(THREE.Terrain.HillIsland,{
+        easing: THREE.Terrain.Linear,
+        frequency: 3.5,
+        material: new THREE.MeshBasicMaterial({map:mntTexture,side: THREE.DoubleSide}),
+        maxHeight: 100,
+        minHeight: -10,
+        steps: 1,
+        useBufferGeometry: false,
+        xSegments: xS,
+        xSize: 2048,
+        ySegments: yS,
+        ySize: 2048
+    }))
+    console.log(terrainScene.children[0].geometry.vertices)
     return terrainScene
 }
