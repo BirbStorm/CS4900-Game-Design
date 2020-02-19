@@ -126,3 +126,8 @@ canvas {
   -webkit-animation: spin 1.5s linear infinite;
   animation: spin 1.5s linear infinite;
 }
+
+#muteButton {
+  margin-top: 20px;
+  margin-left: 20px;
+}
