@@ -23,7 +23,7 @@ let container;
 let stats;
 export let dynamicObjects = []
 export let loadingManager;
-const mixers = []
+export const mixers = []
 const clock = new THREE.Clock();
 const blocker = document.querySelector('#blocker')
 const menu = document.getElementById( 'menu')
@@ -98,11 +98,12 @@ function main() {
   document.addEventListener("mousedown", () => isMouseDown = true);
   document.addEventListener("mouseup", () => isMouseDown = false);
   raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 10, 0 ), 0, 100 );
-
+  console.log("mixers"+mixers)
 }
 
 function loadModels(){
   modelLoader('../assets/models/knuckles/knuckles.glb', new THREE.Vector3(-200, 0, 900), 'knuckles')
+  
   //modelLoader('../assets/models/untitled.glb', new THREE.Vector3(0, 5, 0), 'charmander');
 }
 
@@ -242,7 +243,6 @@ function createHealthBar(){
 
 function update() {
   const delta = clock.getDelta();
-
   for ( const mixer of mixers ) {
 
     mixer.update( delta );
@@ -252,6 +252,7 @@ function update() {
 
 function animate() {
   requestAnimationFrame(animate)
+  update()
   player = scene.getObjectByName("knuckles")
 
   controlsHelper.updateControls()

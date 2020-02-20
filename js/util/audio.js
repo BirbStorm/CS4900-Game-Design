@@ -1,12 +1,17 @@
 let mute = false;
+let music = document.getElementById('music');
+let muteButton = document.getElementById('muteButton');
 
+music.volume = 0.1;
 function toggleMute(){
     if(mute){
         mute = false;
-        document.getElementById('music').play();
+        music.play();
+        muteButton.src = "/assets/textures/unmute.png";
     }
     else if(!mute){
         mute = true;
-        document.getElementById('music').pause();
+        music.pause();
+        muteButton.src = "/assets/textures/mute.png";
     }
 }
