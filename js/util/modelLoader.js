@@ -12,7 +12,7 @@ export function modelLoader( path, pos, name ){
 function onLoad( model, pos, name ){
     let bbox = null
     const character = model.scene
-    character.scale.set(0.005, 0.005, 0.005)
+    //character.scale.set(0.005, 0.005, 0.005)
     
     var box = new THREE.Box3().setFromObject( character );
     let test = box.getSize(new THREE.Vector3())
