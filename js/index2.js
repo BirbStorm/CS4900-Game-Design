@@ -1,5 +1,5 @@
 import { createCamera } from './util/camera.js';
-import { Terrain } from './util/terrain.js'
+import { Terrain, generateTerrain } from './util/terrain.js'
 import * as controlsHelper from './util/controls.js'
 
 import { modelLoader } from './util/modelLoader.js'
@@ -69,7 +69,7 @@ function main() {
   controls = controlsHelper.createControls(camera, renderer);
   scene.add(controls.getObject())
 
-  terrain = Terrain()
+  terrain = generateTerrain()
   scene.add(terrain)
   createLights();
   createFloor();
@@ -77,7 +77,7 @@ function main() {
   //createHUD();
   //createHealthBar();
   //createSprites();
-  initPhysics()
+  //initPhysics()
   var axesHelper = new THREE.AxesHelper( 1 );
   scene.add( axesHelper );
   var dir = new THREE.Vector3( 0, -2, 0 );

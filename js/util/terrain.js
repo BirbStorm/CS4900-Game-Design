@@ -74,3 +74,118 @@ export function Terrain() {
     console.log(terrainScene.children[0].geometry.vertices)
     return terrainScene
 }
+
+var gridWidth , gridHeight;
+var displacement 
+
+
+let getIndex = (x, y, h) => y*h + x
+
+
+export function generateTerrain(){
+    gridHeight = 1024
+    gridWidth = 1024
+    displacement = new Float32Array(gridWidth*gridHeight);
+    for(var i = 0; i<displacement.length; i++)
+        displacement[i] = 0;
+    
+    computeDisplacement()
+    var geometry, wireframegeometry;
+    geometry = new THREE.PlaneBufferGeometry(gridWidth, gridHeight, gridWidth-1, gridHeight-1);
+
+
+    var positions = geometry.attributes.position.array;
+
+    var i1 = 0;
+    for(var i = 2; i<positions.length; i+=3) {
+        positions[i] -= displacement[i1]; i1++;
+    }
+    var material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
+    var mesh = new THREE.Mesh( geometry, material);
+
+    //terrain.rotation.x = -90*3.14/180.0;
+    mesh.rotation.x = -90*3.14/180.0;
+    console.log(mesh)
+    return mesh
+}
+
+function computeDisplacement() {
+    
+    var maxScale = 10;
+    for (var scale = 2; scale <= maxScale; scale++){
+        // create image data
+        var origImage = new Float32Array(scale*scale*scale*scale+1);
+        // populate it w random noise
+        for(var i = 0; i<origImage.length; i++)
+            origImage[i] = (Math.random()*1000)/Math.pow(scale, 2.5); 
+
+        // create resized image
+        let resizedImage = new Float32Array(gridWidth*gridHeight); 
+        for (var i = 0; i<gridWidth*gridHeight; i++) 
+            resizedImage[i]  = 0;
+
+        // upsample via bilinear interpolation
+        for (var x = 0; x<gridWidth; x++) 
+            for(var y = 0; y<gridHeight; y++) 
+            {
+                //interpolate along the x direction
+                var realX = x / gridWidth * (scale*scale);
+                var realY = y / gridHeight * (scale*scale);
+
+                var x_left = Math.floor(realX);
+                var y_up = Math.floor(realY);
+                var x_right = Math.ceil(realX);
+                var y_down = Math.ceil(realY);
+                
+                var right_influence = Math.abs(realX - x_left);
+                var left_influence = Math.abs(realX - x_right)==0 ? 1 : Math.abs(realX - x_right);;
+                
+                var up_influence = Math.abs(realY - y_up);
+                var down_influence = Math.abs(realY - y_down)==0  ? 1 : Math.abs(realY - y_down);;
+
+                
+                var inputIndexLeft = getIndex(x_left, y_up, scale*scale);
+                var inputIndexRight = getIndex(x_right, y_up, scale*scale);
+                var origValueLeft = origImage[inputIndexLeft];
+                var origValueRight = origImage[inputIndexRight];
+                var lrInterpUp = left_influence*origValueLeft + right_influence*origValueRight;
+
+                var inputIndexLeft = getIndex(x_left, y_down, scale*scale);
+                var inputIndexRight = getIndex(x_right, y_down, scale*scale);
+                var origValueLeft = origImage[inputIndexLeft];
+
+                if(!origValueLeft) {
+                    var inputIndexLeft = getIndex(x_left, y_up, scale*scale);
+                    var inputIndexRight = getIndex(x_right, y_up, scale*scale);
+                    origValueLeft = origImage[inputIndexLeft];
+                }
+                var origValueRight = origImage[inputIndexRight];
+                if(!origValueRight) { 
+                    var inputIndexLeft = getIndex(x_left, y_up, scale*scale);
+                    var inputIndexRight = getIndex(x_right, y_up, scale*scale);
+                    origValueRight = origImage[inputIndexRight];
+
+                }
+                var lrInterpDown = left_influence*origValueLeft + right_influence*origValueRight;
+
+
+                var lrInterpBoth = down_influence*lrInterpUp + up_influence*lrInterpDown;
+
+                var outIndex = getIndex(x, y, gridHeight);
+                resizedImage[outIndex] = lrInterpBoth; 
+
+                displacement[outIndex] += resizedImage[outIndex];
+            }
+
+    }			
+
+    var accum = 0;
+    for(var i = 0; i<displacement.length; i++)
+        accum += displacement[i];
+    var mean = accum / displacement.length;
+
+    for(var i = 0; i<displacement.length; i++)
+        if(displacement[i]>mean) 
+            displacement[i] = mean/2;
+    
+}
