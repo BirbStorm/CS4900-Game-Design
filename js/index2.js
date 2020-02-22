@@ -110,14 +110,14 @@ function loadModels(){
 
 function createLights() {
     const color = 0xFFFFFF;
-    const intensity = 5;
+    const intensity = 1;
     const light = new THREE.AmbientLight(color, intensity);
     scene.add(light);
     // const ambientLight = new THREE.HemisphereLight( 0xddeeff, 0x0f0e0d, 5 );
 
-    const mainLight = new THREE.DirectionalLight( 0xffffff, 2 );
+    const mainLight = new THREE.DirectionalLight( 0xffffff, 1 );
     mainLight.position.set( 10, 20, 20 );
-    const hemiLight = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 5)
+    const hemiLight = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 1)
     hemiLight.position.set(10,10,-10)
     scene.add(   mainLight,hemiLight );
 

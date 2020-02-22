@@ -19,7 +19,7 @@ export function generateTerrain(){
     geometry = new THREE.PlaneBufferGeometry(gridWidth, gridHeight, gridWidth-1, gridHeight-1);
     let t2 = new THREE.TextureLoader().load('../assets/textures/grass.jpg' );
     t2.wrapS = t2.wrapT = THREE.RepeatWrapping;
-    t2.repeat.set(8,8)
+    t2.repeat.set(16,16)
     positions = geometry.attributes.position.array;
 
     let i1 = 0
@@ -27,7 +27,7 @@ export function generateTerrain(){
         positions[i] -= displacement[i1]; 
         i1++;
     }
-    let material = new THREE.MeshBasicMaterial( { map:new THREE.TextureLoader().load('../assets/textures/grass.jpg' ) } );
+    let material = new THREE.MeshLambertMaterial( { map:t2 } );
     let mesh = new THREE.Mesh( geometry, material);
 
     mesh.rotation.x = -90*3.14/180.0;
