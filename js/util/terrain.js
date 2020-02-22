@@ -83,24 +83,33 @@ let getIndex = (x, y, h) => y*h + x
 
 
 export function generateTerrain(){
+    var simplex = new SimplexNoise(),
+        value2d = simplex.noise2D(0, 0),
+        value3d = simplex.noise3D(0, 10, 0),
+        value4d = simplex.noise4D(0, 0, 0, 0);
+  console.log(value2d,value3d,value4d)
     gridHeight = 1024
     gridWidth = 1024
     displacement = new Float32Array(gridWidth*gridHeight);
-    for(var i = 0; i<displacement.length; i++)
+    for(let i in displacement)
         displacement[i] = 0;
     
+    console.log(displacement)
     computeDisplacement()
     var geometry, wireframegeometry;
     geometry = new THREE.PlaneBufferGeometry(gridWidth, gridHeight, gridWidth-1, gridHeight-1);
-
-
+	let t2 = new THREE.TextureLoader().load('../assets/textures/grass.jpg' );
+    t2.wrapS = t2.wrapT = THREE.RepeatWrapping;
+    t2.repeat.set(8,8)
+    console.log(geometry)
     var positions = geometry.attributes.position.array;
 
-    var i1 = 0;
+    var i1 = 0
     for(var i = 2; i<positions.length; i+=3) {
-        positions[i] -= displacement[i1]; i1++;
+        positions[i] -= displacement[i1]; 
+        i1++;
     }
-    var material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
+    var material = new THREE.MeshLambertMaterial( {map:t2 } );
     var mesh = new THREE.Mesh( geometry, material);
 
     //terrain.rotation.x = -90*3.14/180.0;
@@ -116,7 +125,7 @@ function computeDisplacement() {
         // create image data
         var origImage = new Float32Array(scale*scale*scale*scale+1);
         // populate it w random noise
-        for(var i = 0; i<origImage.length; i++)
+        for(let i in origImage)
             origImage[i] = (Math.random()*1000)/Math.pow(scale, 2.5); 
 
         // create resized image
@@ -179,13 +188,13 @@ function computeDisplacement() {
 
     }			
 
-    var accum = 0;
+    var accum = -40;
     for(var i = 0; i<displacement.length; i++)
         accum += displacement[i];
     var mean = accum / displacement.length;
 
     for(var i = 0; i<displacement.length; i++)
-        if(displacement[i]>mean) 
-            displacement[i] = mean/2;
+        if(displacement[i] > mean) 
+            displacement[i] = mean;
     
 }
