@@ -77,7 +77,7 @@ export function Terrain() {
 
 var gridWidth , gridHeight;
 var displacement 
-
+export var positions
 
 var getIndex = (x, y, h) => y*h + x
 
@@ -89,7 +89,6 @@ export function generateTerrain(){
     for(let i in displacement)
         displacement[i] = 0;
 
-    console.log(displacement)
     computeDisplacement()
 
 
@@ -98,8 +97,7 @@ export function generateTerrain(){
     let t2 = new THREE.TextureLoader().load('../assets/textures/grass.jpg' );
     t2.wrapS = t2.wrapT = THREE.RepeatWrapping;
     t2.repeat.set(8,8)
-    console.log(geometry)
-    let positions = geometry.attributes.position.array;
+    positions = geometry.attributes.position.array;
 
     let i1 = 0
     for(let i = 2; i<positions.length; i+=3) {

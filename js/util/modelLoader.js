@@ -14,25 +14,25 @@ function onLoad( model, pos, name ){
     const character = model.scene
     //character.scale.set(0.005, 0.005, 0.005)
     
-    // var box = new THREE.Box3().setFromObject( character );
-    // let test = box.getSize(new THREE.Vector3())
+    var box = new THREE.Box3().setFromObject( character );
+    let test = box.getSize(new THREE.Vector3())
 
-    // bbox = new Ammo.btBoxShape( new Ammo.btVector3( test.x, test.y, test.z ) );
-    // bbox.setMargin( 0.05 );
+    bbox = new Ammo.btBoxShape( new Ammo.btVector3( test.x, test.y, test.z ) );
+    bbox.setMargin( 0.05 );
 
     character.position.copy(pos)
     character.name = name
-    // var mass = 3 * 5;
-    // var localInertia = new Ammo.btVector3( 0, 0, 0 );
-    // bbox.calculateLocalInertia( mass, localInertia );
-    // var transform = new Ammo.btTransform();
-    // transform.setIdentity();
-    // transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
-    // var motionState = new Ammo.btDefaultMotionState( transform );
-    // var rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, bbox, localInertia );
-    // var body = new Ammo.btRigidBody( rbInfo );
-    // character.userData.physicsBody = body
-    // dynamicObjects.push( character )
+    var mass = 3 * 5;
+    var localInertia = new Ammo.btVector3( 0, 0, 0 );
+    bbox.calculateLocalInertia( mass, localInertia );
+    var transform = new Ammo.btTransform();
+    transform.setIdentity();
+    transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
+    var motionState = new Ammo.btDefaultMotionState( transform );
+    var rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, bbox, localInertia );
+    var body = new Ammo.btRigidBody( rbInfo );
+    character.userData.physicsBody = body
+    dynamicObjects.push( character )
     scene.add(character)
 
     let mixer = new THREE.AnimationMixer( character );

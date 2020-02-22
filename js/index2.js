@@ -77,7 +77,7 @@ function main() {
   //createHUD();
   //createHealthBar();
   //createSprites();
-  //initPhysics()
+  initPhysics()
   var axesHelper = new THREE.AxesHelper( 1 );
   scene.add( axesHelper );
   var dir = new THREE.Vector3( 0, -2, 0 );
@@ -258,7 +258,7 @@ function animate() {
   controlsHelper.updateControls()
   stats.update()
   //renderer.clear();
-  //updatePhysics(clock.getDelta())
+  updatePhysics(clock.getDelta())
   renderer.render( scene, camera );
   //renderer.clearDepth();
   //renderer.render(sceneHUD, cameraHUD);
