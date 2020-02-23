@@ -32,7 +32,7 @@ export function initPhysics() {
     broadphase = new Ammo.btDbvtBroadphase();
     solver = new Ammo.btSequentialImpulseConstraintSolver();
     physicsWorld = new Ammo.btDiscreteDynamicsWorld( dispatcher, broadphase, solver, collisionConfiguration );
-    physicsWorld.setGravity( new Ammo.btVector3( 0, -100, 0 ) );
+    physicsWorld.setGravity( new Ammo.btVector3( 0, -10, 0 ) );
 
     // Create the terrain body
 
@@ -67,7 +67,7 @@ function createTerrainShape() {
     var flipQuadEdges = false;
 
     // Creates height data buffer in Ammo heap
-    ammoHeightData = Ammo._malloc( 4 * terrainWidth * terrainDepth );
+    ammoHeightData = Ammo._malloc(4 *  terrainWidth * terrainDepth );
 
     // Copy the javascript height data array to the Ammo one.
     var p = 0;

@@ -126,8 +126,7 @@ export function updateControls() {
         //velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
         
         
-        raycaster.ray.origin.copy( player.position );
-        raycaster.ray.origin.y -= 10;
+
         //console.log(raycaster.intersectObject(terrain, true))
         
         direction.z = Number( moveForward ) - Number( moveBackward );
@@ -179,10 +178,10 @@ export function updateControls() {
         // player.translateX(- velocity.x * delta)
         controls.getObject().position.y += ( velocity.y * delta ); // new behavior
 
-        if ( controls.getObject().position.y < 5 ) {
-            velocity.y = 0;
-            controls.getObject().position.y = 5;
-        }
+        // if ( controls.getObject().position.y < 5 ) {
+        //     velocity.y = 0;
+        //     controls.getObject().position.y = 5;
+        // }
         //Lowers the camera for crouching
         if (crouch){
             var relativeCameraOffset = new THREE.Vector3(0,4,-10);
@@ -194,13 +193,15 @@ export function updateControls() {
         controls.getObject().position.x = cameraOffset.x
         controls.getObject().position.y = cameraOffset.y
         controls.getObject().position.z = cameraOffset.z
-        // controls.getObject().lookAt(player.position)
+        controls.getObject().lookAt(player.position)
 
         prevTime = time
 
     }
 
     else if(player !== undefined){
+        physicsBody = player.userData.physicsBody;
+
         physicsBody.setLinearVelocity ( new Ammo.btVector3( 0, 0, 0 ) );
     }
 
