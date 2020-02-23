@@ -12,7 +12,7 @@ export function modelLoader( path, pos, name ){
 function onLoad( model, pos, name ){
     let bbox = null
     const character = model.scene
-    character.scale.set(0.005, 0.005, 0.005)
+    //character.scale.set(0.005, 0.005, 0.005)
     
     var box = new THREE.Box3().setFromObject( character );
     let test = box.getSize(new THREE.Vector3())
@@ -37,10 +37,12 @@ function onLoad( model, pos, name ){
 
     let mixer = new THREE.AnimationMixer( character );
     mixers.push(mixer);
-    mixer.clipAction(model.animations[0]).play();
-
+    character.userData.animations = model.animations
+    character.userData.mixer = mixer
+    character.userData.mixer.clipAction(character.userData.animations[0]).play();
+    character.userData.hampus = "see custom"
     //physicsWorld.addRigidBody( body );
-    console.log(physicsWorld, scene)
+    console.log(character)
 
 }
 

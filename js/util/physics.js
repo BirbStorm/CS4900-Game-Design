@@ -1,9 +1,10 @@
 import { terrain, dynamicObjects } from '../index2.js'
+import { positions } from './terrain.js';
 
 // Heightfield parameters
 
-var terrainWidth = 128;
-var terrainDepth = 128;
+var terrainWidth = 1024;
+var terrainDepth = 1024;
 var terrainHalfWidth = terrainWidth / 2;
 var terrainHalfDepth = terrainDepth / 2;
 var terrainMaxHeight = 100;
@@ -23,7 +24,7 @@ var ammoHeightData = null;
 
 
 export function initPhysics() {
-    heightData = THREE.Terrain.toArray1D(terrain.children[0].geometry.vertices)
+    heightData = positions
     // Physics configuration
 
     collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
@@ -71,7 +72,6 @@ function createTerrainShape() {
     // Copy the javascript height data array to the Ammo one.
     var p = 0;
     var p2 = 0;
-    console.log(THREE.Terrain.toArray1D(terrain.children[0].geometry.vertices))
     for ( var j = 0; j < terrainDepth; j ++ ) {
 
         for ( var i = 0; i < terrainWidth; i ++ ) {
