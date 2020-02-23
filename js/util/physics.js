@@ -18,7 +18,7 @@ var solver;
 export var physicsWorld;
 // var dynamicObjects = [];
 var transformAux1;
-
+var debug
 var heightData = null;
 var ammoHeightData = null;
 
@@ -132,3 +132,4 @@ export function updatePhysics( deltaTime ) {
     }
 
 }
+

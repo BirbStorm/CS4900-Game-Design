@@ -4,7 +4,7 @@ import * as controlsHelper from './util/controls.js'
 
 import { modelLoader } from './util/modelLoader.js'
 import { makeTextSprite } from './util/sprites.js'
-import { initPhysics, updatePhysics } from './util/physics.js';
+import { initPhysics, updatePhysics, physicsWorld } from './util/physics.js';
 
 
 export let scene;
@@ -98,9 +98,13 @@ function main() {
   document.addEventListener("mousedown", () => isMouseDown = true);
   document.addEventListener("mouseup", () => isMouseDown = false);
   raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 10, 0 ), 0, 100 );
-  
+  debug()
 }
-
+function debug() {
+  this.debugDrawer = new THREE.AmmoDebugDrawer(scene, physicsWorld);
+  this.debugDrawer.enable();
+  this.debugDrawer.setDebugMode(2);
+}
 function loadModels(){
   modelLoader('../assets/models/knuckles/knuckles.glb', new THREE.Vector3(0, 0, 0), 'knuckles')
   console.log("mixers"+mixers)
