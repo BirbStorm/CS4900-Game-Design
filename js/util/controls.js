@@ -1,8 +1,9 @@
 
-import { player, isMouseDown, terrain } from '../index2.js'
+import { player, isMouseDown, terrain, mixers } from '../index2.js'
 const container = document.body;
 const menu = document.querySelector('#menu');
 const blocker = document.querySelector('#blocker')
+
 
 let controls;
 let moveForward = false
@@ -18,6 +19,7 @@ let raycaster
 let prevTime = performance.now();
 let velocity = new THREE.Vector3()
 let direction = new THREE.Vector3()
+
 
 export function createControls(camera){
     controls = new THREE.PointerLockControls( camera, container )
@@ -202,3 +204,53 @@ export function updateControls() {
 
 
 }
+//Timeout needed because character mixer hasnt been created yet
+setTimeout(function(){
+    console.log("mixers"+mixers)
+    console.log("mixer"+mixers[0])
+    let idleAction = mixers[0].clipAction(player.animations[0])
+    let runAction = mixers[0].clipAction(player.animations[1])
+    let actions = [idleAction, runAction]
+    activateAllActions();
+    animate();
+
+
+    function activateAllActions(){
+        actions.forEach( function ( action ) {
+            action.play();
+        } );
+    }
+
+    function prepareCrossFade( startAction, endAction, defaultDuration ){
+        var duration = setCrossFadeDuration(defaultDuration);
+        if (startAction === idleAction){
+            executeCrossFade(startAction, endAction, duration)
+        } else{
+            synchronizeCrossFade(startAction, endAction, duration);
+        }
+    }
+
+    function synchronizeCrossFade(startAction, endAction, duration){
+        mixers[0].addEventListener('loop', onLoopFinished);
+        function onLoopFinished(event){
+            if (event.action === startAction){
+                mixers[0].removeEventListener('loop', onLoopFinished);
+                executeCrossFade(startAction, endAction, duration);
+            }
+        }
+    }
+
+    function executeCrossFade(startAction, endAction, duration){
+        setWeight(endAction, 1);
+        endAction.time = 0;
+        startAction.crossFadeTo(endAction, duration, true);
+    }
+
+    function setWeight(action, weight){
+        action.enabled = true;
+        action.setEffectiveTimeScale(1);
+        action.setEffectiveWeight(weight);
+    }
+
+
+ }, 6000);

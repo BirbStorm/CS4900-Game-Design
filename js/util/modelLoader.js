@@ -37,10 +37,10 @@ function onLoad( model, pos, name ){
 
     let mixer = new THREE.AnimationMixer( character );
     mixers.push(mixer);
-    character.userData.animations = model.animations
-    character.userData.mixer = mixer
-    character.userData.mixer.clipAction(character.userData.animations[0]).play();
-    character.userData.hampus = "see custom"
+    character.animations = model.animations
+    character.mixer = mixer
+    character.mixer.clipAction(character.animations[0]).play();
+    character.hampus = "see custom"
     //physicsWorld.addRigidBody( body );
     console.log(character)
 

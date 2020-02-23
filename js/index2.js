@@ -103,7 +103,6 @@ function main() {
 
 function loadModels(){
   modelLoader('../assets/models/knuckles/knuckles.glb', new THREE.Vector3(0, 0, 0), 'knuckles')
-  console.log("mixers"+mixers)
 }
 
 
