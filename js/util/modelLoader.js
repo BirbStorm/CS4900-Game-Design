@@ -13,27 +13,34 @@ function onLoad( model, pos, name ){
     let bbox = null
     const character = model.scene
     //character.scale.set(0.005, 0.005, 0.005)
-    
-    var box = new THREE.Box3().setFromObject( character );
-    let test = box.getSize(new THREE.Vector3())
-
-    bbox = new Ammo.btBoxShape( new Ammo.btVector3( test.x, test.y, test.z ) );
-    bbox.setMargin( 0.05 );
 
     character.position.copy(pos)
     character.name = name
-    var mass = 3 * 5;
-    var localInertia = new Ammo.btVector3( 0, 0, 0 );
-    bbox.calculateLocalInertia( mass, localInertia );
-    var transform = new Ammo.btTransform();
-    transform.setIdentity();
-    transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
-    var motionState = new Ammo.btDefaultMotionState( transform );
-    var rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, bbox, localInertia );
-    var body = new Ammo.btRigidBody( rbInfo );
-    character.userData.physicsBody = body
-    dynamicObjects.push( character )
+    let vect3 = new THREE.Vector3();
+    let box = new THREE.Box3().setFromObject(model.scene).getSize(vect3);
+
+    // let transform = new Ammo.btTransform();
+    // transform.setIdentity();
+    // transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
+    // transform.setRotation( new Ammo.btQuaternion( 0, 0, 0, 1 ) );
+    // let motionState = new Ammo.btDefaultMotionState( transform );
+
+    // let colShape = new Ammo.btBoxShape(new Ammo.btVector3(box.x/2.5, box.y/3, box.z/2.5));
+    // colShape.setMargin( 0.5 );
+
+    // let localInertia = new Ammo.btVector3( 0, 0, 0 );
+    // colShape.calculateLocalInertia( 1, localInertia );
+
+    // let rbInfo = new Ammo.btRigidBodyConstructionInfo( 1, motionState, colShape, localInertia );
+    // let objBody = new Ammo.btRigidBody( rbInfo );
+
+    // objBody.setFriction(4);
+    // objBody.setRollingFriction(10);
+
+    //physicsWorld.addRigidBody( objBody );
+
     scene.add(character)
+
 
     let mixer = new THREE.AnimationMixer( character );
     mixers.push(mixer);
@@ -41,7 +48,6 @@ function onLoad( model, pos, name ){
     character.userData.mixer = mixer
     character.userData.mixer.clipAction(character.userData.animations[0]).play();
     character.userData.hampus = "see custom"
-    //physicsWorld.addRigidBody( body );
     console.log(character)
 
 }

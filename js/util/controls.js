@@ -14,7 +14,8 @@ let rotateRight = false
 let sprint = false
 let crouch = false
 let oldX = 0
-let raycaster
+let raycaster = new THREE.Raycaster()
+let down = new THREE.Vector3(-1,-1,-1)
 let prevTime = performance.now();
 let velocity = new THREE.Vector3()
 let direction = new THREE.Vector3()
@@ -38,9 +39,9 @@ export function createControls(camera){
         menu.style.display = '';
 
     } );
-    raycaster = new THREE.Raycaster(new THREE.Vector3(),new THREE.Vector3(0, -1, 0))
     return controls;
 }
+
 
 export const onKeyDown = ( event ) => {
     switch( event.keyCode ) {
@@ -126,10 +127,12 @@ export function updateControls() {
         //velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
         
         
-        raycaster.ray.origin.copy( player.position );
-        raycaster.ray.origin.y -= 10;
-        //console.log(raycaster.intersectObject(terrain, true))
-        
+        raycaster.set( player.position, down );
+        let cols = (raycaster.intersectObject(terrain))
+        // let cols = []
+        console.log(cols)
+        if(cols[0])
+            player.position.y = cols[0].point.y + 2.5
         direction.z = Number( moveForward ) - Number( moveBackward );
         direction.x = Number( moveRight ) - Number( moveLeft );
         direction.normalize(); // this ensures consistent movements in all directions
