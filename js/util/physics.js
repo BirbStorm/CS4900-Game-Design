@@ -32,7 +32,7 @@ export function initPhysics() {
     broadphase = new Ammo.btDbvtBroadphase();
     solver = new Ammo.btSequentialImpulseConstraintSolver();
     physicsWorld = new Ammo.btDiscreteDynamicsWorld( dispatcher, broadphase, solver, collisionConfiguration );
-    physicsWorld.setGravity( new Ammo.btVector3( 0, - 6, 0 ) );
+    physicsWorld.setGravity( new Ammo.btVector3( 0, -100, 0 ) );
 
     // Create the terrain body
 
@@ -45,8 +45,8 @@ export function initPhysics() {
     var groundLocalInertia = new Ammo.btVector3( 0, 0, 0 );
     var groundMotionState = new Ammo.btDefaultMotionState( groundTransform );
     var groundBody = new Ammo.btRigidBody( new Ammo.btRigidBodyConstructionInfo( groundMass, groundMotionState, groundShape, groundLocalInertia ) );
-    physicsWorld.addRigidBody( groundBody );
-
+    //physicsWorld.addRigidBody( groundBody );
+    physicsWorld.debugDrawWorld();
     transformAux1 = new Ammo.btTransform();
 
 }

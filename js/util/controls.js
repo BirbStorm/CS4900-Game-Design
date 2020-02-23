@@ -18,7 +18,7 @@ let raycaster
 let prevTime = performance.now();
 let velocity = new THREE.Vector3()
 let direction = new THREE.Vector3()
-
+let physicsBody
 export function createControls(camera){
     controls = new THREE.PointerLockControls( camera, container )
     
@@ -141,7 +141,7 @@ export function updateControls() {
 
         if ( moveForward ){
             if ( sprint ){
-                velocity.z -= (direction.z * 400.0 * delta) * .75;
+                velocity.z -= (direction.z * 400.0 * delta) * 2;
             }
             else if (crouch){
                 velocity.z -= (direction.z * 400.0 * delta) * 0.5;
@@ -169,9 +169,14 @@ export function updateControls() {
         if ( rotateLeft )  player.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
         if ( rotateRight )  player.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
 
-        
-        player.translateZ(- velocity.z * delta)
-        player.translateX(- velocity.x * delta)
+        let factor = 20
+        let resultantImpulse = new Ammo.btVector3( -velocity.x, 0, -velocity.z );
+        resultantImpulse.op_mul(factor);
+
+        physicsBody = player.userData.physicsBody;
+        physicsBody.setLinearVelocity ( resultantImpulse );
+        // player.translateZ(- velocity.z * delta)
+        // player.translateX(- velocity.x * delta)
         controls.getObject().position.y += ( velocity.y * delta ); // new behavior
 
         if ( controls.getObject().position.y < 5 ) {
@@ -189,15 +194,14 @@ export function updateControls() {
         controls.getObject().position.x = cameraOffset.x
         controls.getObject().position.y = cameraOffset.y
         controls.getObject().position.z = cameraOffset.z
-        controls.getObject().lookAt(player.position)
+        // controls.getObject().lookAt(player.position)
 
         prevTime = time
 
     }
 
     else if(player !== undefined){
-
-        velocity = new THREE.Vector3(0,0,0)
+        physicsBody.setLinearVelocity ( new Ammo.btVector3( 0, 0, 0 ) );
     }
 
 
