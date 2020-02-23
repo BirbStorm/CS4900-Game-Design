@@ -238,7 +238,7 @@ function createHUD(){
 }
 
 function createHealthBar(){
-  
+
 }
 
 function update() {
