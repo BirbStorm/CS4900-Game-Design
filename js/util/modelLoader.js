@@ -43,7 +43,8 @@ function onLoad( model, pos, name ){
     character.userData.hampus = "see custom"
     //physicsWorld.addRigidBody( body );
     console.log(character)
-
+    console.log(character.userData.hampus);
+    console.log(character.userData.hampus);
 }
 
 function progress(){
