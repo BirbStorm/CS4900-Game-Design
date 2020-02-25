@@ -97,13 +97,13 @@ function main() {
   document.addEventListener("mousemove", controlsHelper.onMouseMove);
   document.addEventListener("mousedown", () => isMouseDown = true);
   document.addEventListener("mouseup", () => isMouseDown = false);
-  debug()
+  // debug()
 }
-function debug() {
-  let debugDrawer = new THREE.AmmoDebugDrawer(scene, physicsWorld);
-  debugDrawer.enable();
-  debugDrawer.setDebugMode(2);
-}
+// function debug() {
+//   let debugDrawer = new THREE.AmmoDebugDrawer(scene, physicsWorld);
+//   debugDrawer.enable();
+//   debugDrawer.setDebugMode(2);
+// }
 function loadModels(){
   modelLoader('../assets/models/knuckles/knuckles.glb', new THREE.Vector3(0, -140, 0), 'knuckles')
   console.log("mixers"+mixers)
@@ -257,7 +257,6 @@ function animate() {
   requestAnimationFrame(animate)
   update()
   player = scene.getObjectByName("knuckles")
-
   controlsHelper.updateControls()
   stats.update()
   //renderer.clear();
