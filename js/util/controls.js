@@ -180,7 +180,7 @@ export function updateControls() {
         vertex.applyQuaternion(player.quaternion);
         if( moveX == 0 && moveY == 0 && moveZ == 0) return;
 
-        let factor = 800
+        let factor = 80
         let resultantImpulse = new Ammo.btVector3( -vertex.x, 0, vertex.z );
         resultantImpulse.op_mul(factor);
 
