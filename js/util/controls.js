@@ -116,71 +116,78 @@ export const onKeyUp = ( event ) => {
 
 export function updateControls() {
     if( controls.isLocked && player !== undefined) {
+        physicsBody = player.userData.physicsBody;
 
         let time = performance.now();
         let delta = ( time - prevTime ) / 1000;
         //console.log(delta)
-        let rotateAngle = Math.PI / 4 * delta
-        velocity.x -= velocity.x * 10.0 * delta;
-        //console.log(velocity)
-        velocity.z -= velocity.z * 10.0 * delta;
-        //velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
+        // let rotateAngle = Math.PI / 4 * delta
+        // velocity.x -= velocity.x * 10.0 * delta;
+        // //console.log(velocity)
+        // velocity.z -= velocity.z * 10.0 * delta;
+        // //velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
         
         
-        // raycaster.set( player.position, down );
-        // let cols = (raycaster.intersectObject(terrain))
-        // // let cols = []
-        // console.log(cols)
-        // if(cols[0])
-        //     player.position.y = cols[0].point.y + 2.5
-        direction.z = Number( moveForward ) - Number( moveBackward );
-        direction.x = Number( moveRight ) - Number( moveLeft );
-        direction.normalize(); // this ensures consistent movements in all directions
+        // // raycaster.set( player.position, down );
+        // // let cols = (raycaster.intersectObject(terrain))
+        // // // let cols = []
+        // // console.log(cols)
+        // // if(cols[0])
+        // //     player.position.y = cols[0].point.y + 2.5
+        // direction.z = Number( moveForward ) - Number( moveBackward );
+        // direction.x = Number( moveRight ) - Number( moveLeft );
+        // direction.normalize(); // this ensures consistent movements in all directions
 
-        //If both sprint and crouch are pressed, crouch will not be activated
-        if (sprint && crouch){
-            crouch = false;
-        }
+        // //If both sprint and crouch are pressed, crouch will not be activated
+        // if (sprint && crouch){
+        //     crouch = false;
+        // }
 
-        if ( moveForward ){
-            if ( sprint ){
-                velocity.z -= (direction.z * 400.0 * delta) * 2;
-            }
-            else if (crouch){
-                velocity.z -= (direction.z * 400.0 * delta) * 0.5;
-            }
-            else{
-                velocity.z -= (direction.z * 400.0 * delta);
-            }
-        }
-        if ( moveBackward ){
-            if(crouch){
-                velocity.z -= (direction.z * 400.0 * delta) * 0.5;
-            }
-            else{
-                velocity.z -= (direction.z * 400.0 * delta);
-            }
-        } 
-        if ( moveLeft || moveRight ){
-            if (crouch){
-                velocity.x -= -(direction.x * 400.0 * delta) * 0.5;
-            }
-            else{
-                velocity.x -= -(direction.x * 400.0 * delta);
-            }
-        }
+        // if ( moveForward ){
+        //     if ( sprint ){
+        //         velocity.z -= (direction.z * 400.0 * delta) * 2;
+        //     }
+        //     else if (crouch){
+        //         velocity.z -= (direction.z * 400.0 * delta) * 0.5;
+        //     }
+        //     else{
+        //         velocity.z -= (direction.z * 400.0 * delta);
+        //     }
+        // }
+        // if ( moveBackward ){
+        //     if(crouch){
+        //         velocity.z -= (direction.z * 400.0 * delta) * 0.5;
+        //     }
+        //     else{
+        //         velocity.z -= (direction.z * 400.0 * delta);
+        //     }
+        // } 
+        // if ( moveLeft || moveRight ){
+        //     if (crouch){
+        //         velocity.x -= -(direction.x * 400.0 * delta) * 0.5;
+        //     }
+        //     else{
+        //         velocity.x -= -(direction.x * 400.0 * delta);
+        //     }
+        // }
         if ( rotateLeft )  player.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
         if ( rotateRight )  player.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
+        let moveX =  Number( moveRight ) - Number( moveLeft );
+        let moveZ =  Number( moveForward ) - Number( moveBackward );
+        let moveY =  0;
+    
+        let vertex = new THREE.Vector3(moveX,moveY,moveZ);
+        vertex.applyQuaternion(player.quaternion);
+        if( moveX == 0 && moveY == 0 && moveZ == 0) return;
 
-        let factor = 20
-        let resultantImpulse = new Ammo.btVector3( -velocity.x, 0, -velocity.z );
+        let factor = 800
+        let resultantImpulse = new Ammo.btVector3( -vertex.x, 0, vertex.z );
         resultantImpulse.op_mul(factor);
 
-        physicsBody = player.userData.physicsBody;
         physicsBody.setLinearVelocity ( resultantImpulse );
         // player.translateZ(- velocity.z * delta)
         // player.translateX(- velocity.x * delta)
-        controls.getObject().position.y += ( velocity.y * delta ); // new behavior
+        // controls.getObject().position.y += ( velocity.y * delta ); // new behavior
 
         // if ( controls.getObject().position.y < 5 ) {
         //     velocity.y = 0;
@@ -193,10 +200,12 @@ export function updateControls() {
         else{
             var relativeCameraOffset = new THREE.Vector3(0,5,-10);
         }
+
         var cameraOffset = relativeCameraOffset.applyMatrix4(player.matrixWorld )
-        controls.getObject().position.x = cameraOffset.x
-        controls.getObject().position.y = cameraOffset.y
-        controls.getObject().position.z = cameraOffset.z
+        controls.getObject().position.copy(player.position)
+        controls.getObject().position.y += 4
+        controls.getObject().position.z -= 10
+
         controls.getObject().lookAt(player.position)
 
         prevTime = time
@@ -204,10 +213,9 @@ export function updateControls() {
     }
 
     else if(player !== undefined){
-        console.log(player)
-        // physicsBody = player.userData.physicsBody;
+        physicsBody = player.userData.physicsBody;
 
-        // physicsBody.setLinearVelocity ( new Ammo.btVector3( 0, 0, 0 ) );
+        physicsBody.setLinearVelocity ( new Ammo.btVector3( 0, 0, 0 ) );
     }
 
 

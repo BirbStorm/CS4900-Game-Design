@@ -18,7 +18,6 @@ var solver;
 export var physicsWorld;
 // var dynamicObjects = [];
 var transformAux1;
-var debug
 var heightData = null;
 var ammoHeightData = null;
 
@@ -32,7 +31,7 @@ export function initPhysics() {
     broadphase = new Ammo.btDbvtBroadphase();
     solver = new Ammo.btSequentialImpulseConstraintSolver();
     physicsWorld = new Ammo.btDiscreteDynamicsWorld( dispatcher, broadphase, solver, collisionConfiguration );
-    physicsWorld.setGravity( new Ammo.btVector3( 0, -10, 0 ) );
+    physicsWorld.setGravity( new Ammo.btVector3( 0, -100, 0 ) );
 
     // Create the terrain body
 
@@ -46,7 +45,6 @@ export function initPhysics() {
     var groundMotionState = new Ammo.btDefaultMotionState( groundTransform );
     var groundBody = new Ammo.btRigidBody( new Ammo.btRigidBodyConstructionInfo( groundMass, groundMotionState, groundShape, groundLocalInertia ) );
     //physicsWorld.addRigidBody( groundBody );
-    physicsWorld.debugDrawWorld();
     transformAux1 = new Ammo.btTransform();
 
 }
@@ -116,7 +114,7 @@ export function updatePhysics( deltaTime ) {
     physicsWorld.stepSimulation( deltaTime, 10 );
     
     // Update objects
-    for ( var i = 0, il = dynamicObjects.length; i < il; i ++ ) {
+    for ( let i in dynamicObjects ) {
         var objThree = dynamicObjects[ i ];
         var objPhys = objThree.userData.physicsBody;
         var ms = objPhys.getMotionState();

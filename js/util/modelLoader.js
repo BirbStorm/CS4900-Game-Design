@@ -10,7 +10,6 @@ export function modelLoader( path, pos, name ){
 }
 
 function onLoad( model, pos, name ){
-    let bbox = null
     const character = model.scene
     //character.scale.set(0.005, 0.005, 0.005)
 
@@ -35,13 +34,13 @@ function onLoad( model, pos, name ){
     let objBody = new Ammo.btRigidBody( rbInfo );
 
     character.userData.physicsBody = objBody
-    objBody.setFriction(4);
+    objBody.setFriction(10);
     objBody.setRollingFriction(10);
 
     physicsWorld.addRigidBody( objBody );
 
     scene.add(character)
-
+    dynamicObjects.push(character)
 
     let mixer = new THREE.AnimationMixer( character );
     mixers.push(mixer);
