@@ -6,8 +6,8 @@ var getIndex = (x, y, h) => y*h + x
 
 
 export function generateTerrain(){
-    gridHeight = 1024
-    gridWidth = 1024
+    gridHeight = 512
+    gridWidth = 512
     displacement = new Float32Array(gridWidth*gridHeight);
     for(let i in displacement)
         displacement[i] = 0;

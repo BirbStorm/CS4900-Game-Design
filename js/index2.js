@@ -4,7 +4,7 @@ import * as controlsHelper from './util/controls.js'
 
 import { modelLoader } from './util/modelLoader.js'
 import { makeTextSprite } from './util/sprites.js'
-import { initPhysics, updatePhysics } from './util/physics.js';
+import { initPhysics, updatePhysics, physicsWorld } from './util/physics.js';
 
 
 export let scene;
@@ -97,12 +97,20 @@ function main() {
   document.addEventListener("mousemove", controlsHelper.onMouseMove);
   document.addEventListener("mousedown", () => isMouseDown = true);
   document.addEventListener("mouseup", () => isMouseDown = false);
-  raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 10, 0 ), 0, 100 );
-  
+  // debug()
 }
-
+// function debug() {
+//   let debugDrawer = new THREE.AmmoDebugDrawer(scene, physicsWorld);
+//   debugDrawer.enable();
+//   debugDrawer.setDebugMode(2);
+// }
 function loadModels(){
   modelLoader('../assets/models/knuckles/knuckles.glb', new THREE.Vector3(0, 0, 0), 'knuckles')
+  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, -140, 0), 'player')
+  modelLoader('../assets/models/Trex.glb', new THREE.Vector3(50, -140, 0), 'trex')
+  modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, -140, 0), 'alien')
+  modelLoader('../assets/models/slime.glb', new THREE.Vector3(10, -140, 0), 'slime')
+  modelLoader('../assets/models/Rat.glb', new THREE.Vector3(30, -140, 0), 'rat')
 }
 
 
@@ -237,7 +245,7 @@ function createHUD(){
 }
 
 function createHealthBar(){
-  
+
 }
 
 function update() {
@@ -252,8 +260,7 @@ function update() {
 function animate() {
   requestAnimationFrame(animate)
   update()
-  player = scene.getObjectByName("knuckles")
-
+  player = scene.getObjectByName("player")
   controlsHelper.updateControls()
   stats.update()
   //renderer.clear();

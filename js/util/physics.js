@@ -3,8 +3,8 @@ import { positions } from './terrain.js';
 
 // Heightfield parameters
 
-var terrainWidth = 1024;
-var terrainDepth = 1024;
+var terrainWidth = 512;
+var terrainDepth = 512;
 var terrainHalfWidth = terrainWidth / 2;
 var terrainHalfDepth = terrainDepth / 2;
 var terrainMaxHeight = 100;
@@ -18,7 +18,6 @@ var solver;
 export var physicsWorld;
 // var dynamicObjects = [];
 var transformAux1;
-
 var heightData = null;
 var ammoHeightData = null;
 
@@ -32,7 +31,7 @@ export function initPhysics() {
     broadphase = new Ammo.btDbvtBroadphase();
     solver = new Ammo.btSequentialImpulseConstraintSolver();
     physicsWorld = new Ammo.btDiscreteDynamicsWorld( dispatcher, broadphase, solver, collisionConfiguration );
-    physicsWorld.setGravity( new Ammo.btVector3( 0, - 6, 0 ) );
+    physicsWorld.setGravity( new Ammo.btVector3( 0, -10, 0 ) );
 
     // Create the terrain body
 
@@ -46,7 +45,6 @@ export function initPhysics() {
     var groundMotionState = new Ammo.btDefaultMotionState( groundTransform );
     var groundBody = new Ammo.btRigidBody( new Ammo.btRigidBodyConstructionInfo( groundMass, groundMotionState, groundShape, groundLocalInertia ) );
     physicsWorld.addRigidBody( groundBody );
-
     transformAux1 = new Ammo.btTransform();
 
 }
@@ -67,7 +65,7 @@ function createTerrainShape() {
     var flipQuadEdges = false;
 
     // Creates height data buffer in Ammo heap
-    ammoHeightData = Ammo._malloc( 4 * terrainWidth * terrainDepth );
+    ammoHeightData = Ammo._malloc(4 *  terrainWidth * terrainDepth );
 
     // Copy the javascript height data array to the Ammo one.
     var p = 0;
@@ -116,7 +114,7 @@ export function updatePhysics( deltaTime ) {
     physicsWorld.stepSimulation( deltaTime, 10 );
     
     // Update objects
-    for ( var i = 0, il = dynamicObjects.length; i < il; i ++ ) {
+    for ( let i in dynamicObjects ) {
         var objThree = dynamicObjects[ i ];
         var objPhys = objThree.userData.physicsBody;
         var ms = objPhys.getMotionState();
@@ -132,3 +130,4 @@ export function updatePhysics( deltaTime ) {
     }
 
 }
+
