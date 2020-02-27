@@ -128,12 +128,12 @@ export function updateControls() {
         // //velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
         
         
-        // // raycaster.set( player.position, down );
-        // // let cols = (raycaster.intersectObject(terrain))
-        // // // let cols = []
-        // // console.log(cols)
-        // // if(cols[0])
-        // //     player.position.y = cols[0].point.y + 2.5
+        // raycaster.set( player.position, down );
+        // let cols = (raycaster.intersectObject(terrain))
+        // // let cols = []
+        // console.log(cols)
+        // if(cols[0])
+        //     player.position.y = cols[0].point.y + 2.5
         // direction.z = Number( moveForward ) - Number( moveBackward );
         // direction.x = Number( moveRight ) - Number( moveLeft );
         // direction.normalize(); // this ensures consistent movements in all directions
@@ -179,21 +179,12 @@ export function updateControls() {
         let vertex = new THREE.Vector3(moveX,moveY,moveZ);
         vertex.applyQuaternion(player.quaternion);
         if( moveX == 0 && moveY == 0 && moveZ == 0) return;
-        console.log(player.position)
-        let factor = 80
+        let factor = 100
         let resultantImpulse = new Ammo.btVector3( -vertex.x, 0, vertex.z );
         resultantImpulse.op_mul(factor);
 
         physicsBody.setLinearVelocity ( resultantImpulse );
-        // player.translateZ(- velocity.z * delta)
-        // player.translateX(- velocity.x * delta)
-        // controls.getObject().position.y += ( velocity.y * delta ); // new behavior
-
-        // if ( controls.getObject().position.y < 5 ) {
-        //     velocity.y = 0;
-        //     controls.getObject().position.y = 5;
-        // }
-        //Lowers the camera for crouching
+ 
         if (crouch){
             var relativeCameraOffset = new THREE.Vector3(0,4,-10);
         }
