@@ -105,7 +105,6 @@ function main() {
 //   debugDrawer.setDebugMode(2);
 // }
 function loadModels(){
-  modelLoader('../assets/models/knuckles/knuckles.glb', new THREE.Vector3(0, 0, 0), 'knuckles')
   modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, -140, 0), 'player')
   modelLoader('../assets/models/Trex.glb', new THREE.Vector3(50, -140, 0), 'trex')
   modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, -140, 0), 'alien')
