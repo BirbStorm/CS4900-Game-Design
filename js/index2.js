@@ -105,7 +105,14 @@ function main() {
 //   debugDrawer.setDebugMode(2);
 // }
 function loadModels(){
-  modelLoader('../assets/models/knuckles/knuckles.glb', new THREE.Vector3(0, -140, 0), 'knuckles')
+  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, -140, 0), 'player')
+  modelLoader('../assets/models/Trex.glb', new THREE.Vector3(50, -140, 0), 'trex')
+  modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, -140, 0), 'alien')
+  modelLoader('../assets/models/slime.glb', new THREE.Vector3(10, -140, 0), 'slime')
+  modelLoader('../assets/models/Rat.glb', new THREE.Vector3(30, -140, 0), 'rat')
+
+
+
   console.log("mixers"+mixers)
 }
 
@@ -256,7 +263,7 @@ function update() {
 function animate() {
   requestAnimationFrame(animate)
   update()
-  player = scene.getObjectByName("knuckles")
+  player = scene.getObjectByName("player")
   controlsHelper.updateControls()
   stats.update()
   //renderer.clear();

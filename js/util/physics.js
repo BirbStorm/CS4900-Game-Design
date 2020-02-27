@@ -44,7 +44,7 @@ export function initPhysics() {
     var groundLocalInertia = new Ammo.btVector3( 0, 0, 0 );
     var groundMotionState = new Ammo.btDefaultMotionState( groundTransform );
     var groundBody = new Ammo.btRigidBody( new Ammo.btRigidBodyConstructionInfo( groundMass, groundMotionState, groundShape, groundLocalInertia ) );
-    //physicsWorld.addRigidBody( groundBody );
+    physicsWorld.addRigidBody( groundBody );
     transformAux1 = new Ammo.btTransform();
 
 }

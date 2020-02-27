@@ -179,7 +179,7 @@ export function updateControls() {
         let vertex = new THREE.Vector3(moveX,moveY,moveZ);
         vertex.applyQuaternion(player.quaternion);
         if( moveX == 0 && moveY == 0 && moveZ == 0) return;
-
+        console.log(player.position)
         let factor = 80
         let resultantImpulse = new Ammo.btVector3( -vertex.x, 0, vertex.z );
         resultantImpulse.op_mul(factor);

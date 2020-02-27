@@ -17,7 +17,7 @@ function onLoad( model, pos, name ){
     character.name = name
     let vect3 = new THREE.Vector3();
     let box = new THREE.Box3().setFromObject(model.scene).getSize(vect3);
-
+    console.log(box)
     let transform = new Ammo.btTransform();
     transform.setIdentity();
     transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
@@ -47,11 +47,6 @@ function onLoad( model, pos, name ){
     character.animations = model.animations
     character.mixer = mixer
     character.mixer.clipAction(character.animations[0]).play();
-    //
-
-    console.log(character)
-    console.log(character.userData.hampus);
-    console.log(character.userData.hampus);
 }
 
 function progress(){
