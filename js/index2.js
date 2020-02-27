@@ -110,10 +110,6 @@ function loadModels(){
   modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, -140, 0), 'alien')
   modelLoader('../assets/models/slime.glb', new THREE.Vector3(10, -140, 0), 'slime')
   modelLoader('../assets/models/Rat.glb', new THREE.Vector3(30, -140, 0), 'rat')
-
-
-
-  console.log("mixers"+mixers)
 }
 
 
