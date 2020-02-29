@@ -1,7 +1,8 @@
 var gridWidth , gridHeight;
 var displacement 
-export var positions
-
+var positions
+export let heightMap = []
+export let max, min;
 var getIndex = (x, y, h) => y*h + x
 
 
@@ -18,20 +19,24 @@ export function generateTerrain(){
     let geometry, wireframegeometry;
     geometry = new THREE.PlaneBufferGeometry(gridWidth, gridHeight, gridWidth-1, gridHeight-1);
     let t2 = new THREE.TextureLoader().load('../assets/textures/grass.jpg' );
-    t2.wrapS = t2.wrapT = THREE.RepeatWrapping;
-    t2.repeat.set(16,16)
+    // t2.wrapS = t2.wrapT = THREE.RepeatWrapping;
+    // t2.repeat.set(16,16)
     positions = geometry.attributes.position.array;
 
     let i1 = 0
     for(let i = 2; i<positions.length; i+=3) {
-        positions[i] -= displacement[i1]; 
+        positions[i] -= displacement[i1];
+        heightMap[i1] = Math.abs(positions[i] )
+        positions[i] = Math.abs(positions[i] )
         i1++;
     }
+    // max = Math.max(...heightMap)
+    // min = Math.min(...heightMap)
     let material = new THREE.MeshLambertMaterial( { map:t2 } );
     let mesh = new THREE.Mesh( geometry, material);
 
     mesh.rotation.x = -90*3.14/180.0;
-    
+    console.log(geometry)
     console.log(mesh)
     
     return mesh
@@ -107,13 +112,13 @@ function computeDisplacement() {
 
     }			
 
-    let accum = -40;
-    for(let i in displacement)
-        accum += displacement[i];
-    let mean = accum / displacement.length;
+    // let accum = -40;
+    // for(let i in displacement)
+    //     accum += displacement[i];
+    // let mean = accum / displacement.length;
 
-    for(let i in displacement)
-        if(displacement[i] > mean) 
-            displacement[i] = mean;
+    // for(let i in displacement)
+    //     if(displacement[i] > mean) 
+    //         displacement[i] = mean;
     
 }

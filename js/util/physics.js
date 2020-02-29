@@ -1,5 +1,5 @@
-import { terrain, dynamicObjects } from '../index2.js'
-import { positions } from './terrain.js';
+import { terrain, dynamicObjects, scene } from '../index2.js'
+import { heightMap, max, min } from './terrain.js';
 
 // Heightfield parameters
 
@@ -7,8 +7,8 @@ var terrainWidth = 512;
 var terrainDepth = 512;
 var terrainHalfWidth = terrainWidth / 2;
 var terrainHalfDepth = terrainDepth / 2;
-var terrainMaxHeight = 100;
-var terrainMinHeight = - 10;
+var terrainMaxHeight = 200;
+var terrainMinHeight = 0;
 
 // Physics variables
 var collisionConfiguration;
@@ -20,20 +20,27 @@ export var physicsWorld;
 var transformAux1;
 var heightData = null;
 var ammoHeightData = null;
+let debugDrawer
 
 
+function debug() {
+    debugDrawer = new THREE.AmmoDebugDrawer(scene, physicsWorld);
+    debugDrawer.enable();
+    debugDrawer.setDebugMode(2);
+  }
 export function initPhysics() {
-    heightData = positions
+    heightData = heightMap
+    console.log(heightData)
     // Physics configuration
-
     collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
     dispatcher = new Ammo.btCollisionDispatcher( collisionConfiguration );
     broadphase = new Ammo.btDbvtBroadphase();
     solver = new Ammo.btSequentialImpulseConstraintSolver();
     physicsWorld = new Ammo.btDiscreteDynamicsWorld( dispatcher, broadphase, solver, collisionConfiguration );
-    physicsWorld.setGravity( new Ammo.btVector3( 0, -10, 0 ) );
+    physicsWorld.setGravity( new Ammo.btVector3( 0, -1000, 0 ) );
 
     // Create the terrain body
+    debug()
 
     var groundShape = createTerrainShape();
     var groundTransform = new Ammo.btTransform();
@@ -128,6 +135,7 @@ export function updatePhysics( deltaTime ) {
         }
 
     }
+    debugDrawer.update();
 
 }
 

@@ -24,9 +24,8 @@ function onLoad( model, pos, name ){
     transform.setRotation( new Ammo.btQuaternion( 0, 0, 0, 1 ) );
     let motionState = new Ammo.btDefaultMotionState( transform );
 
-    let colShape = new Ammo.btBoxShape(new Ammo.btVector3(box.x/2.5, box.y/3, box.z/2.5));
-    colShape.setMargin( 0.5 );
-
+    let colShape = new Ammo.btBoxShape(new Ammo.btVector3(box.x/2.5, box.y/1.5, box.z/2.5));
+    colShape.setMargin( 0.05 );
     let localInertia = new Ammo.btVector3( 0, 0, 0 );
     colShape.calculateLocalInertia( 1, localInertia );
 

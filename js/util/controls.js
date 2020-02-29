@@ -175,10 +175,10 @@ export function updateControls() {
         let moveX =  Number( moveRight ) - Number( moveLeft );
         let moveZ =  Number( moveForward ) - Number( moveBackward );
         let moveY =  0;
-    
+        if( moveX == 0 && moveY == 0 && moveZ == 0) return;
+
         let vertex = new THREE.Vector3(moveX,moveY,moveZ);
         vertex.applyQuaternion(player.quaternion);
-        if( moveX == 0 && moveY == 0 && moveZ == 0) return;
         let factor = 100
         let resultantImpulse = new Ammo.btVector3( -vertex.x, 0, vertex.z );
         resultantImpulse.op_mul(factor);
@@ -193,9 +193,9 @@ export function updateControls() {
         }
 
         var cameraOffset = relativeCameraOffset.applyMatrix4(player.matrixWorld )
-        controls.getObject().position.copy(player.position)
-        controls.getObject().position.y += 4
-        controls.getObject().position.z -= 10
+        controls.getObject().position.x = cameraOffset.x
+        controls.getObject().position.y = cameraOffset.y
+        controls.getObject().position.z = cameraOffset.z
 
         controls.getObject().lookAt(player.position)
 
