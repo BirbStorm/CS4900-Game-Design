@@ -1,8 +1,9 @@
 
-import { player, isMouseDown, terrain } from '../index2.js'
+import { player, isMouseDown, terrain, mixers } from '../index2.js'
 const container = document.body;
 const menu = document.querySelector('#menu');
 const blocker = document.querySelector('#blocker')
+
 
 let controls;
 let moveForward = false
@@ -19,6 +20,12 @@ let down = new THREE.Vector3(-1,-1,-1)
 let prevTime = performance.now();
 let velocity = new THREE.Vector3()
 let direction = new THREE.Vector3()
+
+let idleAction
+let runAction
+let actions
+
+
 let physicsBody
 export function createControls(camera){
     controls = new THREE.PointerLockControls( camera, container )
@@ -211,3 +218,51 @@ export function updateControls() {
 
 
 }
+
+
+
+
+function activateAllActions(){
+    actions.forEach( function ( action ) {
+        action.play();
+    } );
+}
+
+function prepareCrossFade( startAction, endAction, defaultDuration ){
+    var duration = defaultDuration;
+    if (startAction === idleAction){
+        executeCrossFade(startAction, endAction, duration)
+    } else{
+        synchronizeCrossFade(startAction, endAction, duration);
+    }
+}
+
+function synchronizeCrossFade(startAction, endAction, duration){
+    mixers[0].addEventListener('loop', onLoopFinished);
+    function onLoopFinished(event){
+        if (event.action === startAction){
+            mixers[0].removeEventListener('loop', onLoopFinished);
+            executeCrossFade(startAction, endAction, duration);
+        }
+    }
+}
+
+function executeCrossFade(startAction, endAction, duration){
+    setWeight(endAction, 1);
+    endAction.time = 0;
+    startAction.crossFadeTo(endAction, duration, true);
+}
+
+function setWeight(action, weight){
+    action.enabled = true;
+    action.setEffectiveTimeScale(1);
+    action.setEffectiveWeight(weight);
+}
+
+//Timeout needed because character mixer hasnt been created yet
+setTimeout(function(){
+    idleAction = mixers[0].clipAction(player.animations[0])
+    runAction = mixers[0].clipAction(player.animations[1])
+    actions = [idleAction, runAction]
+    activateAllActions();
+ }, 6000);
