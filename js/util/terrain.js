@@ -112,13 +112,13 @@ function computeDisplacement() {
 
     }			
 
-    // let accum = -40;
-    // for(let i in displacement)
-    //     accum += displacement[i];
-    // let mean = accum / displacement.length;
+    let accum = -40;
+    for(let i in displacement)
+        accum += displacement[i];
+    let mean = accum / displacement.length;
 
-    // for(let i in displacement)
-    //     if(displacement[i] > mean) 
-    //         displacement[i] = mean;
+    for(let i in displacement)
+        if(displacement[i] > mean) 
+            displacement[i] = mean;
     
 }
