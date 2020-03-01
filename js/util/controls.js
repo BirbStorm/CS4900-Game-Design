@@ -128,12 +128,12 @@ export function updateControls() {
         let time = performance.now();
         let delta = ( time - prevTime ) / 1000;
         
-        // raycaster.set( player.position, down );
-        // let cols = (raycaster.intersectObject(terrain))
-        // // let cols = []
+        raycaster.set( player.position, down );
+        let cols = (raycaster.intersectObject(terrain))
+        // let cols = []
         // console.log(cols)
-        // if(cols[0])
-        //     player.position.y = cols[0].point.y + 2.5
+        if(cols[0])
+            player.position.y = cols[0].point.y + 2.5
         // direction.z = Number( moveForward ) - Number( moveBackward );
         // direction.x = Number( moveRight ) - Number( moveLeft );
         // direction.normalize(); // this ensures consistent movements in all directions

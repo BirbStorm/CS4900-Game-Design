@@ -7,8 +7,8 @@ var terrainWidth = 512;
 var terrainDepth = 512;
 var terrainHalfWidth = terrainWidth / 2;
 var terrainHalfDepth = terrainDepth / 2;
-var terrainMaxHeight = 200;
-var terrainMinHeight = 0;
+var terrainMaxHeight = 100;
+var terrainMinHeight = -10;
 
 // Physics variables
 var collisionConfiguration;
@@ -29,7 +29,7 @@ function debug() {
     debugDrawer.setDebugMode(2);
   }
 export function initPhysics() {
-    heightData = heightMap
+    heightData = THREE.Terrain.toArray1D(terrain.children[0].geometry.vertices)
     console.log(heightData)
     // Physics configuration
     collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
