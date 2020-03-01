@@ -69,7 +69,7 @@ function main() {
   controls = controlsHelper.createControls(camera, renderer);
   scene.add(controls.getObject())
 
-  terrain = Terrain()
+  terrain = generateTerrain()
   scene.add(terrain)
   createLights();
   createFloor();
@@ -100,11 +100,11 @@ function main() {
 }
 
 function loadModels(){
-  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 120, 0), 'player')
-  modelLoader('../assets/models/Trex.glb', new THREE.Vector3(50, 120, 0), 'trex')
-  modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, 120, 0), 'alien')
-  modelLoader('../assets/models/slime.glb', new THREE.Vector3(10, 120, 0), 'slime')
-  modelLoader('../assets/models/Rat.glb', new THREE.Vector3(30, 120, 0), 'rat')
+  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 200, 0), 'player')
+  modelLoader('../assets/models/Trex.glb', new THREE.Vector3(50, 220, 0), 'trex')
+  modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, 220, 0), 'alien')
+  modelLoader('../assets/models/slime.glb', new THREE.Vector3(10, 220, 0), 'slime')
+  modelLoader('../assets/models/Rat.glb', new THREE.Vector3(30, 220, 0), 'rat')
 
 }
 
