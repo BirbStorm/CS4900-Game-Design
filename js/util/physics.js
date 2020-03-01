@@ -3,8 +3,8 @@ import { heightMap, max, min } from './terrain.js';
 
 // Heightfield parameters
 
-var terrainWidth = 512;
-var terrainDepth = 512;
+var terrainWidth = 1024;
+var terrainDepth = 1024;
 var terrainHalfWidth = terrainWidth / 2;
 var terrainHalfDepth = terrainDepth / 2;
 var terrainMaxHeight = 100;
