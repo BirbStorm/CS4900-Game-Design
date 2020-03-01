@@ -3,7 +3,13 @@ class Player{
         this.currentHealth = 10;
         this.maxHealth = 10;
         this.model = model.userData.gunDamage;
-        this.damage = Number(model.userData.gunDamage);
+        this.gun = {
+            damage = 2,
+            capacity = 10,
+            reloadSpeed = 1,
+            rateOfFire = 1,
+            automatic = true
+        };
     }
     getHealth(){
         return this.currentHealth;
@@ -23,9 +29,9 @@ class Player{
         }
     }
     getDamage(){
-        return this.damage;
+        return this.gun.damage;
     }
-    changeGun(){
-        this.damage = Number(this.model.userData.gunDamage);
+    changeGun(x){
+        this.gun = x
     }
 }

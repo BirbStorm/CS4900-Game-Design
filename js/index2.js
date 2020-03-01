@@ -1,5 +1,5 @@
 import { createCamera } from './util/camera.js';
-import { generateTerrain } from './util/terrain.js'
+import { generateTerrain, Terrain } from './util/terrain.js'
 import * as controlsHelper from './util/controls.js'
 
 import { modelLoader } from './util/modelLoader.js'
@@ -69,7 +69,7 @@ function main() {
   controls = controlsHelper.createControls(camera, renderer);
   scene.add(controls.getObject())
 
-  terrain = generateTerrain()
+  terrain = Terrain()
   scene.add(terrain)
   createLights();
   createFloor();
@@ -97,30 +97,29 @@ function main() {
   document.addEventListener("mousemove", controlsHelper.onMouseMove);
   document.addEventListener("mousedown", () => isMouseDown = true);
   document.addEventListener("mouseup", () => isMouseDown = false);
-  // debug()
 }
-// function debug() {
-//   let debugDrawer = new THREE.AmmoDebugDrawer(scene, physicsWorld);
-//   debugDrawer.enable();
-//   debugDrawer.setDebugMode(2);
-// }
+
 function loadModels(){
-  modelLoader('../assets/models/knuckles/knuckles.glb', new THREE.Vector3(0, -140, 0), 'knuckles')
-  console.log("mixers"+mixers)
+  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 120, 0), 'player')
+  modelLoader('../assets/models/Trex.glb', new THREE.Vector3(50, 120, 0), 'trex')
+  modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, 120, 0), 'alien')
+  modelLoader('../assets/models/slime.glb', new THREE.Vector3(10, 120, 0), 'slime')
+  modelLoader('../assets/models/Rat.glb', new THREE.Vector3(30, 120, 0), 'rat')
+
 }
 
 
 
 function createLights() {
     const color = 0xFFFFFF;
-    const intensity = 1;
+    const intensity = 0.5;
     const light = new THREE.AmbientLight(color, intensity);
     scene.add(light);
     // const ambientLight = new THREE.HemisphereLight( 0xddeeff, 0x0f0e0d, 5 );
 
-    const mainLight = new THREE.DirectionalLight( 0xffffff, 1 );
+    const mainLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
     mainLight.position.set( 10, 20, 20 );
-    const hemiLight = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 1)
+    const hemiLight = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 0.5)
     hemiLight.position.set(10,10,-10)
     scene.add(   mainLight,hemiLight );
 
@@ -256,7 +255,7 @@ function update() {
 function animate() {
   requestAnimationFrame(animate)
   update()
-  player = scene.getObjectByName("knuckles")
+  player = scene.getObjectByName("player")
   controlsHelper.updateControls()
   stats.update()
   //renderer.clear();

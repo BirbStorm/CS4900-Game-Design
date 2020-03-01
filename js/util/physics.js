@@ -1,14 +1,14 @@
-import { terrain, dynamicObjects } from '../index2.js'
-import { positions } from './terrain.js';
+import { terrain, dynamicObjects, scene } from '../index2.js'
+import { heightMap, max, min } from './terrain.js';
 
 // Heightfield parameters
 
-var terrainWidth = 512;
-var terrainDepth = 512;
+var terrainWidth = 1024;
+var terrainDepth = 1024;
 var terrainHalfWidth = terrainWidth / 2;
 var terrainHalfDepth = terrainDepth / 2;
 var terrainMaxHeight = 100;
-var terrainMinHeight = - 10;
+var terrainMinHeight = -10;
 
 // Physics variables
 var collisionConfiguration;
@@ -20,20 +20,27 @@ export var physicsWorld;
 var transformAux1;
 var heightData = null;
 var ammoHeightData = null;
+let debugDrawer
 
 
+function debug() {
+    debugDrawer = new THREE.AmmoDebugDrawer(scene, physicsWorld);
+    debugDrawer.enable();
+    debugDrawer.setDebugMode(2);
+  }
 export function initPhysics() {
-    heightData = positions
+    heightData = THREE.Terrain.toArray1D(terrain.children[0].geometry.vertices)
+    console.log(heightData)
     // Physics configuration
-
     collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
     dispatcher = new Ammo.btCollisionDispatcher( collisionConfiguration );
     broadphase = new Ammo.btDbvtBroadphase();
     solver = new Ammo.btSequentialImpulseConstraintSolver();
     physicsWorld = new Ammo.btDiscreteDynamicsWorld( dispatcher, broadphase, solver, collisionConfiguration );
-    physicsWorld.setGravity( new Ammo.btVector3( 0, -100, 0 ) );
+    physicsWorld.setGravity( new Ammo.btVector3( 0, -1000, 0 ) );
 
     // Create the terrain body
+    debug()
 
     var groundShape = createTerrainShape();
     var groundTransform = new Ammo.btTransform();
@@ -44,7 +51,7 @@ export function initPhysics() {
     var groundLocalInertia = new Ammo.btVector3( 0, 0, 0 );
     var groundMotionState = new Ammo.btDefaultMotionState( groundTransform );
     var groundBody = new Ammo.btRigidBody( new Ammo.btRigidBodyConstructionInfo( groundMass, groundMotionState, groundShape, groundLocalInertia ) );
-    //physicsWorld.addRigidBody( groundBody );
+    physicsWorld.addRigidBody( groundBody );
     transformAux1 = new Ammo.btTransform();
 
 }
@@ -128,6 +135,7 @@ export function updatePhysics( deltaTime ) {
         }
 
     }
+    debugDrawer.update();
 
 }
 
