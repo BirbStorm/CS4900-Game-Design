@@ -21,8 +21,20 @@ let prevTime = performance.now();
 let velocity = new THREE.Vector3()
 let direction = new THREE.Vector3()
 
+let danceAction
+let deathAction
 let idleAction
+let jumpAction
+let noAction
+let punchAction
 let runAction
+let sitAction
+let standAction
+let thumbsUpAction
+let walkAction
+let walkJumpAction
+let waveAction
+let yesAction
 let actions
 
 
@@ -223,6 +235,26 @@ export function updateControls() {
 
 
 function activateAllActions(){
+    //let i
+    //for (i = 0; i < actions.length; i++) {
+    //    setWeight(actions[i], 0.0);
+    //}
+    setWeight(danceAction, 0.0);
+    setWeight(deathAction, 0.0);
+    setWeight(idleAction, 1.0);
+    setWeight(jumpAction, 0.0);
+    setWeight(noAction, 0.0);
+    setWeight(punchAction, 0.0);
+    setWeight(runAction, 0.0);
+    setWeight(sitAction, 0.0);
+    setWeight(standAction, 0.0);
+    setWeight(thumbsUpAction, 0.0);
+    setWeight(walkAction, 0.0);
+    setWeight(walkJumpAction, 0.0);
+    setWeight(waveAction, 0.0);
+    setWeight(yesAction, 0.0);
+
+
     actions.forEach( function ( action ) {
         action.play();
     } );
@@ -261,8 +293,21 @@ function setWeight(action, weight){
 
 //Timeout needed because character mixer hasnt been created yet
 setTimeout(function(){
-    idleAction = mixers[0].clipAction(player.animations[0])
-    runAction = mixers[0].clipAction(player.animations[1])
-    actions = [idleAction, runAction]
+    danceAction = mixers[0].clipAction(player.animations[0])
+    deathAction = mixers[0].clipAction(player.animations[1])
+    idleAction = mixers[0].clipAction(player.animations[2])
+    jumpAction = mixers[0].clipAction(player.animations[3])
+    noAction = mixers[0].clipAction(player.animations[4])
+    punchAction = mixers[0].clipAction(player.animations[5])
+    runAction = mixers[0].clipAction(player.animations[6])
+    sitAction = mixers[0].clipAction(player.animations[7])
+    standAction = mixers[0].clipAction(player.animations[8])
+    thumbsUpAction = mixers[0].clipAction(player.animations[9])
+    walkAction = mixers[0].clipAction(player.animations[10])
+    walkJumpAction = mixers[0].clipAction(player.animations[11])
+    waveAction = mixers[0].clipAction(player.animations[12])
+    yesAction = mixers[0].clipAction(player.animations[13])
+
+    actions = [danceAction, deathAction, idleAction, jumpAction, noAction, punchAction, runAction, sitAction, standAction, thumbsUpAction, walkAction, walkJumpAction, waveAction, yesAction]
     activateAllActions();
  }, 6000);

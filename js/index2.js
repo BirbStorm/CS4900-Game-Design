@@ -100,7 +100,7 @@ function main() {
 }
 
 function loadModels(){
-  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 200, 0), 'player')
+  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 400, 0), 'player')
   modelLoader('../assets/models/Trex.glb', new THREE.Vector3(50, 200, 0), 'trex')
   modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, 200, 0), 'alien')
   modelLoader('../assets/models/slime.glb', new THREE.Vector3(10, 200, 0), 'slime')
