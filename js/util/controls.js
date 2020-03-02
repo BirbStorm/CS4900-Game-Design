@@ -36,7 +36,7 @@ let walkJumpAction
 let waveAction
 let yesAction
 let actions
-
+let count = 0
 
 let physicsBody
 export function createControls(camera){
@@ -134,12 +134,13 @@ export const onKeyUp = ( event ) => {
 }
 
 export function updateControls() {
-    if( controls.isLocked && player !== undefined) {
+    if( controls.isLocked ) {
         physicsBody = player.userData.physicsBody;
 
         let time = performance.now();
         let delta = ( time - prevTime ) / 1000;
-        
+        let rotateAngle = Math.PI / 2 * delta
+
         // raycaster.set( player.position, down );
         // let cols = (raycaster.intersectObject(terrain))
         // // let cols = []
@@ -160,7 +161,6 @@ export function updateControls() {
         let moveX =  Number( moveRight ) - Number( moveLeft );
         let moveZ =  Number( moveForward ) - Number( moveBackward );
         let moveY =  0;
-        if( moveX == 0 && moveY == 0 && moveZ == 0) return;
 
         let vertex = new THREE.Vector3(moveX,moveY,moveZ);
         vertex.applyQuaternion(player.quaternion);
@@ -183,13 +183,10 @@ export function updateControls() {
         controls.getObject().position.x = cameraOffset.x
         controls.getObject().position.y = cameraOffset.y
         controls.getObject().position.z = cameraOffset.z
-
         controls.getObject().lookAt(player.position)
-
         prevTime = time
 
     }
-
     else if(player !== undefined){
         physicsBody = player.userData.physicsBody;
 

@@ -100,27 +100,13 @@ function main() {
 }
 
 function loadModels(){
-<<<<<<< HEAD
-<<<<<<< HEAD
-  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 400, 0), 'player')
-  modelLoader('../assets/models/Trex.glb', new THREE.Vector3(50, 200, 0), 'trex')
-  modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, 200, 0), 'alien')
-  modelLoader('../assets/models/slime.glb', new THREE.Vector3(10, 200, 0), 'slime')
-  modelLoader('../assets/models/Rat.glb', new THREE.Vector3(30, 200, 0), 'rat')
-=======
-  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 200, 0), 'player')
-  modelLoader('../assets/models/Trex.glb', new THREE.Vector3(50, 220, 0), 'trex')
-  modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, 220, 0), 'alien')
-  modelLoader('../assets/models/slime.glb', new THREE.Vector3(10, 220, 0), 'slime')
-  modelLoader('../assets/models/Rat.glb', new THREE.Vector3(30, 220, 0), 'rat')
->>>>>>> master
-=======
-  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 200, 0), 'player', 1)
-  modelLoader('../assets/models/Trex.glb', new THREE.Vector3(50, 220, 0), 'trex', 1)
-  modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, 220, 0), 'alien', 1)
-  modelLoader('../assets/models/slime.glb', new THREE.Vector3(10, 220, 0), 'slime', 1)
-  modelLoader('../assets/models/Rat.glb', new THREE.Vector3(30, 220, 0), 'rat', 1)
->>>>>>> 0431b7ecb1b798f68ae84bdcb28695fea30034c3
+
+  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 400, 0), 'player', 2)
+  modelLoader('../assets/models/Trex.glb', new THREE.Vector3(50, 200, 0), 'trex', 1)
+  modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, 200, 0), 'alien', 1)
+  modelLoader('../assets/models/slime.glb', new THREE.Vector3(10, 200, 0), 'slime', 1)
+  modelLoader('../assets/models/Rat.glb', new THREE.Vector3(30, 200, 0), 'rat',1)
+
 
 }
 
@@ -273,6 +259,7 @@ function animate() {
   update()
   player = scene.getObjectByName("player")
   controlsHelper.updateControls()
+  
   stats.update()
   //renderer.clear();
   updatePhysics(clock.getDelta())
