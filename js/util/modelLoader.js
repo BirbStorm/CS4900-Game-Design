@@ -45,7 +45,6 @@ function onLoad( model, pos, name ){
     mixers.push(mixer);
     character.animations = model.animations
     character.mixer = mixer
-    character.mixer.clipAction(character.animations[0]).play();
 }
 
 function progress(){
