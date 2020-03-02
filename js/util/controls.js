@@ -139,18 +139,11 @@ export function updateControls() {
 
         let time = performance.now();
         let delta = ( time - prevTime ) / 1000;
-        //console.log(delta)
-        // let rotateAngle = Math.PI / 4 * delta
-        // velocity.x -= velocity.x * 10.0 * delta;
-        // //console.log(velocity)
-        // velocity.z -= velocity.z * 10.0 * delta;
-        // //velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
-        
         
         // raycaster.set( player.position, down );
         // let cols = (raycaster.intersectObject(terrain))
         // // let cols = []
-        // console.log(cols)
+        // // console.log(cols)
         // if(cols[0])
         //     player.position.y = cols[0].point.y + 2.5
         // direction.z = Number( moveForward ) - Number( moveBackward );
@@ -162,33 +155,6 @@ export function updateControls() {
         //     crouch = false;
         // }
 
-        // if ( moveForward ){
-        //     if ( sprint ){
-        //         velocity.z -= (direction.z * 400.0 * delta) * 2;
-        //     }
-        //     else if (crouch){
-        //         velocity.z -= (direction.z * 400.0 * delta) * 0.5;
-        //     }
-        //     else{
-        //         velocity.z -= (direction.z * 400.0 * delta);
-        //     }
-        // }
-        // if ( moveBackward ){
-        //     if(crouch){
-        //         velocity.z -= (direction.z * 400.0 * delta) * 0.5;
-        //     }
-        //     else{
-        //         velocity.z -= (direction.z * 400.0 * delta);
-        //     }
-        // } 
-        // if ( moveLeft || moveRight ){
-        //     if (crouch){
-        //         velocity.x -= -(direction.x * 400.0 * delta) * 0.5;
-        //     }
-        //     else{
-        //         velocity.x -= -(direction.x * 400.0 * delta);
-        //     }
-        // }
         if ( rotateLeft )  player.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
         if ( rotateRight )  player.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
         let moveX =  Number( moveRight ) - Number( moveLeft );
@@ -199,6 +165,8 @@ export function updateControls() {
         let vertex = new THREE.Vector3(moveX,moveY,moveZ);
         vertex.applyQuaternion(player.quaternion);
         let factor = 100
+        if(sprint)
+            factor = factor * 2
         let resultantImpulse = new Ammo.btVector3( -vertex.x, 0, vertex.z );
         resultantImpulse.op_mul(factor);
 
