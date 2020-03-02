@@ -17,7 +17,7 @@ function onLoad( model, pos, name, mass ){
     character.name = name
     let vect3 = new THREE.Vector3();
     let box = new THREE.Box3().setFromObject(model.scene).getSize(vect3);
-
+    console.log(box)
     let transform = new Ammo.btTransform();
     transform.setIdentity();
     transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );

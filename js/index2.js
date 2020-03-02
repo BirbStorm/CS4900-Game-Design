@@ -149,7 +149,7 @@ function createFloor(){
   helper.rotation.x = Math.PI * - 0.5;
   helper.visible = false;
 
-  //scene.add(water,helper);
+  scene.add(water,helper);
   
 }
 
