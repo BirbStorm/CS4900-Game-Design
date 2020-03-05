@@ -1,5 +1,6 @@
 import { terrain, dynamicObjects, scene, player} from '../index2.js'
 import { heightMap, max, min } from './terrain.js';
+import{a} from './modelLoader.js'
 
 // Heightfield parameters
 
@@ -21,9 +22,8 @@ var transformAux1;
 var heightData = null;
 var ammoHeightData = null;
 let debugDrawer
-
-export let a,b;
-a = false;
+let groundBody;
+export let b;
 b = false;
 function debug() {
     debugDrawer = new THREE.AmmoDebugDrawer(scene, physicsWorld);
@@ -53,7 +53,7 @@ export function initPhysics() {
     var groundMass = 0;
     var groundLocalInertia = new Ammo.btVector3( 0, 0, 0 );
     var groundMotionState = new Ammo.btDefaultMotionState( groundTransform );
-    var groundBody = new Ammo.btRigidBody( new Ammo.btRigidBodyConstructionInfo( groundMass, groundMotionState, groundShape, groundLocalInertia ) );
+    groundBody = new Ammo.btRigidBody( new Ammo.btRigidBodyConstructionInfo( groundMass, groundMotionState, groundShape, groundLocalInertia ) );
     physicsWorld.addRigidBody( groundBody );
     transformAux1 = new Ammo.btTransform();
     b = true;
@@ -129,8 +129,10 @@ export function updatePhysics( deltaTime ) {
     physicsWorld.stepSimulation( deltaTime, 10 );
     // Update objects
 
-    // if(a && b){
-    //     //console.log("die");
+    //if(a && b)  physicsWorld.contactPairTest(player.userData.physicsBody,groundBody,die);
+
+
+    //      console.log("die");
     //     if(player.userData.physicsBody.isIntersectionBox(groundBody)){
     //         die();
     //     }

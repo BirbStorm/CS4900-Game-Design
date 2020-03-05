@@ -1,5 +1,5 @@
 import { scene, dynamicObjects, loadingManager, mixers} from '../index2.js'
-import { physicsWorld ,a} from './physics.js'
+import { physicsWorld } from './physics.js'
 
 export function modelLoader( path, pos, name ){
 	const loader = new THREE.GLTFLoader(loadingManager);
@@ -8,7 +8,7 @@ export function modelLoader( path, pos, name ){
 	() => progress(),
 	(error) => console.log(error))
 }
-
+export let a;
 function onLoad( model, pos, name ){
     const character = model.scene
     //character.scale.set(0.005, 0.005, 0.005)
@@ -40,7 +40,6 @@ function onLoad( model, pos, name ){
 
     scene.add(character)
     dynamicObjects.push(character)
-
     let mixer = new THREE.AnimationMixer( character );
     mixers.push(mixer);
     character.animations = model.animations
