@@ -161,15 +161,18 @@ export function updateControls() {
         // direction.x = Number( moveRight ) - Number( moveLeft );
         // direction.normalize(); // this ensures consistent movements in all directions
 
-        // //If both sprint and crouch are pressed, crouch will not be activated
-        // if (sprint && crouch){
-        //     crouch = false;
-        // }
+        //If both sprint and crouch are pressed, crouch will not be activated
+        if (sprint && crouch){
+            crouch = false;
+        }
 
         if ( rotateLeft )  player.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
         if ( rotateRight )  player.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
         let moveX =  Number( moveRight ) - Number( moveLeft );
         let moveZ =  Number( moveForward ) - Number( moveBackward );
+        if (sprint){
+            moveZ = moveZ*2
+        }
         let moveY =  0;
 
         let vertex = new THREE.Vector3(moveX,moveY,moveZ);
