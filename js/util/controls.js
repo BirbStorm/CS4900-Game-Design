@@ -35,6 +35,8 @@ let walkAction
 let walkJumpAction
 let waveAction
 let yesAction
+let currentAction
+let playerMixer
 let actions
 let count = 0
 
@@ -66,6 +68,10 @@ export const onKeyDown = ( event ) => {
     switch( event.keyCode ) {
         case 87: //w
             moveForward = true
+            if(currentAction != walkAction){
+                prepareCrossFade(idleAction, walkAction, 1.0);
+                currentAction = walkAction;
+            }
             break
         case 65: //a
             moveLeft = true
@@ -114,6 +120,10 @@ export const onKeyUp = ( event ) => {
     switch( event.keyCode ) {
         case 87: //w
             moveForward = false
+            if(currentAction === walkAction){
+                prepareCrossFade(walkAction, idleAction, 1.0);
+                currentAction = idleAction;
+            }
             break
         case 65: //a
             moveLeft = false
@@ -151,15 +161,18 @@ export function updateControls() {
         // direction.x = Number( moveRight ) - Number( moveLeft );
         // direction.normalize(); // this ensures consistent movements in all directions
 
-        // //If both sprint and crouch are pressed, crouch will not be activated
-        // if (sprint && crouch){
-        //     crouch = false;
-        // }
+        //If both sprint and crouch are pressed, crouch will not be activated
+        if (sprint && crouch){
+            crouch = false;
+        }
 
         if ( rotateLeft )  player.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
         if ( rotateRight )  player.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
         let moveX =  Number( moveRight ) - Number( moveLeft );
         let moveZ =  Number( moveForward ) - Number( moveBackward );
+        if (sprint){
+            moveZ = moveZ*2
+        }
         let moveY =  0;
 
         let vertex = new THREE.Vector3(moveX,moveY,moveZ);
@@ -206,11 +219,6 @@ function activateAllActions(){
     }
     setWeight(idleAction, 1.0);
 
-    setTimeout(function(){
-        console.log("RUN")
-        prepareCrossFade(idleAction, runAction, 1.0)
-    }, 3000);
-
     actions.forEach( function ( action ) {
         action.play();
     } );
@@ -226,10 +234,10 @@ function prepareCrossFade( startAction, endAction, defaultDuration ){
 }
 
 function synchronizeCrossFade(startAction, endAction, duration){
-    mixers[0].addEventListener('loop', onLoopFinished);
+    playerMixer.addEventListener('loop', onLoopFinished);
     function onLoopFinished(event){
         if (event.action === startAction){
-            mixers[0].removeEventListener('loop', onLoopFinished);
+            playerMixer.removeEventListener('loop', onLoopFinished);
             executeCrossFade(startAction, endAction, duration);
         }
     }
@@ -249,7 +257,7 @@ function setWeight(action, weight){
 
 //Timeout needed because character mixer hasnt been created yet
 setTimeout(function(){
-    let playerMixer = mixers.find(mixer => mixer.getRoot().name == 'player')
+    playerMixer = mixers.find(mixer => mixer.getRoot().name == 'player')
 
     danceAction = playerMixer.clipAction(player.animations[0])
     deathAction = playerMixer.clipAction(player.animations[1])
@@ -266,6 +274,7 @@ setTimeout(function(){
     waveAction = playerMixer.clipAction(player.animations[12])
     yesAction = playerMixer.clipAction(player.animations[13])
 
+    currentAction = idleAction;
     actions = [danceAction, deathAction, idleAction, jumpAction, noAction, punchAction, runAction, sitAction, standAction, thumbsUpAction, walkAction, walkJumpAction, waveAction, yesAction]
     activateAllActions();
  }, 10000);
