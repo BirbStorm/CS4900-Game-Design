@@ -107,7 +107,6 @@ function loadModels(){
   modelLoader('../assets/models/slime.glb', new THREE.Vector3(10, 200, 0), 'slime', 1)
   modelLoader('../assets/models/Rat.glb', new THREE.Vector3(30, 200, 0), 'rat',1)
 
-
 }
 
 
