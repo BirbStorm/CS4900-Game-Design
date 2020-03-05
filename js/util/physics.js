@@ -1,6 +1,6 @@
 import { terrain, dynamicObjects, scene, player} from '../index2.js'
 import { heightMap, max, min } from './terrain.js';
-import{a} from './modelLoader.js'
+import{playerExsists} from './modelLoader.js'
 
 // Heightfield parameters
 
@@ -23,8 +23,8 @@ var heightData = null;
 var ammoHeightData = null;
 let debugDrawer
 let groundBody;
-export let b;
-b = false;
+export let groundExsists;
+groundExsists = false;
 function debug() {
     debugDrawer = new THREE.AmmoDebugDrawer(scene, physicsWorld);
     debugDrawer.enable();
@@ -40,7 +40,7 @@ export function initPhysics() {
     broadphase = new Ammo.btDbvtBroadphase();
     solver = new Ammo.btSequentialImpulseConstraintSolver();
     physicsWorld = new Ammo.btDiscreteDynamicsWorld( dispatcher, broadphase, solver, collisionConfiguration );
-    physicsWorld.setGravity( new Ammo.btVector3( 0, -1000, 0 ) );
+    physicsWorld.setGravity( new Ammo.btVector3( 0, -5000, 0 ) );
 
     // Create the terrain body
     debug()
@@ -56,7 +56,7 @@ export function initPhysics() {
     groundBody = new Ammo.btRigidBody( new Ammo.btRigidBodyConstructionInfo( groundMass, groundMotionState, groundShape, groundLocalInertia ) );
     physicsWorld.addRigidBody( groundBody );
     transformAux1 = new Ammo.btTransform();
-    b = true;
+    groundExsists = true;
 }
 
 
@@ -118,26 +118,20 @@ function createTerrainShape() {
     return heightFieldShape;
 
 }
-// let die = null;
-// die = function(){
-//     document.getElementById("hbar").width = 0;
-//     console.log("die");
-// }
+let die = null;
+die = function(){
+    document.getElementById("hbar").width = 0;
+    console.log("die");
+}
 
 export function updatePhysics( deltaTime ) {
 
     physicsWorld.stepSimulation( deltaTime, 10 );
     // Update objects
 
-    //if(a && b)  physicsWorld.contactPairTest(player.userData.physicsBody,groundBody,die);
+    //if(playerExsists && groundExsists) physicsWorld.contactPairTest(player.userData.physicsBody,groundBody,die);
 
-
-    //      console.log("die");
-    //     if(player.userData.physicsBody.isIntersectionBox(groundBody)){
-    //         die();
-    //     }
-    // }
-    //console.log(contactTest(player.userData.physicsBody,groundBody));
+    //console.log(player.userData.physicsBody)
     for ( let i in dynamicObjects ) {
         
         var objThree = dynamicObjects[ i ];

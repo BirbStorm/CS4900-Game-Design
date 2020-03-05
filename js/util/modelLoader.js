@@ -8,7 +8,7 @@ export function modelLoader( path, pos, name ){
 	() => progress(),
 	(error) => console.log(error))
 }
-export let a;
+export let playerExsists;
 function onLoad( model, pos, name ){
     const character = model.scene
     //character.scale.set(0.005, 0.005, 0.005)
@@ -33,6 +33,7 @@ function onLoad( model, pos, name ){
     let objBody = new Ammo.btRigidBody( rbInfo );
 
     character.userData.physicsBody = objBody
+    //character.userData.physicsBody.set;
     objBody.setFriction(10);
     objBody.setRollingFriction(10);
 
@@ -48,7 +49,7 @@ function onLoad( model, pos, name ){
     if(!character.name == "player"){
         character.mixer.clipAction(character.animations[0]).play();
     }
-    a = true;
+    playerExsists = true;
 }
 
 function progress(){
