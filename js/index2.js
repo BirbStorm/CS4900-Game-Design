@@ -39,6 +39,8 @@ function main() {
     loadingScreen.addEventListener( 'transitionend', onTransitionEnd );
 
 } );
+
+
   //sets container to the div within the HTML file
   container = document.body;
   scene = new THREE.Scene();
@@ -51,9 +53,9 @@ function main() {
   var height = window.innerHeight;
 
   stats = new Stats();
-  stats.domElement.style.position = 'absolute';
-  stats.domElement.style.top = '0px';
-  container.appendChild( stats.domElement );
+  // stats.domElement.style.position = 'absolute';
+  // stats.domElement.style.top = '0px';
+  // container.appendChild( stats.domElement );
 
   loadModels();
   createRenderer();
@@ -101,7 +103,7 @@ function main() {
 
 function loadModels(){
 
-  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 200, 0), 'player', 2)
+  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 200, 0), 'player', 100)
   modelLoader('../assets/models/Trex.glb', new THREE.Vector3(50, 200, 0), 'trex', 1)
   modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, 200, 0), 'alien', 1)
   modelLoader('../assets/models/slime.glb', new THREE.Vector3(10, 200, 0), 'slime', 1)

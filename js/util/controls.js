@@ -175,6 +175,7 @@ export function updateControls() {
         }
         let moveY =  0;
 
+        if(!(moveX == 0 && moveY == 0 && moveZ == 0)){
         let vertex = new THREE.Vector3(moveX,moveY,moveZ);
         vertex.applyQuaternion(player.quaternion);
         let factor = 100
@@ -184,7 +185,7 @@ export function updateControls() {
         resultantImpulse.op_mul(factor);
 
         physicsBody.setLinearVelocity ( resultantImpulse );
- 
+    }
         if (crouch){
             var relativeCameraOffset = new THREE.Vector3(0,4,-10);
         }

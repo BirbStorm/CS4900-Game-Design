@@ -100,7 +100,8 @@ function onLoad( model, pos, name ){
     if(!character.name == "player"){
         character.mixer.clipAction(character.animations[0]).play();
     }
-    playerExsists = true;
+    else
+        playerExsists = true;
 }
 
 function progress(){
