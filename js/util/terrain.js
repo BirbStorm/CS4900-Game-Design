@@ -12,10 +12,10 @@ export function Terrain() {
 	
 	var material = THREE.Terrain.generateBlendedMaterial([
     // The first texture is the base; other textures are blended in on top.
-    {texture: t1, levels: [-10, -5, ,15 , 25]},
+    {texture: t1},
     // Start blending in at height -80; opaque between -35 and 20; blend out by 50
     {texture: t2, levels: [5, 10, 45, 60]},
-    {texture: t3, levels: [30, 50, 100, 100]},
+    {texture: t3, levels: [45, 60, 70, 100]},
 
     // How quickly this texture is blended in depends on its x-position.
     //{texture: t4, glsl: '1.0 - smoothstep(65.0 + smoothstep(-256.0, 256.0, vPosition.x) * 10.0, 80.0, vPosition.z)'},
@@ -95,10 +95,19 @@ export function generateTerrain(){
 
     computeDisplacement()
 
-
+    let t1 = new THREE.TextureLoader().load('../assets/textures/testSand.jpg');
+	let t2 = new THREE.TextureLoader().load('../assets/textures/testGrass.jpg');
+	let t3 = new THREE.TextureLoader().load('../assets/textures/testRock.jpg');
+	
+	var material = THREE.Terrain.generateBlendedMaterial([
+    {texture: t1},
+    {texture: t2, levels: [100, 115, 130,150]},
+    {texture: t3, levels: [130, 150, 180, 200]},
+    ]);
+    
     let geometry, wireframegeometry;
     geometry = new THREE.PlaneBufferGeometry(gridWidth, gridHeight, gridWidth-1, gridHeight-1);
-    let t2 = new THREE.TextureLoader().load('../assets/textures/grass.jpg' );
+    //let t2 = new THREE.TextureLoader().load('../assets/textures/grass.jpg' );
     // t2.wrapS = t2.wrapT = THREE.RepeatWrapping;
     // t2.repeat.set(16,16)
     positions = geometry.attributes.position.array;
@@ -112,7 +121,7 @@ export function generateTerrain(){
     }
     // max = Math.max(...heightMap)
     // min = Math.min(...heightMap)
-    let material = new THREE.MeshLambertMaterial( { map:t2 } );
+    //let material = new THREE.MeshLambertMaterial( { map:t2 } );
     let mesh = new THREE.Mesh( geometry, material);
 
     mesh.rotation.x = -90*3.14/180.0;

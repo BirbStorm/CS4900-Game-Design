@@ -1,5 +1,5 @@
-import { scene, dynamicObjects, loadingManager, mixers } from '../index2.js'
-import { physicsWorld } from './physics.js'
+import { scene, dynamicObjects, loadingManager, mixers} from '../index2.js'
+import { physicsWorld ,a} from './physics.js'
 
 export function modelLoader( path, pos, name ){
 	const loader = new THREE.GLTFLoader(loadingManager);
@@ -49,6 +49,7 @@ function onLoad( model, pos, name ){
     if(!character.name == "player"){
         character.mixer.clipAction(character.animations[0]).play();
     }
+    a = true;
 }
 
 function progress(){

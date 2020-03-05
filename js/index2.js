@@ -101,7 +101,7 @@ function main() {
 
 function loadModels(){
 
-  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 400, 0), 'player', 2)
+  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 200, 0), 'player', 2)
   modelLoader('../assets/models/Trex.glb', new THREE.Vector3(50, 200, 0), 'trex', 1)
   modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, 200, 0), 'alien', 1)
   modelLoader('../assets/models/slime.glb', new THREE.Vector3(10, 200, 0), 'slime', 1)
@@ -258,7 +258,6 @@ function animate() {
   update()
   player = scene.getObjectByName("player")
   controlsHelper.updateControls()
-  
   stats.update()
   //renderer.clear();
   updatePhysics(clock.getDelta())
@@ -274,7 +273,7 @@ function onWindowResize() {
   // update the camera's frustum
   camera.updateProjectionMatrix();
   renderer.setSize( window.innerWidth , window.innerHeight );
-
+  //console.log(player)
 }
 
 function onTransitionEnd( event ) {
