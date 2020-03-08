@@ -32,6 +32,7 @@ let sitAction
 let standAction
 let thumbsUpAction
 let walkAction
+let backwardAction
 let walkJumpAction
 let waveAction
 let yesAction
@@ -126,6 +127,10 @@ export const onKeyUp = ( event ) => {
             break
         case 83: //s
             moveBackward = false
+            if(currentAction === backwardAction){
+                prepareCrossFade(backwardAction, idleAction, 1.0);
+                currentAction = idleAction;
+            }
             break
         case 68: //d
             moveRight = false
@@ -154,7 +159,7 @@ export function updateControls() {
         // if(cols[0])
         //     player.position.y = cols[0].point.y + 2.5
         // direction.z = Number( moveForward ) - Number( moveBackward );
-        // direction.x = Number( moveRight ) - Number( moveLeft );
+        // direction.x = Number( moveRight ) - Number( moveLeft ); 
         // direction.normalize(); // this ensures consistent movements in all directions
 
         //If both sprint and crouch are pressed, crouch will not be activated
@@ -173,8 +178,13 @@ export function updateControls() {
                 currentAction = walkAction;
             }
         }
+        //Moving backward
         else if (moveZ == -1){
-
+            console.log("Backward")
+            if(currentAction != backwardAction){
+                prepareCrossFade(currentAction, backwardAction, 1.0);
+                currentAction = backwardAction;
+            }
         }
         if (sprint && moveZ == 1){
             moveZ = moveZ*2
@@ -225,6 +235,10 @@ function activateAllActions(){
         setWeight(actions[i], 0.0);
     }
     setWeight(idleAction, 1.0);
+
+    //Sets the walking animation to play backwards
+    backwardAction.timeScale = -1;
+
 
     actions.forEach( function ( action ) {
         action.play();
@@ -277,11 +291,12 @@ setTimeout(function(){
     standAction = playerMixer.clipAction(player.animations[8])
     thumbsUpAction = playerMixer.clipAction(player.animations[9])
     walkAction = playerMixer.clipAction(player.animations[10])
+    backwardAction = playerMixer.clipAction(player.animations[10])
     walkJumpAction = playerMixer.clipAction(player.animations[11])
     waveAction = playerMixer.clipAction(player.animations[12])
     yesAction = playerMixer.clipAction(player.animations[13])
 
     currentAction = idleAction;
-    actions = [danceAction, deathAction, idleAction, jumpAction, noAction, punchAction, runAction, sitAction, standAction, thumbsUpAction, walkAction, walkJumpAction, waveAction, yesAction]
+    actions = [danceAction, deathAction, idleAction, jumpAction, noAction, punchAction, runAction, sitAction, standAction, thumbsUpAction, walkAction, backwardAction, walkJumpAction, waveAction, yesAction]
     activateAllActions();
  }, 10000);
