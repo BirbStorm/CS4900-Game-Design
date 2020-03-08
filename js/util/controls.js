@@ -68,10 +68,6 @@ export const onKeyDown = ( event ) => {
     switch( event.keyCode ) {
         case 87: //w
             moveForward = true
-            if(currentAction != walkAction){
-                prepareCrossFade(idleAction, walkAction, 1.0);
-                currentAction = walkAction;
-            }
             break
         case 65: //a
             moveLeft = true
@@ -170,7 +166,17 @@ export function updateControls() {
         if ( rotateRight )  player.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
         let moveX =  Number( moveRight ) - Number( moveLeft );
         let moveZ =  Number( moveForward ) - Number( moveBackward );
-        if (sprint){
+        //Moving forward
+        if (moveZ == 1){
+            if(currentAction != walkAction){
+                prepareCrossFade(currentAction, walkAction, 1.0);
+                currentAction = walkAction;
+            }
+        }
+        else if (moveZ == -1){
+
+        }
+        if (sprint && moveZ == 1){
             moveZ = moveZ*2
         }
         let moveY =  0;
