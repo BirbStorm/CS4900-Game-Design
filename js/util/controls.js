@@ -15,6 +15,7 @@ let rotateRight = false
 let sprint = false
 let crouch = false
 let jump = false
+let punch = false
 let oldX = 0
 let raycaster = new THREE.Raycaster()
 let down = new THREE.Vector3(-1,-1,-1)
@@ -88,7 +89,7 @@ export const onKeyDown = ( event ) => {
             break
         case 32: //space
             if (jump == false && jumpAction.getEffectiveWeight() == 0 && walkJumpAction.getEffectiveWeight() == 0){
-                jump = true
+                jump = true;
                 if (moveForward){
                     prepareCrossFade(currentAction, walkJumpAction, 1);
                     prepareCrossFade(currentAction, currentAction, 2);
@@ -97,6 +98,13 @@ export const onKeyDown = ( event ) => {
                     prepareCrossFade(currentAction, jumpAction, 1);
                     prepareCrossFade(currentAction, currentAction, 0.6);
                 }
+            }
+            break
+        case 86: //v
+            if (punch == false){
+                punch = true;
+                prepareCrossFade(currentAction, punchAction, 0.6);
+                prepareCrossFade(currentAction, currentAction, 0.6);
             }
             break
     }
@@ -161,6 +169,9 @@ export const onKeyUp = ( event ) => {
             break
         case 32: //space
             jump = false
+            break
+        case 86: //v
+            punch = false
             break
     }
 }
@@ -263,8 +274,10 @@ function activateAllActions(){
     }
     setWeight(idleAction, 1.0);
 
+    //Sets ceratin actions to only play once
     jumpAction.setLoop(THREE.LoopOnce);
     walkJumpAction.setLoop(THREE.LoopOnce);
+    punchAction.setLoop(THREE.LoopOnce);
 
     actions.forEach( function ( action ) {
         action.play();
