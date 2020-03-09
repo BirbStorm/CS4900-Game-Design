@@ -14,6 +14,7 @@ let rotateLeft = false
 let rotateRight = false
 let sprint = false
 let crouch = false
+let jump = false
 let oldX = 0
 let raycaster = new THREE.Raycaster()
 let down = new THREE.Vector3(-1,-1,-1)
@@ -85,6 +86,13 @@ export const onKeyDown = ( event ) => {
         case 17: //control
             crouch = true
             break
+        case 32: //space
+            if (jump == false && jumpAction.isRunning() == false){
+                jump = true
+                prepareCrossFade(currentAction, jumpAction, 1);
+                prepareCrossFade(jumpAction, currentAction, 0.6);
+            }
+            break
     }
 };
 export const onMouseMove = (event) => {
@@ -144,6 +152,9 @@ export const onKeyUp = ( event ) => {
             break
         case 17: //control
             crouch = false
+            break
+        case 32: //space
+            jump = false
             break
     }
 }
@@ -245,6 +256,8 @@ function activateAllActions(){
         setWeight(actions[i], 0.0);
     }
     setWeight(idleAction, 1.0);
+
+    jumpAction.setLoop(THREE.LoopOnce);
 
     actions.forEach( function ( action ) {
         action.play();
