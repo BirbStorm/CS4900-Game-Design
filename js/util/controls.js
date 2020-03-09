@@ -118,7 +118,7 @@ export const onKeyUp = ( event ) => {
         case 87: //w
             moveForward = false
             if(currentAction === walkAction){
-                prepareCrossFade(walkAction, idleAction, 1.0);
+                prepareCrossFade(currentAction, idleAction, 0.6);
                 currentAction = idleAction;
             }
             break
@@ -128,7 +128,7 @@ export const onKeyUp = ( event ) => {
         case 83: //s
             moveBackward = false
             if(currentAction === backwardAction){
-                prepareCrossFade(backwardAction, idleAction, 1.0);
+                prepareCrossFade(backwardAction, idleAction, 0.6);
                 currentAction = idleAction;
             }
             break
@@ -137,6 +137,10 @@ export const onKeyUp = ( event ) => {
             break
         case 16: //shift
             sprint = false
+            if (moveForward){
+                prepareCrossFade(currentAction, walkAction, 1.0);
+                currentAction = walkAction;
+            }
             break
         case 17: //control
             crouch = false
@@ -173,21 +177,27 @@ export function updateControls() {
         let moveZ =  Number( moveForward ) - Number( moveBackward );
         //Moving forward
         if (moveZ == 1){
-            if(currentAction != walkAction){
-                prepareCrossFade(currentAction, walkAction, 1.0);
+            if(currentAction != walkAction && currentAction != runAction){
+                prepareCrossFade(currentAction, walkAction, 0.6);
                 currentAction = walkAction;
             }
         }
         //Moving backward
         else if (moveZ == -1){
-            console.log("Backward")
+            //Sets the walking animation to play backwards
+            backwardAction.timeScale = -1;
             if(currentAction != backwardAction){
-                prepareCrossFade(currentAction, backwardAction, 1.0);
+                prepareCrossFade(currentAction, backwardAction, 0.6);
                 currentAction = backwardAction;
             }
         }
+        //Sprint, only forward
         if (sprint && moveZ == 1){
             moveZ = moveZ*2
+            if(currentAction != runAction){
+                prepareCrossFade(currentAction, runAction, 1.0);
+                currentAction = runAction;
+            }
         }
         let moveY =  0;
 
@@ -235,10 +245,6 @@ function activateAllActions(){
         setWeight(actions[i], 0.0);
     }
     setWeight(idleAction, 1.0);
-
-    //Sets the walking animation to play backwards
-    backwardAction.timeScale = -1;
-
 
     actions.forEach( function ( action ) {
         action.play();
