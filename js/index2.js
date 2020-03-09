@@ -1,5 +1,5 @@
 import { createCamera } from './util/camera.js';
-import { generateTerrain, Terrain } from './util/terrain.js'
+import { generateTerrain } from './util/terrain.js'
 import * as controlsHelper from './util/controls.js'
 
 import { modelLoader } from './util/modelLoader.js'

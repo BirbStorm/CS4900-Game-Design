@@ -229,17 +229,16 @@ export function updateControls() {
         }
         let moveY =  0;
 
-        if(!(moveX == 0 && moveY == 0 && moveZ == 0)){
-        let vertex = new THREE.Vector3(moveX,moveY,moveZ);
-        vertex.applyQuaternion(player.quaternion);
-        let factor = 100
-        if(sprint)
-            factor = factor * 2
-        let resultantImpulse = new Ammo.btVector3( -vertex.x, 0, vertex.z );
-        resultantImpulse.op_mul(factor);
+            let vertex = new THREE.Vector3(moveX,moveY,moveZ);
+            vertex.applyQuaternion(player.quaternion);
+            let factor = 100
+            if(sprint)
+                factor = factor * 2
+            let resultantImpulse = new Ammo.btVector3( -vertex.x, 0, vertex.z );
+            resultantImpulse.op_mul(factor);
 
-        physicsBody.setLinearVelocity ( resultantImpulse );
-    }
+            physicsBody.setLinearVelocity ( resultantImpulse );
+
         if (crouch){
             var relativeCameraOffset = new THREE.Vector3(0,4,-10);
         }
