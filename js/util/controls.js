@@ -14,6 +14,8 @@ let rotateLeft = false
 let rotateRight = false
 let sprint = false
 let crouch = false
+let jump = false
+let punch = false
 let oldX = 0
 let raycaster = new THREE.Raycaster()
 let down = new THREE.Vector3(-1,-1,-1)
@@ -32,6 +34,7 @@ let sitAction
 let standAction
 let thumbsUpAction
 let walkAction
+let backwardAction
 let walkJumpAction
 let waveAction
 let yesAction
@@ -68,10 +71,6 @@ export const onKeyDown = ( event ) => {
     switch( event.keyCode ) {
         case 87: //w
             moveForward = true
-            if(currentAction != walkAction){
-                prepareCrossFade(idleAction, walkAction, 1.0);
-                currentAction = walkAction;
-            }
             break
         case 65: //a
             moveLeft = true
@@ -87,6 +86,26 @@ export const onKeyDown = ( event ) => {
             break
         case 17: //control
             crouch = true
+            break
+        case 32: //space
+            if (jump == false && jumpAction.getEffectiveWeight() == 0 && walkJumpAction.getEffectiveWeight() == 0){
+                jump = true;
+                if (moveForward){
+                    prepareCrossFade(currentAction, walkJumpAction, 1);
+                    prepareCrossFade(currentAction, currentAction, 2);
+                }
+                else{
+                    prepareCrossFade(currentAction, jumpAction, 1);
+                    prepareCrossFade(currentAction, currentAction, 0.6);
+                }
+            }
+            break
+        case 86: //v
+            if (punch == false){
+                punch = true;
+                prepareCrossFade(currentAction, punchAction, 0.6);
+                prepareCrossFade(currentAction, currentAction, 0.6);
+            }
             break
     }
 };
@@ -121,7 +140,7 @@ export const onKeyUp = ( event ) => {
         case 87: //w
             moveForward = false
             if(currentAction === walkAction){
-                prepareCrossFade(walkAction, idleAction, 1.0);
+                prepareCrossFade(currentAction, idleAction, 0.6);
                 currentAction = idleAction;
             }
             break
@@ -130,15 +149,29 @@ export const onKeyUp = ( event ) => {
             break
         case 83: //s
             moveBackward = false
+            if(currentAction === backwardAction){
+                prepareCrossFade(backwardAction, idleAction, 0.6);
+                currentAction = idleAction;
+            }
             break
         case 68: //d
             moveRight = false
             break
         case 16: //shift
             sprint = false
+            if (moveForward){
+                prepareCrossFade(currentAction, walkAction, 1.0);
+                currentAction = walkAction;
+            }
             break
         case 17: //control
             crouch = false
+            break
+        case 32: //space
+            jump = false
+            break
+        case 86: //v
+            punch = false
             break
     }
 }
@@ -158,7 +191,7 @@ export function updateControls() {
         // if(cols[0])
         //     player.position.y = cols[0].point.y + 2.5
         // direction.z = Number( moveForward ) - Number( moveBackward );
-        // direction.x = Number( moveRight ) - Number( moveLeft );
+        // direction.x = Number( moveRight ) - Number( moveLeft ); 
         // direction.normalize(); // this ensures consistent movements in all directions
 
         //If both sprint and crouch are pressed, crouch will not be activated
@@ -170,8 +203,29 @@ export function updateControls() {
         if ( rotateRight )  player.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
         let moveX =  Number( moveRight ) - Number( moveLeft );
         let moveZ =  Number( moveForward ) - Number( moveBackward );
-        if (sprint){
+        //Moving forward
+        if (moveZ == 1){
+            if(currentAction != walkAction && currentAction != runAction){
+                prepareCrossFade(currentAction, walkAction, 0.6);
+                currentAction = walkAction;
+            }
+        }
+        //Moving backward
+        else if (moveZ == -1){
+            //Sets the walking animation to play backwards
+            backwardAction.timeScale = -1;
+            if(currentAction != backwardAction){
+                prepareCrossFade(currentAction, backwardAction, 0.6);
+                currentAction = backwardAction;
+            }
+        }
+        //Sprint, only forward
+        if (sprint && moveZ == 1){
             moveZ = moveZ*2
+            if(currentAction != runAction){
+                prepareCrossFade(currentAction, runAction, 1.0);
+                currentAction = runAction;
+            }
         }
         let moveY =  0;
 
@@ -219,6 +273,11 @@ function activateAllActions(){
         setWeight(actions[i], 0.0);
     }
     setWeight(idleAction, 1.0);
+
+    //Sets ceratin actions to only play once
+    jumpAction.setLoop(THREE.LoopOnce);
+    walkJumpAction.setLoop(THREE.LoopOnce);
+    punchAction.setLoop(THREE.LoopOnce);
 
     actions.forEach( function ( action ) {
         action.play();
@@ -271,11 +330,12 @@ setTimeout(function(){
     standAction = playerMixer.clipAction(player.animations[8])
     thumbsUpAction = playerMixer.clipAction(player.animations[9])
     walkAction = playerMixer.clipAction(player.animations[10])
+    backwardAction = playerMixer.clipAction(player.animations[10])
     walkJumpAction = playerMixer.clipAction(player.animations[11])
     waveAction = playerMixer.clipAction(player.animations[12])
     yesAction = playerMixer.clipAction(player.animations[13])
 
     currentAction = idleAction;
-    actions = [danceAction, deathAction, idleAction, jumpAction, noAction, punchAction, runAction, sitAction, standAction, thumbsUpAction, walkAction, walkJumpAction, waveAction, yesAction]
+    actions = [danceAction, deathAction, idleAction, jumpAction, noAction, punchAction, runAction, sitAction, standAction, thumbsUpAction, walkAction, backwardAction, walkJumpAction, waveAction, yesAction]
     activateAllActions();
  }, 10000);
