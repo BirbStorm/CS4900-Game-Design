@@ -87,10 +87,16 @@ export const onKeyDown = ( event ) => {
             crouch = true
             break
         case 32: //space
-            if (jump == false && jumpAction.isRunning() == false){
+            if (jump == false && jumpAction.getEffectiveWeight() == 0 && walkJumpAction.getEffectiveWeight() == 0){
                 jump = true
-                prepareCrossFade(currentAction, jumpAction, 1);
-                prepareCrossFade(jumpAction, currentAction, 0.6);
+                if (moveForward){
+                    prepareCrossFade(currentAction, walkJumpAction, 1);
+                    prepareCrossFade(currentAction, currentAction, 2);
+                }
+                else{
+                    prepareCrossFade(currentAction, jumpAction, 1);
+                    prepareCrossFade(currentAction, currentAction, 0.6);
+                }
             }
             break
     }
@@ -258,6 +264,7 @@ function activateAllActions(){
     setWeight(idleAction, 1.0);
 
     jumpAction.setLoop(THREE.LoopOnce);
+    walkJumpAction.setLoop(THREE.LoopOnce);
 
     actions.forEach( function ( action ) {
         action.play();
