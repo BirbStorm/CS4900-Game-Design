@@ -40,7 +40,7 @@ export function initPhysics() {
     broadphase = new Ammo.btDbvtBroadphase();
     solver = new Ammo.btSequentialImpulseConstraintSolver();
     physicsWorld = new Ammo.btDiscreteDynamicsWorld( dispatcher, broadphase, solver, collisionConfiguration );
-    physicsWorld.setGravity( new Ammo.btVector3( 0, -100, 0 ) );
+    physicsWorld.setGravity( new Ammo.btVector3( 0, -1000, 0 ) );
 
     // Create the terrain body
     debug()
