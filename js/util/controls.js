@@ -3,6 +3,7 @@ import { player, isMouseDown, terrain, mixers } from '../index2.js'
 const container = document.body;
 const menu = document.querySelector('#menu');
 const blocker = document.querySelector('#blocker')
+const play = document.querySelector('#play')
 
 
 let controls;
@@ -14,6 +15,8 @@ let rotateLeft = false
 let rotateRight = false
 let sprint = false
 let crouch = false
+let jump = false
+let punch = false
 let oldX = 0
 let raycaster = new THREE.Raycaster()
 let down = new THREE.Vector3(-1,-1,-1)
@@ -32,9 +35,12 @@ let sitAction
 let standAction
 let thumbsUpAction
 let walkAction
+let backwardAction
 let walkJumpAction
 let waveAction
 let yesAction
+let currentAction
+let playerMixer
 let actions
 let count = 0
 
@@ -50,12 +56,14 @@ export function createControls(camera){
     controls.addEventListener( 'lock', () => {
         blocker.style.display = 'none';
         menu.style.display = 'none';
+        play.style.display = 'none';
         console.log(controls.isLocked)
     } );
 
     controls.addEventListener( 'unlock', () => {
         blocker.style.display = 'block';
         menu.style.display = '';
+        play.style.display = '';
 
     } );
     return controls;
@@ -81,6 +89,26 @@ export const onKeyDown = ( event ) => {
             break
         case 17: //control
             crouch = true
+            break
+        case 32: //space
+            if (jump == false && jumpAction.getEffectiveWeight() == 0 && walkJumpAction.getEffectiveWeight() == 0){
+                jump = true;
+                if (moveForward){
+                    prepareCrossFade(currentAction, walkJumpAction, 1);
+                    prepareCrossFade(currentAction, currentAction, 2);
+                }
+                else{
+                    prepareCrossFade(currentAction, jumpAction, 1);
+                    prepareCrossFade(currentAction, currentAction, 0.6);
+                }
+            }
+            break
+        case 86: //v
+            if (punch == false){
+                punch = true;
+                prepareCrossFade(currentAction, punchAction, 0.6);
+                prepareCrossFade(currentAction, currentAction, 0.6);
+            }
             break
     }
 };
@@ -114,21 +142,39 @@ export const onKeyUp = ( event ) => {
     switch( event.keyCode ) {
         case 87: //w
             moveForward = false
+            if(currentAction === walkAction){
+                prepareCrossFade(currentAction, idleAction, 0.6);
+                currentAction = idleAction;
+            }
             break
         case 65: //a
             moveLeft = false
             break
         case 83: //s
             moveBackward = false
+            if(currentAction === backwardAction){
+                prepareCrossFade(backwardAction, idleAction, 0.6);
+                currentAction = idleAction;
+            }
             break
         case 68: //d
             moveRight = false
             break
         case 16: //shift
             sprint = false
+            if (moveForward){
+                prepareCrossFade(currentAction, walkAction, 1.0);
+                currentAction = walkAction;
+            }
             break
         case 17: //control
             crouch = false
+            break
+        case 32: //space
+            jump = false
+            break
+        case 86: //v
+            punch = false
             break
     }
 }
@@ -148,30 +194,54 @@ export function updateControls() {
         // if(cols[0])
         //     player.position.y = cols[0].point.y + 2.5
         // direction.z = Number( moveForward ) - Number( moveBackward );
-        // direction.x = Number( moveRight ) - Number( moveLeft );
+        // direction.x = Number( moveRight ) - Number( moveLeft ); 
         // direction.normalize(); // this ensures consistent movements in all directions
 
-        // //If both sprint and crouch are pressed, crouch will not be activated
-        // if (sprint && crouch){
-        //     crouch = false;
-        // }
+        //If both sprint and crouch are pressed, crouch will not be activated
+        if (sprint && crouch){
+            crouch = false;
+        }
 
         if ( rotateLeft )  player.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
         if ( rotateRight )  player.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
         let moveX =  Number( moveRight ) - Number( moveLeft );
         let moveZ =  Number( moveForward ) - Number( moveBackward );
+        //Moving forward
+        if (moveZ == 1){
+            if(currentAction != walkAction && currentAction != runAction){
+                prepareCrossFade(currentAction, walkAction, 0.6);
+                currentAction = walkAction;
+            }
+        }
+        //Moving backward
+        else if (moveZ == -1){
+            //Sets the walking animation to play backwards
+            backwardAction.timeScale = -1;
+            if(currentAction != backwardAction){
+                prepareCrossFade(currentAction, backwardAction, 0.6);
+                currentAction = backwardAction;
+            }
+        }
+        //Sprint, only forward
+        if (sprint && moveZ == 1){
+            moveZ = moveZ*2
+            if(currentAction != runAction){
+                prepareCrossFade(currentAction, runAction, 1.0);
+                currentAction = runAction;
+            }
+        }
         let moveY =  0;
 
-        let vertex = new THREE.Vector3(moveX,moveY,moveZ);
-        vertex.applyQuaternion(player.quaternion);
-        let factor = 100
-        if(sprint)
-            factor = factor * 2
-        let resultantImpulse = new Ammo.btVector3( -vertex.x, 0, vertex.z );
-        resultantImpulse.op_mul(factor);
+            let vertex = new THREE.Vector3(moveX,moveY,moveZ);
+            vertex.applyQuaternion(player.quaternion);
+            let factor = 100
+            if(sprint)
+                factor = factor * 2
+            let resultantImpulse = new Ammo.btVector3( -vertex.x, 0, vertex.z );
+            resultantImpulse.op_mul(factor);
 
-        physicsBody.setLinearVelocity ( resultantImpulse );
- 
+            physicsBody.setLinearVelocity ( resultantImpulse );
+
         if (crouch){
             var relativeCameraOffset = new THREE.Vector3(0,4,-10);
         }
@@ -206,10 +276,10 @@ function activateAllActions(){
     }
     setWeight(idleAction, 1.0);
 
-    setTimeout(function(){
-        console.log("RUN")
-        prepareCrossFade(idleAction, runAction, 1.0)
-    }, 3000);
+    //Sets ceratin actions to only play once
+    jumpAction.setLoop(THREE.LoopOnce);
+    walkJumpAction.setLoop(THREE.LoopOnce);
+    punchAction.setLoop(THREE.LoopOnce);
 
     actions.forEach( function ( action ) {
         action.play();
@@ -226,10 +296,10 @@ function prepareCrossFade( startAction, endAction, defaultDuration ){
 }
 
 function synchronizeCrossFade(startAction, endAction, duration){
-    mixers[0].addEventListener('loop', onLoopFinished);
+    playerMixer.addEventListener('loop', onLoopFinished);
     function onLoopFinished(event){
         if (event.action === startAction){
-            mixers[0].removeEventListener('loop', onLoopFinished);
+            playerMixer.removeEventListener('loop', onLoopFinished);
             executeCrossFade(startAction, endAction, duration);
         }
     }
@@ -249,7 +319,7 @@ function setWeight(action, weight){
 
 //Timeout needed because character mixer hasnt been created yet
 setTimeout(function(){
-    let playerMixer = mixers.find(mixer => mixer.getRoot().name == 'player')
+    playerMixer = mixers.find(mixer => mixer.getRoot().name == 'player')
 
     danceAction = playerMixer.clipAction(player.animations[0])
     deathAction = playerMixer.clipAction(player.animations[1])
@@ -262,10 +332,12 @@ setTimeout(function(){
     standAction = playerMixer.clipAction(player.animations[8])
     thumbsUpAction = playerMixer.clipAction(player.animations[9])
     walkAction = playerMixer.clipAction(player.animations[10])
+    backwardAction = playerMixer.clipAction(player.animations[10])
     walkJumpAction = playerMixer.clipAction(player.animations[11])
     waveAction = playerMixer.clipAction(player.animations[12])
     yesAction = playerMixer.clipAction(player.animations[13])
 
-    actions = [danceAction, deathAction, idleAction, jumpAction, noAction, punchAction, runAction, sitAction, standAction, thumbsUpAction, walkAction, walkJumpAction, waveAction, yesAction]
+    currentAction = idleAction;
+    actions = [danceAction, deathAction, idleAction, jumpAction, noAction, punchAction, runAction, sitAction, standAction, thumbsUpAction, walkAction, backwardAction, walkJumpAction, waveAction, yesAction]
     activateAllActions();
  }, 10000);

@@ -2,7 +2,7 @@ let mute = false;
 let music = document.getElementById('music');
 let muteButton = document.getElementById('muteButton');
 
-music.volume = 0.1;
+music.volume = 0.02;
 function toggleMute(){
     if(mute){
         mute = false;
