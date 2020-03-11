@@ -36,7 +36,7 @@ canvas {
   display: -moz-box;
   display: box;
 
-  padding-top: 5%;
+  padding-top: 0%;
   padding-left: 35%;
   padding-right: 35%;
 
@@ -154,36 +154,42 @@ canvas {
 }
 
 .menuButton{
-  border: none;
   display: inline-block;
-  font-size: 24px;
-  padding: 15px 25px;
+  border-radius: 4px;
+  background-color: #f4511e;
+  border: none;
+  color: #FFFFFF;
   text-align: center;
-  outline: none;
-  color: #ffffff;
-  background-color: lightseagreen;
-  border-radius: 15px;
-  box-shadow: 0 9px #999999;
+  font-size: 22px;
+  padding: 15px;
+  
   transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
 }
 
 .menuButton span{
+  cursor: pointer;
   display: inline-block;
   position: relative;
   transition: 0.5s;
 }
 
 .menuButton span:after{
-  content: '/00bb';
-  
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
 }
 
-.menuButton:hover{
-  background-color: seagreen;
+.menuButton:hover span{
+  padding-right: 25px;
 }
 
-.menuButton:active{
-  background-color: seagreen;
-  box-shadow: 0 5px #666666;
-  transform: translateY(4px);
+.menuButton:hover span:after{
+  opacity: 1;
+  right: 0;
 }
+
