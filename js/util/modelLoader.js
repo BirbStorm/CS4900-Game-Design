@@ -43,7 +43,7 @@ function onLoad( model, pos, name,type){
     //character.userData.physicsBody.set;
     objBody.setFriction(10);
     objBody.setRollingFriction(10);
-
+    objBody.setActivationState(4)
     physicsWorld.addRigidBody( objBody ,type,3);
 
     scene.add(character)
