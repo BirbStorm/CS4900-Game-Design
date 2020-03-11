@@ -19,18 +19,20 @@
     <img id="muteButton" src="/assets/textures/unmute.png" style="width:60px;height:60px;" onclick="javascript:toggleMute()" />
         
         <div id="menu">
+            <div class="container">
             
-            <span>Click to play</span>
+            <span><h1 style="font-size: 500%;">The Hunt</h1></span>
             <br>
-                Move: WASD
             <br>
-                Jump: SPACE
+            <form>
+                <button class="menuButton" id="play" onclick="javascript:playClick()">Play</button>
+            </form>                
             <br>
-                Look: Click + Mouse Move                
-            <br>
+
             <audio id="music" autoplay loop >
                 <source src="/assets/audio/POL-staff-roll-short.wav" type="audio/wav">
             </audio>
+            </div>
         </div>      
                        
 </div>

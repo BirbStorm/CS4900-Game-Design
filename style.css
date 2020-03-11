@@ -36,7 +36,11 @@ canvas {
   display: -moz-box;
   display: box;
 
-  -webkit-box-orient: horizontal;
+  padding-top: 5%;
+  padding-left: 35%;
+  padding-right: 35%;
+
+  /* -webkit-box-orient: horizontal;
   -moz-box-orient: horizontal;
   box-orient: horizontal;
 
@@ -46,7 +50,7 @@ canvas {
 
   -webkit-box-align: center;
   -moz-box-align: center;
-  box-align: center;
+  box-align: center; */
 
   color: #ffffff;
   text-align: center;
@@ -142,4 +146,44 @@ canvas {
 #muteButton {
   margin-top: 20px;
   margin-left: 20px;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+}
+
+.menuButton{
+  border: none;
+  display: inline-block;
+  font-size: 24px;
+  padding: 15px 25px;
+  text-align: center;
+  outline: none;
+  color: #ffffff;
+  background-color: lightseagreen;
+  border-radius: 15px;
+  box-shadow: 0 9px #999999;
+  transition: all 0.5s;
+}
+
+.menuButton span{
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.menuButton span:after{
+  content: '/00bb';
+  
+}
+
+.menuButton:hover{
+  background-color: seagreen;
+}
+
+.menuButton:active{
+  background-color: seagreen;
+  box-shadow: 0 5px #666666;
+  transform: translateY(4px);
 }
