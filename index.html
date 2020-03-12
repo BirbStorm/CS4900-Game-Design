@@ -63,6 +63,7 @@
 
 <script src='js/lib/stats.min.js'></script>
 <script src='js/util/audio.js'></script>
+<script src='js/util/hud.js'></script>
 
 <script src='js/lib/controls/THREEx.KeyboardState.js'></script>
 <script src='js/lib/controls/THREEx.FullScreen.js'></script>
@@ -73,6 +74,15 @@
 
 <script type="module" src="js/index2.js"></script>
  
-
+<!-- <script type="text/javascript">
+    export function takeDamage(){
+        let str = document.getElementById("hbar").style.width;
+        str = str.substring(0,str.length-2);
+        let x = parseInt(str)-1;
+        str = x + "px";
+        document.getElementById("hbar").style.width = str;
+        console.log("die");
+    }
+</script> -->
 </body>
 </html>

@@ -1,6 +1,7 @@
 import { terrain, dynamicObjects, scene, player} from '../index2.js'
 import { heightMap, max, min } from './terrain.js';
-import{playerExsists} from './modelLoader.js'
+import{playerExsists} from './modelLoader.js';
+//import{takeDamage} from 'index.html';
 
 // Heightfield parameters
 
@@ -16,6 +17,7 @@ var collisionConfiguration;
 var dispatcher;
 var broadphase;
 var solver;
+let die = null;
 export var physicsWorld;
 // var dynamicObjects = [];
 var transformAux1;
@@ -35,6 +37,7 @@ export function initPhysics() {
     // console.log(heightData)
     heightData = heightMap
     // Physics configuration
+    die = new Ammo.ConcreteContactResultCallback();
     collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
     dispatcher = new Ammo.btCollisionDispatcher( collisionConfiguration );
     broadphase = new Ammo.btDbvtBroadphase();
@@ -118,19 +121,22 @@ function createTerrainShape() {
     return heightFieldShape;
 
 }
-let die = null;
-die = function(){
-    document.getElementById("hbar").width = 0;
-    console.log("die");
-}
 
 export function updatePhysics( deltaTime ) {
 
     physicsWorld.stepSimulation( deltaTime, 10 );
     // Update objects
 
-    //if(playerExsists && groundExsists) physicsWorld.contactPairTest(player.userData.physicsBody,groundBody,die);
-
+    if(playerExsists && groundExsists) physicsWorld.contactPairTest(player.userData.physicsBody,groundBody,die);
+    die.addSingleResult = function(){
+        //takeDamage();
+        // let str = document.getElementById("hbar").style.width;
+        // str = str.substring(0,str.length-2);
+        // let x = parseInt(str)-1;
+        // str = x + "px";
+        // document.getElementById("hbar").style.width = str;
+        console.log("die");
+    }
     //console.log(player.userData.physicsBody)
     for ( let i in dynamicObjects ) {
         

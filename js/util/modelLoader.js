@@ -9,14 +9,14 @@ export let playerExsists;
 // 	(error) => console.log(error))
 // }
 
-export function modelLoader( path, pos, name ,type){
+export function modelLoader( path, pos, name ,mass,type){
 	const loader = new THREE.GLTFLoader(loadingManager);
 	loader.load(path, 
-	(model) => onLoad(model, pos, name,type),
+	(model) => onLoad(model, pos, name,mass,type),
 	() => progress(),
 	(error) => console.log(error))
 }
-function onLoad( model, pos, name,type){
+function onLoad( model, pos, name,mass,type){
     const character = model.scene
     //character.scale.set(0.005, 0.005, 0.005)
 
@@ -36,7 +36,7 @@ function onLoad( model, pos, name,type){
     let localInertia = new Ammo.btVector3( 0, 0, 0 );
     colShape.calculateLocalInertia( 1, localInertia );
 
-    let rbInfo = new Ammo.btRigidBodyConstructionInfo( 1, motionState, colShape, localInertia );
+    let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
     let objBody = new Ammo.btRigidBody( rbInfo );
 
     character.userData.physicsBody = objBody
