@@ -3,6 +3,7 @@ import { player, isMouseDown, terrain, mixers } from '../index2.js'
 const container = document.body;
 const menu = document.querySelector('#menu');
 const blocker = document.querySelector('#blocker')
+const play = document.querySelector('#play')
 
 
 let controls;
@@ -55,12 +56,14 @@ export function createControls(camera){
     controls.addEventListener( 'lock', () => {
         blocker.style.display = 'none';
         menu.style.display = 'none';
+        play.style.display = 'none';
         console.log(controls.isLocked)
     } );
 
     controls.addEventListener( 'unlock', () => {
         blocker.style.display = 'block';
         menu.style.display = '';
+        play.style.display = '';
 
     } );
     return controls;

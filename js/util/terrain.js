@@ -1,3 +1,4 @@
+
 var gridWidth , gridHeight;
 var displacement 
 var positions

@@ -36,7 +36,11 @@ canvas {
   display: -moz-box;
   display: box;
 
-  -webkit-box-orient: horizontal;
+  padding-top: 0%;
+  padding-left: 35%;
+  padding-right: 35%;
+
+  /* -webkit-box-orient: horizontal;
   -moz-box-orient: horizontal;
   box-orient: horizontal;
 
@@ -46,7 +50,7 @@ canvas {
 
   -webkit-box-align: center;
   -moz-box-align: center;
-  box-align: center;
+  box-align: center; */
 
   color: #ffffff;
   text-align: center;
@@ -143,3 +147,49 @@ canvas {
   margin-top: 20px;
   margin-left: 20px;
 }
+
+.container{
+  display: flex;
+  flex-direction: column;
+}
+
+.menuButton{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #f4511e;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 22px;
+  padding: 15px;
+  
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.menuButton span{
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.menuButton span:after{
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.menuButton:hover span{
+  padding-right: 25px;
+}
+
+.menuButton:hover span:after{
+  opacity: 1;
+  right: 0;
+}
+
