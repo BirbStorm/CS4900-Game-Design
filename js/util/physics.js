@@ -129,15 +129,11 @@ export function updatePhysics( deltaTime ) {
 
     if(playerExsists && groundExsists) physicsWorld.contactPairTest(player.userData.physicsBody,groundBody,die);
     die.addSingleResult = function(){
-        //takeDamage();
-        // let str = document.getElementById("hbar").style.width;
-        // str = str.substring(0,str.length-2);
-        // let x = parseInt(str)-1;
-        // str = x + "px";
-        // document.getElementById("hbar").style.width = str;
+        let bar = document.querySelector("#hpbar");
+        let str = bar.clientWidth
+        bar.style.width = (bar.clientWidth -1) + 'px';
         console.log("die");
     }
-    //console.log(player.userData.physicsBody)
     for ( let i in dynamicObjects ) {
         
         var objThree = dynamicObjects[ i ];
