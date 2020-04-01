@@ -72,6 +72,9 @@ export function createControls(camera){
 
 export const onKeyDown = ( event ) => {
     switch( event.keyCode ) {
+        case 90: //z
+            died();
+            break;
         case 87: //w
             moveForward = true
             break
@@ -266,6 +269,15 @@ export function updateControls() {
 
 }
 
+export function died(){
+    console.log("test")
+    if(currentAction != deathAction){
+        console.log("DIED")
+        prepareCrossFade(currentAction, deathAction, 1.0);
+        currentAction = deathAction;
+    }
+}
+
 
 
 
@@ -280,6 +292,9 @@ function activateAllActions(){
     jumpAction.setLoop(THREE.LoopOnce);
     walkJumpAction.setLoop(THREE.LoopOnce);
     punchAction.setLoop(THREE.LoopOnce);
+    deathAction.clampWhenFinished = true;
+    deathAction.setLoop(THREE.LoopOnce);
+    
 
     actions.forEach( function ( action ) {
         action.play();

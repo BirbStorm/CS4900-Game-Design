@@ -1,6 +1,7 @@
 import { terrain, dynamicObjects, scene, player} from '../index2.js'
 import { heightMap, max, min } from './terrain.js';
 import{playerExsists} from './modelLoader.js';
+import {died} from './controls.js';
 //import{takeDamage} from 'index.html';
 
 // Heightfield parameters
@@ -132,7 +133,7 @@ export function updatePhysics( deltaTime ) {
         let bar = document.querySelector("#hpbar");
         let str = bar.clientWidth
         bar.style.width = (bar.clientWidth -1) + 'px';
-        console.log("die");
+        died();
     }
     for ( let i in dynamicObjects ) {
         
