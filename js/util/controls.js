@@ -24,6 +24,8 @@ let down = new THREE.Vector3(-1,-1,-1)
 let prevTime = performance.now();
 let velocity = new THREE.Vector3()
 let direction = new THREE.Vector3()
+let listener = new THREE.AudioListener();
+let sound = new THREE.Audio( listener );
 
 let danceAction
 let deathAction
@@ -44,6 +46,8 @@ let currentAction
 let playerMixer
 let actions
 let count = 0
+
+
 
 let physicsBody
 export function createControls(camera){
@@ -285,6 +289,19 @@ export function died(){
         executeCrossFade(currentAction, deathAction, 3.0);
         currentAction = deathAction;
         death.style.opacity = '1';
+
+        let music = document.getElementById('music');
+        music.pause();
+
+        var audioLoader = new THREE.AudioLoader();
+        audioLoader.load( '../../assets/audio/scream.mp3', function( buffer ) {
+            sound.setBuffer( buffer );
+            sound.setLoop( false );
+            sound.setVolume( 0.8 );
+            sound.play();
+        });
+
+
     }
 }
 
