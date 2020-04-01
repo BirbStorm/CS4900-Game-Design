@@ -4,6 +4,7 @@ const container = document.body;
 const menu = document.querySelector('#menu');
 const blocker = document.querySelector('#blocker')
 const play = document.querySelector('#play')
+const death = document.querySelector('#death')
 
 
 let controls;
@@ -23,6 +24,8 @@ let down = new THREE.Vector3(-1,-1,-1)
 let prevTime = performance.now();
 let velocity = new THREE.Vector3()
 let direction = new THREE.Vector3()
+let listener = new THREE.AudioListener();
+let sound = new THREE.Audio( listener );
 
 let danceAction
 let deathAction
@@ -43,6 +46,8 @@ let currentAction
 let playerMixer
 let actions
 let count = 0
+
+
 
 let physicsBody
 export function createControls(camera){
@@ -71,45 +76,53 @@ export function createControls(camera){
 
 
 export const onKeyDown = ( event ) => {
-    switch( event.keyCode ) {
-        case 87: //w
-            moveForward = true
-            break
-        case 65: //a
-            moveLeft = true
-            break
-        case 83: //s
-            moveBackward = true
-            break
-        case 68: //d
-            moveRight = true
-            break
-        case 16: //shift
-            sprint = true
-            break
-        case 17: //control
-            crouch = true
-            break
-        case 32: //space
-            if (jump == false && jumpAction.getEffectiveWeight() == 0 && walkJumpAction.getEffectiveWeight() == 0){
-                jump = true;
-                if (moveForward){
-                    prepareCrossFade(currentAction, walkJumpAction, 1);
-                    prepareCrossFade(currentAction, currentAction, 2);
+    if (currentAction === deathAction){
+        return false;
+    }
+    else{
+        switch( event.keyCode ) {
+            case 90: //z
+                died();
+                break;
+            case 87: //w
+                moveForward = true
+                break
+            case 65: //a
+                moveLeft = true
+                break
+            case 83: //s
+                moveBackward = true
+                break
+            case 68: //d
+                moveRight = true
+                break
+            case 16: //shift
+                sprint = true
+                break
+            case 17: //control
+                crouch = true
+                break
+            case 32: //space
+                if (jump == false && jumpAction.getEffectiveWeight() == 0 && walkJumpAction.getEffectiveWeight() == 0){
+                    jump = true;
+                    if (moveForward){
+                        prepareCrossFade(currentAction, walkJumpAction, 1);
+                        prepareCrossFade(currentAction, currentAction, 2);
+                    }
+                    else{
+                        prepareCrossFade(currentAction, jumpAction, 1);
+                        prepareCrossFade(currentAction, currentAction, 0.6);
+                    }
                 }
-                else{
-                    prepareCrossFade(currentAction, jumpAction, 1);
+                break
+            case 86: //v
+                if (punch == false){
+                    punch = true;
+                    prepareCrossFade(currentAction, punchAction, 0.6);
                     prepareCrossFade(currentAction, currentAction, 0.6);
                 }
-            }
-            break
-        case 86: //v
-            if (punch == false){
-                punch = true;
-                prepareCrossFade(currentAction, punchAction, 0.6);
-                prepareCrossFade(currentAction, currentAction, 0.6);
-            }
-            break
+                break
+        }
     }
 };
 export const onMouseMove = (event) => {
@@ -139,43 +152,48 @@ export const onMouseMove = (event) => {
     }
 }
 export const onKeyUp = ( event ) => {
-    switch( event.keyCode ) {
-        case 87: //w
-            moveForward = false
-            if(currentAction === walkAction){
-                prepareCrossFade(currentAction, idleAction, 0.6);
-                currentAction = idleAction;
-            }
-            break
-        case 65: //a
-            moveLeft = false
-            break
-        case 83: //s
-            moveBackward = false
-            if(currentAction === backwardAction){
-                prepareCrossFade(backwardAction, idleAction, 0.6);
-                currentAction = idleAction;
-            }
-            break
-        case 68: //d
-            moveRight = false
-            break
-        case 16: //shift
-            sprint = false
-            if (moveForward){
-                prepareCrossFade(currentAction, walkAction, 1.0);
-                currentAction = walkAction;
-            }
-            break
-        case 17: //control
-            crouch = false
-            break
-        case 32: //space
-            jump = false
-            break
-        case 86: //v
-            punch = false
-            break
+    if (currentAction === deathAction){
+        return false;
+    }
+    else{
+        switch( event.keyCode ) {
+            case 87: //w
+                moveForward = false
+                if(currentAction === walkAction){
+                    prepareCrossFade(currentAction, idleAction, 0.6);
+                    currentAction = idleAction;
+                }
+                break
+            case 65: //a
+                moveLeft = false
+                break
+            case 83: //s
+                moveBackward = false
+                if(currentAction === backwardAction){
+                    prepareCrossFade(backwardAction, idleAction, 0.6);
+                    currentAction = idleAction;
+                }
+                break
+            case 68: //d
+                moveRight = false
+                break
+            case 16: //shift
+                sprint = false
+                if (moveForward){
+                    prepareCrossFade(currentAction, walkAction, 1.0);
+                    currentAction = walkAction;
+                }
+                break
+            case 17: //control
+                crouch = false
+                break
+            case 32: //space
+                jump = false
+                break
+            case 86: //v
+                punch = false
+                break
+        }
     }
 }
 
@@ -266,6 +284,27 @@ export function updateControls() {
 
 }
 
+export function died(){
+    if(currentAction != deathAction){
+        executeCrossFade(currentAction, deathAction, 3.0);
+        currentAction = deathAction;
+        death.style.opacity = '1';
+
+        let music = document.getElementById('music');
+        music.pause();
+
+        var audioLoader = new THREE.AudioLoader();
+        audioLoader.load( '../../assets/audio/scream.mp3', function( buffer ) {
+            sound.setBuffer( buffer );
+            sound.setLoop( false );
+            sound.setVolume( 0.8 );
+            sound.play();
+        });
+
+
+    }
+}
+
 
 
 
@@ -280,6 +319,9 @@ function activateAllActions(){
     jumpAction.setLoop(THREE.LoopOnce);
     walkJumpAction.setLoop(THREE.LoopOnce);
     punchAction.setLoop(THREE.LoopOnce);
+    deathAction.clampWhenFinished = true;
+    deathAction.setLoop(THREE.LoopOnce);
+    
 
     actions.forEach( function ( action ) {
         action.play();
