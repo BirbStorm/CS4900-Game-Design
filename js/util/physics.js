@@ -133,7 +133,10 @@ export function updatePhysics( deltaTime ) {
         let bar = document.querySelector("#hpbar");
         let str = bar.clientWidth
         bar.style.width = (bar.clientWidth -1) + 'px';
-        died();
+        console.log(bar.style.width);
+        if (bar.style.width == "0px"){
+            died();
+        }
     }
     for ( let i in dynamicObjects ) {
         
