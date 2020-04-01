@@ -4,6 +4,7 @@ const container = document.body;
 const menu = document.querySelector('#menu');
 const blocker = document.querySelector('#blocker')
 const play = document.querySelector('#play')
+const death = document.querySelector('#death')
 
 
 let controls;
@@ -280,11 +281,10 @@ export function updateControls() {
 }
 
 export function died(){
-    console.log("test")
     if(currentAction != deathAction){
-        console.log("DIED")
-        prepareCrossFade(currentAction, deathAction, 1.0);
+        executeCrossFade(currentAction, deathAction, 3.0);
         currentAction = deathAction;
+        death.style.opacity = '1';
     }
 }
 
