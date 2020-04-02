@@ -135,7 +135,7 @@ export function updatePhysics( deltaTime ) {
     physicsWorld.stepSimulation( deltaTime, 10 );
     // Update objects
 
-    if(playerExsists && groundExsists) physicsWorld.contactPairTest(player.userData.physicsBody,groundBody,die);
+    //if(playerExsists && groundExsists) physicsWorld.contactPairTest(player.userData.physicsBody,groundBody,die);
 
     for ( let i in dynamicObjects ) {
         
@@ -145,9 +145,10 @@ export function updatePhysics( deltaTime ) {
         if ( ms ) {
             ms.getWorldTransform( transformAux1 );
             var p = transformAux1.getOrigin();
-            var q = transformAux1.getRotation();
+            var q = (transformAux1.getRotation());
+            console.log(q)
             objThree.position.set( p.x(), p.y(), p.z() );
-            objThree.quaternion.set( q.x(), q.y(), q.z(), q.w() );
+            //objThree.quaternion.set( q.x(), q.y(), q.z(), q.w() );
 
         }
 
