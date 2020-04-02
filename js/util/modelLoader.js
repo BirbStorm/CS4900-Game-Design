@@ -38,7 +38,7 @@ function onLoad( model, pos, name,mass,type){
 
     let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
     let objBody = new Ammo.btRigidBody( rbInfo );
-
+    //objBody.translate(Ammo.btVector3(0,0,0))
     character.userData.physicsBody = objBody
     //character.userData.physicsBody.set;
     objBody.setFriction(10);

@@ -220,8 +220,7 @@ export function updateControls() {
             crouch = false;
         }
 
-        if ( rotateLeft )  player.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
-        if ( rotateRight )  player.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
+        
         let moveX =  Number( moveRight ) - Number( moveLeft );
         let moveZ =  Number( moveForward ) - Number( moveBackward );
         //Moving forward
@@ -259,7 +258,8 @@ export function updateControls() {
             resultantImpulse.op_mul(factor);
 
             physicsBody.setLinearVelocity ( resultantImpulse );
-
+            if ( rotateLeft )  physicsBody.applyTorque(new Ammo.btVector3(0,1,0), 100);
+            if ( rotateRight )  physicsBody.applyTorque(new Ammo.btVector3(0,1,0), -100);
         if (crouch){
             var relativeCameraOffset = new THREE.Vector3(0,4,-10);
         }
