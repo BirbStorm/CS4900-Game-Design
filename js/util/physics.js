@@ -39,6 +39,13 @@ export function initPhysics() {
     heightData = heightMap
     // Physics configuration
     die = new Ammo.ConcreteContactResultCallback();
+    die.addSingleResult = function(){
+        let bar = document.querySelector("#hpbar");
+        bar.style.width = (bar.clientWidth -1) + 'px';
+        if (bar.style.width == "0px"){
+            died();
+        }
+    }
     collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
     dispatcher = new Ammo.btCollisionDispatcher( collisionConfiguration );
     broadphase = new Ammo.btDbvtBroadphase();
@@ -129,14 +136,7 @@ export function updatePhysics( deltaTime ) {
     // Update objects
 
     if(playerExsists && groundExsists) physicsWorld.contactPairTest(player.userData.physicsBody,groundBody,die);
-    die.addSingleResult = function(){
-        let bar = document.querySelector("#hpbar");
-        let str = bar.clientWidth
-        bar.style.width = (bar.clientWidth -1) + 'px';
-        if (bar.style.width == "0px"){
-            died();
-        }
-    }
+
     for ( let i in dynamicObjects ) {
         
         var objThree = dynamicObjects[ i ];

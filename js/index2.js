@@ -3,7 +3,6 @@ import { generateTerrain } from './util/terrain.js'
 import * as controlsHelper from './util/controls.js'
 
 import { modelLoader } from './util/modelLoader.js'
-import { makeTextSprite } from './util/sprites.js'
 import { initPhysics, updatePhysics, physicsWorld } from './util/physics.js';
 
 
@@ -199,52 +198,6 @@ function createRenderer() {
   document.body.appendChild( renderer.domElement );
 }
 
-function createSprites(){
-  var spritey = makeTextSprite( " World! ", 
-  { fontsize: 10, fontface: "Georgia", borderColor: {r:0, g:0, b:255, a:1.0} } );
-  spritey.position.set(-30,-10,0);
-  scene.add( spritey );
-}
-
-
-function createHUD(){
-
-
-  // We will use 2D canvas element to render our HUD.  
-  var hudCanvas = document.createElement('canvas');
-
-  // Again, set dimensions to fit the screen.
-  hudCanvas.width = width;
-  hudCanvas.height = height;
-
-  // Get 2D context and draw something supercool.
-  var hudBitmap = hudCanvas.getContext('2d');
-	hudBitmap.font = "Normal 40px Arial";
-  hudBitmap.textAlign = 'center';
-  hudBitmap.fillStyle = "rgba(245,245,245,0.75)";
-  hudBitmap.fillText('Initializing...', width / 2, height / 2);
-
-
-  
- 
- 
-	// Create texture from rendered graphics.
-	var hudTexture = new THREE.Texture(hudCanvas) 
-  hudTexture.needsUpdate = true;
-  
-  // Create HUD material.
-  var material = new THREE.MeshBasicMaterial( {map: hudTexture} );
-  material.transparent = true;
-
-  // Create plane to render the HUD. This plane fill the whole screen.
-  var planeGeometry = new THREE.PlaneGeometry( width, height );
-  var plane = new THREE.Mesh( planeGeometry, material );
-  sceneHUD.add( plane );
-}
-
-function createHealthBar(){
-
-}
 
 function update() {
   const delta = clock.getDelta();
@@ -261,11 +214,9 @@ function animate() {
   player = scene.getObjectByName("player")
   controlsHelper.updateControls()
   stats.update()
-  //renderer.clear();
   updatePhysics(clock.getDelta())
   renderer.render( scene, camera );
-  //renderer.clearDepth();
-  //renderer.render(sceneHUD, cameraHUD);
+
 }
 
 function onWindowResize() {
