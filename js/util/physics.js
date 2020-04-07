@@ -24,15 +24,10 @@ export var physicsWorld;
 var transformAux1;
 var heightData = null;
 var ammoHeightData = null;
-let debugDrawer
 let groundBody;
 export let groundExsists;
 groundExsists = false;
-function debug() {
-    debugDrawer = new THREE.AmmoDebugDrawer(scene, physicsWorld);
-    debugDrawer.enable();
-    debugDrawer.setDebugMode(2);
-  }
+
 export function initPhysics() {
     // heightData = THREE.Terrain.toArray1D(terrain.children[0].geometry.vertices)
     // console.log(heightData)
@@ -54,7 +49,6 @@ export function initPhysics() {
     physicsWorld.setGravity( new Ammo.btVector3( 0, -1000, 0 ) );
 
     // Create the terrain body
-    debug()
 
     var groundShape = createTerrainShape();
     var groundTransform = new Ammo.btTransform();
@@ -153,7 +147,6 @@ export function updatePhysics( deltaTime ) {
         }
 
     }
-    debugDrawer.update();
 
 }
 
