@@ -32,7 +32,8 @@ export function generateTerrain(){
     // t2.wrapS = t2.wrapT = THREE.RepeatWrapping;
     // t2.repeat.set(16,16)
     positions = geometry.attributes.position.array;
-    geometry.computeFaceNormals()
+    geometry.computeVertexNormals();
+    console.log(geometry.faces)
     let i1 = 0
     for(let i = 2; i<positions.length; i+=3) {
         positions[i] -= displacement[i1];

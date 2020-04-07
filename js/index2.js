@@ -85,7 +85,11 @@ function main() {
 
   //normalize the direction vector (convert to vector of length 1)
   dir.normalize();
-  
+  var geometry = new THREE.BoxGeometry();
+var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+var cube = new THREE.Mesh( geometry, material );
+scene.add( cube );
+console.log(geometry)
   var origin = new THREE.Vector3( -200, 0, 900 );
   var length = 1;
   var hex = 0xffff00;

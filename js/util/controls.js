@@ -53,7 +53,7 @@ let physicsBody
 export function createControls(camera){
     controls = new THREE.PointerLockControls( camera, container )
     
-    menu.addEventListener( 'click', () => {
+    play.addEventListener( 'click', () => {
 
         controls.lock();
 

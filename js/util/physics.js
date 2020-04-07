@@ -25,6 +25,8 @@ var transformAux1;
 var heightData = null;
 var ammoHeightData = null;
 let groundBody;
+let test;
+let qt;
 export let groundExsists;
 groundExsists = false;
 
@@ -35,11 +37,14 @@ export function initPhysics() {
     // Physics configuration
     die = new Ammo.ConcreteContactResultCallback();
     die.addSingleResult = function(){
-        let bar = document.querySelector("#hpbar");
-        bar.style.width = (bar.clientWidth -1) + 'px';
-        if (bar.style.width == "0px"){
-            died();
-        }
+        // let bar = document.querySelector("#hpbar");
+        // bar.style.width = (bar.clientWidth -1) + 'px';
+        // if (bar.style.width == "0px"){
+        //     died();
+        // }
+        test = groundTransform.getRotation()
+        qt = THREE.Quaternion(test.x(),test.y(),test.z(),test.w())
+        //console.log(test.x(),test.y(),test.z(),test.w())
     }
     collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
     dispatcher = new Ammo.btCollisionDispatcher( collisionConfiguration );
@@ -129,7 +134,7 @@ export function updatePhysics( deltaTime ) {
     physicsWorld.stepSimulation( deltaTime, 10 );
     // Update objects
 
-    //if(playerExsists && groundExsists) physicsWorld.contactPairTest(player.userData.physicsBody,groundBody,die);
+    if(playerExsists && groundExsists) physicsWorld.contactPairTest(player.userData.physicsBody,groundBody,die);
 
     for ( let i in dynamicObjects ) {
         
@@ -140,10 +145,11 @@ export function updatePhysics( deltaTime ) {
             ms.getWorldTransform( transformAux1 );
             var p = transformAux1.getOrigin();
             var q = (transformAux1.getRotation());
-            console.log(q)
+            // if(groundExsists)
+            //  console.log(groundTransform.getRotation())
             objThree.position.set( p.x(), p.y(), p.z() );
             objThree.quaternion.set( q.x(), q.y(), q.z(), q.w() );
-
+            // console.log(objThree)
         }
 
     }
