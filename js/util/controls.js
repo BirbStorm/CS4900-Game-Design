@@ -27,24 +27,24 @@ let direction = new THREE.Vector3()
 let listener = new THREE.AudioListener();
 let sound = new THREE.Audio( listener );
 
-let danceAction
-let deathAction
-let idleAction
-let jumpAction
-let noAction
-let punchAction
-let runAction
-let sitAction
-let standAction
-let thumbsUpAction
-let walkAction
-let backwardAction
-let walkJumpAction
-let waveAction
-let yesAction
-let currentAction
-let playerMixer
-let actions
+export let danceAction,
+deathAction,
+idleAction,
+jumpAction,
+noAction,
+punchAction,
+runAction,
+sitAction,
+standAction,
+thumbsUpAction,
+walkAction,
+backwardAction,
+walkJumpAction,
+waveAction,
+yesAction,
+currentAction,
+playerMixer,
+actions
 let count = 0
 
 
@@ -382,4 +382,4 @@ setTimeout(function(){
     currentAction = idleAction;
     actions = [danceAction, deathAction, idleAction, jumpAction, noAction, punchAction, runAction, sitAction, standAction, thumbsUpAction, walkAction, backwardAction, walkJumpAction, waveAction, yesAction]
     activateAllActions();
- }, 10000);
+ }, 5000);
