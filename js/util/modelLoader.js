@@ -44,7 +44,7 @@ function onLoad( model, pos, name,mass,type){
     objBody.setFriction(10);
     objBody.setRollingFriction(10);
     objBody.setActivationState(4)
-    physicsWorld.addRigidBody( objBody ,type,3);
+    physicsWorld.addRigidBody( objBody , type, 3);
 
     scene.add(character)
     dynamicObjects.push(character)

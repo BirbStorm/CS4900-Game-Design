@@ -142,7 +142,7 @@ export function updatePhysics( deltaTime ) {
             var q = (transformAux1.getRotation());
             console.log(q)
             objThree.position.set( p.x(), p.y(), p.z() );
-            //objThree.quaternion.set( q.x(), q.y(), q.z(), q.w() );
+            objThree.quaternion.set( q.x(), q.y(), q.z(), q.w() );
 
         }
 
