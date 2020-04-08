@@ -18,7 +18,7 @@ var collisionConfiguration;
 var dispatcher;
 var broadphase;
 var solver;
-let die = null;
+let groundContact = null;
 export var physicsWorld;
 // var dynamicObjects = [];
 var transformAux1;
@@ -35,8 +35,8 @@ export function initPhysics() {
     // console.log(heightData)
     heightData = heightMap
     // Physics configuration
-    die = new Ammo.ConcreteContactResultCallback();
-    die.addSingleResult = function(){
+    groundContact = new Ammo.ConcreteContactResultCallback();
+    groundContact.addSingleResult = function(){
         // let bar = document.querySelector("#hpbar");
         // bar.style.width = (bar.clientWidth -1) + 'px';
         // if (bar.style.width == "0px"){
@@ -51,7 +51,8 @@ export function initPhysics() {
     broadphase = new Ammo.btDbvtBroadphase();
     solver = new Ammo.btSequentialImpulseConstraintSolver();
     physicsWorld = new Ammo.btDiscreteDynamicsWorld( dispatcher, broadphase, solver, collisionConfiguration );
-    physicsWorld.setGravity( new Ammo.btVector3( 0, -1000, 0 ) );
+    //Gravity used for dropping
+    physicsWorld.setGravity( new Ammo.btVector3( 0, -10000, 0 ) );
 
     // Create the terrain body
 
@@ -134,7 +135,13 @@ export function updatePhysics( deltaTime ) {
     physicsWorld.stepSimulation( deltaTime, 10 );
     // Update objects
 
-    if(playerExsists && groundExsists) physicsWorld.contactPairTest(player.userData.physicsBody,groundBody,die);
+    if(playerExsists && groundExsists) physicsWorld.contactPairTest(player.userData.physicsBody,groundBody,groundContact);
+
+    //Changes to normal gravity on contact with ground
+    groundContact.addSingleResult = function(){
+        physicsWorld.setGravity( new Ammo.btVector3( 0, -100, 0 ) );
+    }
+    
 
     for ( let i in dynamicObjects ) {
         
