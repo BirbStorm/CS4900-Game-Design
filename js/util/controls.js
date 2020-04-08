@@ -393,6 +393,11 @@ setTimeout(function(){
     punchAction.setLoop(THREE.LoopOnce);
     deathAction.clampWhenFinished = true;
     deathAction.setLoop(THREE.LoopOnce);
+    sitAction.clampWhenFinished = true;
+    sitAction.setLoop(THREE.LoopOnce);
+
+    setWeight(sitAction, 1.0);
+    sitAction.play();
 
     //activateAllActions();
  }, 5000);
