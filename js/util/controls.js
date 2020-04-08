@@ -3,9 +3,11 @@ import { player, isMouseDown, terrain, mixers } from '../index2.js'
 import { playerLanded } from './physics.js';
 const container = document.body;
 const menu = document.querySelector('#menu');
+const known = document.querySelector('#known');
 const blocker = document.querySelector('#blocker')
 const play = document.querySelector('#play')
 const death = document.querySelector('#death')
+const list = document.querySelector('#list')
 
 
 let controls;
@@ -65,7 +67,10 @@ export function createControls(camera){
         play.style.display = 'none';
         console.log(controls.isLocked)
     } );
-
+    list.addEventListener('click',() =>{
+        menu.style.display= 'none';
+        known.style.display = 'block';
+    })
     controls.addEventListener( 'unlock', () => {
         blocker.style.display = 'block';
         menu.style.display = '';

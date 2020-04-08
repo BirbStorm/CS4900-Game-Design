@@ -28,8 +28,8 @@
             <br>
             <br>
                 <button class="menuButton" id="play">Play</button> <br>
-                <button class="menuButton" id="list" onclick="javascript:listClick()">Known Enemies</button><br>
-                <button class="menuButton" id="options" onclick="javascript:optionsClick()">Options</button>
+                <button class="menuButton" id="list">Known Enemies</button><br>
+                <button class="menuButton" id="options">Options</button>
                 
             <br>
 
@@ -37,7 +37,22 @@
                 <source src="/assets/audio/POL-staff-roll-short.wav" type="audio/wav">
             </audio>
             </div>
-        </div>      
+        </div>
+        <div id="known" style="display: none;">
+            <div class="container">
+            
+            <span><h1 style="font-size: 500%;">Known Enemies</h1></span>
+            <br>
+            <br>
+                <button class="menuButton" id="back">Back</button>
+                
+            <br>
+
+            <audio id="music" autoplay loop >
+                <source src="/assets/audio/POL-staff-roll-short.wav" type="audio/wav">
+            </audio>
+            </div>
+        </div>        
                        
 </div>
    <div id="hud">
