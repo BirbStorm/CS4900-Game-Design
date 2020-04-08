@@ -8,6 +8,7 @@ const blocker = document.querySelector('#blocker')
 const play = document.querySelector('#play')
 const death = document.querySelector('#death')
 const list = document.querySelector('#list')
+const back = document.querySelector('#back')
 
 
 let controls;
@@ -67,6 +68,10 @@ export function createControls(camera){
         play.style.display = 'none';
         console.log(controls.isLocked)
     } );
+    back.addEventListener('click',() =>{
+        menu.style.display= 'block';
+        known.style.display = 'none';
+    })
     list.addEventListener('click',() =>{
         menu.style.display= 'none';
         known.style.display = 'block';
