@@ -1,5 +1,6 @@
 
 import { player, isMouseDown, terrain, mixers } from '../index2.js'
+import { playerLanded } from './physics.js';
 const container = document.body;
 const menu = document.querySelector('#menu');
 const blocker = document.querySelector('#blocker')
@@ -97,7 +98,9 @@ export const onKeyDown = ( event ) => {
                 moveRight = true
                 break
             case 16: //shift
-                sprint = true
+                if (playerLanded){
+                    sprint = true
+                }
                 break
             case 17: //control
                 crouch = true
@@ -225,7 +228,14 @@ export function updateControls() {
         let moveZ =  Number( moveForward ) - Number( moveBackward );
         //Moving forward
         if (moveZ == 1){
-            if(currentAction != walkAction && currentAction != runAction){
+            if (sprint){
+                moveZ = moveZ*2
+                if(currentAction != runAction){
+                    prepareCrossFade(currentAction, runAction, 1.0);
+                    currentAction = runAction;
+                }
+            }
+            else if(currentAction != walkAction && currentAction != runAction){
                 prepareCrossFade(currentAction, walkAction, 0.6);
                 currentAction = walkAction;
             }
@@ -239,14 +249,17 @@ export function updateControls() {
                 currentAction = backwardAction;
             }
         }
+        if (!playerLanded){
+            moveZ = moveZ * 3
+        }
         //Sprint, only forward
-        if (sprint && moveZ == 1){
+        /*if (sprint && moveZ == 1){
             moveZ = moveZ*2
             if(currentAction != runAction){
                 prepareCrossFade(currentAction, runAction, 1.0);
                 currentAction = runAction;
             }
-        }
+        }*/
         let moveY =  0;
 
             let vertex = new THREE.Vector3(moveX,moveY,moveZ);
@@ -308,20 +321,12 @@ export function died(){
 
 
 
-function activateAllActions(){
+export function activateAllActions(){
     let i
     for (i = 0; i < actions.length; i++) {
         setWeight(actions[i], 0.0);
     }
     setWeight(idleAction, 1.0);
-
-    //Sets ceratin actions to only play once
-    jumpAction.setLoop(THREE.LoopOnce);
-    walkJumpAction.setLoop(THREE.LoopOnce);
-    punchAction.setLoop(THREE.LoopOnce);
-    deathAction.clampWhenFinished = true;
-    deathAction.setLoop(THREE.LoopOnce);
-    
 
     actions.forEach( function ( action ) {
         action.play();
@@ -381,5 +386,13 @@ setTimeout(function(){
 
     currentAction = idleAction;
     actions = [danceAction, deathAction, idleAction, jumpAction, noAction, punchAction, runAction, sitAction, standAction, thumbsUpAction, walkAction, backwardAction, walkJumpAction, waveAction, yesAction]
-    activateAllActions();
+    
+    //Sets ceratin actions to only play once
+    jumpAction.setLoop(THREE.LoopOnce);
+    walkJumpAction.setLoop(THREE.LoopOnce);
+    punchAction.setLoop(THREE.LoopOnce);
+    deathAction.clampWhenFinished = true;
+    deathAction.setLoop(THREE.LoopOnce);
+
+    //activateAllActions();
  }, 5000);

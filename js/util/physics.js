@@ -1,7 +1,7 @@
 import { terrain, dynamicObjects, scene, player} from '../index2.js'
 import { heightMap, max, min } from './terrain.js';
 import{playerExsists} from './modelLoader.js';
-import {died} from './controls.js';
+import {died, activateAllActions} from './controls.js';
 //import{takeDamage} from 'index.html';
 
 // Heightfield parameters
@@ -19,6 +19,7 @@ var dispatcher;
 var broadphase;
 var solver;
 let groundContact = null;
+export let playerLanded = false;
 export var physicsWorld;
 // var dynamicObjects = [];
 var transformAux1;
@@ -140,6 +141,10 @@ export function updatePhysics( deltaTime ) {
     //Changes to normal gravity on contact with ground
     groundContact.addSingleResult = function(){
         physicsWorld.setGravity( new Ammo.btVector3( 0, -100, 0 ) );
+        if(!playerLanded){
+            playerLanded = true;
+            activateAllActions();
+        }
     }
     
 
