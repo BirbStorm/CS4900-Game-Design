@@ -9,8 +9,7 @@
   background-color: #000000;
   bottom: 3px;
   border-style: solid;
-  width: 300px;
-  height: 40px;
+  margin-bottom: -20px;
 }
 #hpbar{
   background-color: red;
@@ -195,4 +194,16 @@ canvas {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -150%);
+}
+
+@font-face {
+    font-family: 'digital-7';
+    src: url('./assets/fonts/digital-7.regular.ttf');
+}
+  
+#timer{
+  color: white;
+  font-family: 'digital-7';
+  font-size: 30px;
+  letter-spacing: 4px;
 }
