@@ -5,11 +5,14 @@ const container = document.body;
 const menu = document.querySelector('#menu');
 const known = document.querySelector('#known');
 const blocker = document.querySelector('#blocker')
+const optionsMenu = document.querySelector('#optionsMenu');
 const play = document.querySelector('#play')
 const death = document.querySelector('#death')
 const list = document.querySelector('#list')
-const back = document.querySelector('#back')
-
+const kback = document.querySelector('#knownBack')
+const oback = document.querySelector('#optionsBack')
+const music = document.querySelector('#music');
+const options = document.querySelector('#options');
 
 let controls;
 let moveForward = false
@@ -30,6 +33,7 @@ let velocity = new THREE.Vector3()
 let direction = new THREE.Vector3()
 let listener = new THREE.AudioListener();
 let sound = new THREE.Audio( listener );
+
 
 export let danceAction,
 deathAction,
@@ -68,10 +72,19 @@ export function createControls(camera){
         play.style.display = 'none';
         console.log(controls.isLocked)
     } );
-    back.addEventListener('click',() =>{
+    kback.addEventListener('click',() =>{
         menu.style.display= 'block';
         known.style.display = 'none';
     })
+    oback.addEventListener('click',() =>{
+        menu.style.display= 'block';
+        optionsMenu.style.display = 'none';
+    })
+    options.addEventListener('click',() =>{
+        menu.style.display= 'none';
+        optionsMenu.style.display = 'block';
+    })
+    
     list.addEventListener('click',() =>{
         menu.style.display= 'none';
         known.style.display = 'block';
@@ -304,7 +317,6 @@ export function updateControls() {
         physicsBody.setLinearVelocity ( new Ammo.btVector3( 0, 0, 0 ) );
     }
 
-
 }
 
 export function died(){
@@ -312,7 +324,6 @@ export function died(){
         executeCrossFade(currentAction, deathAction, 3.0);
         currentAction = deathAction;
         death.style.opacity = '1';
-
         let music = document.getElementById('music');
         music.pause();
 
@@ -327,9 +338,6 @@ export function died(){
 
     }
 }
-
-
-
 
 export function activateAllActions(){
     let i
