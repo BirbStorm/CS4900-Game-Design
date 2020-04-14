@@ -89,27 +89,27 @@ class Player{
     }
     
     //Timeout needed because character mixer hasnt been created yet
-    setTimeout = function(){
-        playerMixer = mixers.find(mixer => mixer.getRoot().name == 'player')
+    // setTimeout = function(){
+    //     playerMixer = mixers.find(mixer => mixer.getRoot().name == 'player')
     
-        danceAction = playerMixer.clipAction(player.animations[0])
-        deathAction = playerMixer.clipAction(player.animations[1])
-        idleAction = playerMixer.clipAction(player.animations[2])
-        jumpAction = playerMixer.clipAction(player.animations[3])
-        noAction = playerMixer.clipAction(player.animations[4])
-        punchAction = playerMixer.clipAction(player.animations[5])
-        runAction = playerMixer.clipAction(player.animations[6])
-        sitAction = playerMixer.clipAction(player.animations[7])
-        standAction = playerMixer.clipAction(player.animations[8])
-        thumbsUpAction = playerMixer.clipAction(player.animations[9])
-        walkAction = playerMixer.clipAction(player.animations[10])
-        backwardAction = playerMixer.clipAction(player.animations[10])
-        walkJumpAction = playerMixer.clipAction(player.animations[11])
-        waveAction = playerMixer.clipAction(player.animations[12])
-        yesAction = playerMixer.clipAction(player.animations[13])
+    //     danceAction = playerMixer.clipAction(player.animations[0])
+    //     deathAction = playerMixer.clipAction(player.animations[1])
+    //     idleAction = playerMixer.clipAction(player.animations[2])
+    //     jumpAction = playerMixer.clipAction(player.animations[3])
+    //     noAction = playerMixer.clipAction(player.animations[4])
+    //     punchAction = playerMixer.clipAction(player.animations[5])
+    //     runAction = playerMixer.clipAction(player.animations[6])
+    //     sitAction = playerMixer.clipAction(player.animations[7])
+    //     standAction = playerMixer.clipAction(player.animations[8])
+    //     thumbsUpAction = playerMixer.clipAction(player.animations[9])
+    //     walkAction = playerMixer.clipAction(player.animations[10])
+    //     backwardAction = playerMixer.clipAction(player.animations[10])
+    //     walkJumpAction = playerMixer.clipAction(player.animations[11])
+    //     waveAction = playerMixer.clipAction(player.animations[12])
+    //     yesAction = playerMixer.clipAction(player.animations[13])
     
-        currentAction = idleAction;
-        actions = [danceAction, deathAction, idleAction, jumpAction, noAction, punchAction, runAction, sitAction, standAction, thumbsUpAction, walkAction, backwardAction, walkJumpAction, waveAction, yesAction]
-        activateAllActions();
-     }, 10000);
+    //     currentAction = idleAction;
+    //     actions = [danceAction, deathAction, idleAction, jumpAction, noAction, punchAction, runAction, sitAction, standAction, thumbsUpAction, walkAction, backwardAction, walkJumpAction, waveAction, yesAction]
+    //     activateAllActions();
+    //  }, 10000);
 }

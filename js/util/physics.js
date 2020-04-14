@@ -37,7 +37,7 @@ export function initPhysics() {
     heightData = heightMap
     // Physics configuration
     groundContact = new Ammo.ConcreteContactResultCallback();
-    groundContact.addSingleResult = function(){
+    groundContact.addSingleResult = () =>{
         // let bar = document.querySelector("#hpbar");
         // bar.style.width = (bar.clientWidth -1) + 'px';
         // if (bar.style.width == "0px"){
@@ -46,6 +46,14 @@ export function initPhysics() {
         test = groundTransform.getRotation()
         qt = THREE.Quaternion(test.x(),test.y(),test.z(),test.w())
         //console.log(test.x(),test.y(),test.z(),test.w())
+    }
+        //Changes to normal gravity on contact with ground
+    groundContact.addSingleResult = function(){
+        physicsWorld.setGravity( new Ammo.btVector3( 0, -100, 0 ) );
+        if(!playerLanded){
+            playerLanded = true;
+            activateAllActions();
+        }
     }
     collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
     dispatcher = new Ammo.btCollisionDispatcher( collisionConfiguration );
@@ -137,15 +145,6 @@ export function updatePhysics( deltaTime ) {
     // Update objects
 
     if(playerExsists && groundExsists) physicsWorld.contactPairTest(player.userData.physicsBody,groundBody,groundContact);
-
-    //Changes to normal gravity on contact with ground
-    groundContact.addSingleResult = function(){
-        physicsWorld.setGravity( new Ammo.btVector3( 0, -100, 0 ) );
-        if(!playerLanded){
-            playerLanded = true;
-            activateAllActions();
-        }
-    }
     
 
     for ( let i in dynamicObjects ) {

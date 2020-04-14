@@ -231,16 +231,6 @@ export function updateControls() {
         let delta = ( time - prevTime ) / 1000;
         let rotateAngle = Math.PI / 2 * delta
 
-        // raycaster.set( player.position, down );
-        // let cols = (raycaster.intersectObject(terrain))
-        // // let cols = []
-        // // console.log(cols)
-        // if(cols[0])
-        //     player.position.y = cols[0].point.y + 2.5
-        // direction.z = Number( moveForward ) - Number( moveBackward );
-        // direction.x = Number( moveRight ) - Number( moveLeft ); 
-        // direction.normalize(); // this ensures consistent movements in all directions
-
         //If both sprint and crouch are pressed, crouch will not be activated
         if (sprint && crouch){
             crouch = false;
@@ -294,8 +284,10 @@ export function updateControls() {
             resultantImpulse.op_mul(factor);
 
             physicsBody.setLinearVelocity ( resultantImpulse );
-            if ( rotateLeft )  physicsBody.applyTorque(new Ammo.btVector3(0,1,0), 100);
-            if ( rotateRight )  physicsBody.applyTorque(new Ammo.btVector3(0,1,0), -100);
+            if ( rotateLeft )  physicsBody.applyTorqueImpulse(new Ammo.btVector3(0,1,0), 10);
+            else physicsBody.applyTorqueImpulse(new Ammo.btVector3(0,1,0), 0)
+            if ( rotateRight )  physicsBody.applyTorqueImpulse(new Ammo.btVector3(0,1,0), -100);
+            else physicsBody.applyTorqueImpulse(new Ammo.btVector3(0,1,0), 0)
         if (crouch){
             var relativeCameraOffset = new THREE.Vector3(0,4,-10);
         }
