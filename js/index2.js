@@ -86,11 +86,7 @@ function main() {
 
   //normalize the direction vector (convert to vector of length 1)
   dir.normalize();
-  var geometry = new THREE.BoxGeometry();
-var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-var cube = new THREE.Mesh( geometry, material );
-scene.add( cube );
-console.log(geometry)
+
   var origin = new THREE.Vector3( -200, 0, 900 );
   var length = 1;
   var hex = 0xffff00;
@@ -107,9 +103,9 @@ console.log(geometry)
 
 function loadModels(){
 
-  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 300, 0), 'player', 1,0)
+  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 300, 0), 'robot', 1,0)
   modelLoader('../assets/models/Trex.glb', new THREE.Vector3(50, 200, 100), 'trex', 1,0)
-  modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, 200, 100), 'alien', 1,0)
+  modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, 200, 100), 'player', 1,0)
   modelLoader('../assets/models/slime.glb', new THREE.Vector3(10, 200, 100), 'slime', 1,0)
   modelLoader('../assets/models/Rat.glb', new THREE.Vector3(30, 200, 100), 'rat',1,0)
 
