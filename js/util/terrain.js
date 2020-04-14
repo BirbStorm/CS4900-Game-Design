@@ -32,7 +32,6 @@ export function generateTerrain(){
     // t2.wrapS = t2.wrapT = THREE.RepeatWrapping;
     // t2.repeat.set(16,16)
     positions = geometry.attributes.position.array;
-    geometry.computeVertexNormals();
     console.log(geometry.faces)
     let i1 = 0
     for(let i = 2; i<positions.length; i+=3) {
@@ -44,6 +43,11 @@ export function generateTerrain(){
     // max = Math.max(...heightMap)
     // min = Math.min(...heightMap)
     //let material = new THREE.MeshLambertMaterial( { map:t2 } );
+
+    geometry.computeFaceNormals();
+
+
+
     let mesh = new THREE.Mesh( geometry, material);
 
     mesh.rotation.x = -90*3.14/180.0;

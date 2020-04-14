@@ -107,11 +107,11 @@ console.log(geometry)
 
 function loadModels(){
 
-  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 300, 0), 'player', 1,1)
-  modelLoader('../assets/models/Trex.glb', new THREE.Vector3(50, 200, 0), 'trex', 1,1)
-  modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, 200, 0), 'alien', 1,1)
-  modelLoader('../assets/models/slime.glb', new THREE.Vector3(10, 200, 0), 'slime', 1,1)
-  modelLoader('../assets/models/Rat.glb', new THREE.Vector3(30, 200, 0), 'rat',1,1)
+  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 300, 0), 'player', 1,0)
+  modelLoader('../assets/models/Trex.glb', new THREE.Vector3(50, 200, 100), 'trex', 1,0)
+  modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, 200, 100), 'alien', 1,0)
+  modelLoader('../assets/models/slime.glb', new THREE.Vector3(10, 200, 100), 'slime', 1,0)
+  modelLoader('../assets/models/Rat.glb', new THREE.Vector3(30, 200, 100), 'rat',1,0)
 
 }
 
