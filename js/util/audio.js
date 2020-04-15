@@ -3,8 +3,8 @@ let music = document.getElementById('music');
 let flying = document.getElementById('flying');
 let muteButton = document.getElementById('muteButton');
 
-music.volume = 0.01;
-flying.volume = 0.8;
+music.volume = 0.1;
+flying.volume = 0.7;
 
 function toggleMute(){
     if(mute){
