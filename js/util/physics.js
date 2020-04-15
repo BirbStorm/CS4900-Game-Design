@@ -6,6 +6,10 @@ import {died, activateAllActions} from './controls.js';
 
 // Heightfield parameters
 
+let music = document.getElementById('music');
+let flying = document.getElementById('flying');
+let listener = new THREE.AudioListener();
+let sound = new THREE.Audio( listener );
 var terrainWidth = 1024;
 var terrainDepth = 1024;
 var terrainHalfWidth = terrainWidth / 2;
@@ -54,6 +58,9 @@ export function initPhysics() {
         if(!playerLanded){
             playerLanded = true;
             activateAllActions();
+            music.play();
+            getSoundAndFadeAudio('flying');
+            powerUpSound();
         }
     }
     
@@ -182,3 +189,36 @@ export function updatePhysics( deltaTime ) {
 
 }
 
+
+export function getSoundAndFadeAudio (audiosnippetId) {
+
+    var sound = document.getElementById(audiosnippetId);
+
+    // Set the point in playback that fadeout begins. This is for a 2 second fade out.
+    var fadePoint = sound.duration - sound.duration - 2; 
+
+    var fadeAudio = setInterval(function () {
+
+        // Only fade if past the fade out point or not at zero already
+        if ((sound.currentTime >= fadePoint) && (sound.volume != 0.0)) {
+            sound.volume = sound.volume - 0.1;
+        }
+        // When volume at zero stop all the intervalling
+        if (sound.volume <= 0.0001) {
+            clearInterval(fadeAudio);
+            sound.volume = 0.0;
+            sound.pause();
+        }
+    }, 200);
+
+}
+
+function powerUpSound(){
+    var audioLoader = new THREE.AudioLoader();
+    audioLoader.load( '../../assets/audio/powerUp.mp3', function( buffer ) {
+        sound.setBuffer( buffer );
+        sound.setLoop( false );
+        sound.setVolume( 0.8 );
+        sound.play();
+    });
+}
