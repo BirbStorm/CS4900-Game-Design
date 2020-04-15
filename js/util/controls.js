@@ -410,4 +410,4 @@ setTimeout(function(){
     sitAction.play();
 
     //activateAllActions();
- }, 5000);
+ }, 7000);

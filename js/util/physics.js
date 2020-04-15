@@ -6,6 +6,8 @@ import {died, activateAllActions} from './controls.js';
 
 // Heightfield parameters
 
+let music = document.getElementById('music');
+let flying = document.getElementById('flying');
 var terrainWidth = 1024;
 var terrainDepth = 1024;
 var terrainHalfWidth = terrainWidth / 2;
@@ -54,6 +56,8 @@ export function initPhysics() {
         if(!playerLanded){
             playerLanded = true;
             activateAllActions();
+            flying.pause();
+            music.play();
         }
     }
     
