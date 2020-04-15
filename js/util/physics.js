@@ -190,7 +190,7 @@ export function updatePhysics( deltaTime ) {
 }
 
 
-function getSoundAndFadeAudio (audiosnippetId) {
+export function getSoundAndFadeAudio (audiosnippetId) {
 
     var sound = document.getElementById(audiosnippetId);
 

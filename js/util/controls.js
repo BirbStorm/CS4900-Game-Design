@@ -1,6 +1,6 @@
 
 import { player, isMouseDown, terrain, mixers } from '../index2.js'
-import { playerLanded } from './physics.js';
+import { playerLanded, getSoundAndFadeAudio } from './physics.js';
 const container = document.body;
 const menu = document.querySelector('#menu');
 const known = document.querySelector('#known');
@@ -33,6 +33,8 @@ let velocity = new THREE.Vector3()
 let direction = new THREE.Vector3()
 let listener = new THREE.AudioListener();
 let sound = new THREE.Audio( listener );
+let walkingSound = document.getElementById('walking');
+let runningSound = document.getElementById('running');
 
 
 export let danceAction,
@@ -265,6 +267,23 @@ export function updateControls() {
         if (!playerLanded){
             moveZ = moveZ * 3
         }
+        //Play correct sound
+        if (playerLanded){
+            if(currentAction === walkAction || currentAction === backwardAction){
+                walkingSound.play();
+                runningSound.pause();
+            }
+            else if(currentAction === runAction){
+                walkingSound.pause();
+                runningSound.play();
+            }
+            else{
+                walkingSound.pause();
+                runningSound.pause();
+            }
+        }
+        
+
         //Sprint, only forward
         /*if (sprint && moveZ == 1){
             moveZ = moveZ*2
