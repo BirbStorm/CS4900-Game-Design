@@ -6,15 +6,21 @@
 }
 #hud {
   position: absolute;
-  background-color: #000000;
-  bottom: 3px;
+  background-color: white;
+  bottom: 0;
   border-style: solid;
-  margin-bottom: -20px;
 }
 #hpbar{
   background-color: red;
+  border-style: solid;
   width:250px;
   height:30px;
+  padding: 0;
+}
+#health{
+  font-size: 20px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
 }
 #blocker {
   position: absolute;
@@ -218,9 +224,9 @@ canvas {
 }
   
 #timer{
-  color: white;
+  color: black;
   font-family: 'digital-7';
-  font-size: 30px;
+  font-size: 50px;
   letter-spacing: 4px;
 }
 
