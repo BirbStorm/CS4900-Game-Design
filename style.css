@@ -127,9 +127,20 @@ canvas {
   animation: spin 1.5s linear infinite;
 }
 
-#muteButton {
+#muteButtonDiv{
+  background-color: white;
+  width: 80px;
+  height: 80px;
   margin-top: 20px;
   margin-left: 20px;
+  border-style: solid;
+}
+
+#muteButton{
+  padding-left: 10px;
+  padding-top: 10px;
+  width: 60px;
+  height: 60px;
 }
 
 .container{
