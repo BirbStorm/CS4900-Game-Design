@@ -19,7 +19,9 @@
 <div id="death"><p id="deathText">YOU DIED</p></div>
 
 <div id="blocker">
-    <img id="muteButton" src="/assets/textures/unmute.png" style="width:60px;height:60px;" onclick="javascript:toggleMute()" />
+    <div id="muteButtonDiv">
+        <img id="muteButton" src="/assets/textures/unmute.png" onclick="javascript:toggleMute()" />
+    </div>
         
         <div id="menu">
             <div class="container">
@@ -27,7 +29,7 @@
             <span><h1 style="font-size: 500%;">The Hunt</h1></span>
             <br>
             <br>
-                <button class="menuButton" id="play">Play</button> <br>
+                <button class="menuButton" id="play" onclick="javascript:startGame()">Play</button> <br>
                 <button class="menuButton" id="list">Known Enemies</button><br>
                 <button class="menuButton" id="options">Options</button>
                 
@@ -85,16 +87,23 @@
         </div> 
                        
 </div>
+
+<!--Shows current weapon and amount of ammo-->
+<div id="gear">
+    <img id="weapon" src="/assets/textures/fist.png"/>
+    <img id="ammo" src="/assets/textures/infinity.png"/>
+</div>
+
    <div id="hud">
     <div id="timer"></div>
             <div>
                 <table>
                     <tr>
-                        <td style="color:white">Health</td>
+                        <td><p id="health">Health</p></td>
                         <td><div id="hpbar"></div></td>
                     </tr>
                 </table>
-            </div>>
+            </div>
         </div>  
 
 
