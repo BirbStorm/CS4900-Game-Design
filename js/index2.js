@@ -27,6 +27,7 @@ const clock = new THREE.Clock();
 const blocker = document.querySelector('#blocker')
 const menu = document.getElementById( 'menu')
 let raycaster;
+let gameStarted = false;
 
 function main() {
   loadingManager = new THREE.LoadingManager( () => {
@@ -39,7 +40,7 @@ function main() {
 
 } );
 
-  createTimer();
+
   
   //sets container to the div within the HTML file
   container = document.body;
@@ -103,7 +104,7 @@ function main() {
 
 function loadModels(){
 
-  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 150, 0), 'player', 1,0)
+  modelLoader('../assets/models/Robot.glb', new THREE.Vector3(0, 250, 0), 'player', 1,0)
   modelLoader('../assets/models/Trex.glb', new THREE.Vector3(50, 200, 100), 'trex', 1,0)
   modelLoader('../assets/models/alien.glb', new THREE.Vector3(25, 200, 100), 'player', 1,0)
   modelLoader('../assets/models/slime.glb', new THREE.Vector3(10, 200, 100), 'slime', 1,0)
@@ -182,30 +183,6 @@ function createSkyBox(){
     let ambient = new THREE.AmbientLight(0xFFFFFF, 0.3)
 
     scene.add(skyBox, ambient);
-}
-
-//Create timer
-function createTimer(){
-  var startTime = Math.floor(Date.now() / 1000); //Get the starting time (right now) in seconds
-    localStorage.setItem("startTime", startTime); // Store it if I want to restart the timer on the next page
-
-    function startTimeCounter() {
-        var now = Math.floor(Date.now() / 1000); // get the time now
-        var diff = now - startTime; // diff in seconds between now and start
-        var m = Math.floor(diff / 60); // get minutes value (quotient of diff)
-        var s = Math.floor(diff % 60); // get seconds value (remainder of diff)
-        m = checkTime(m); // add a leading zero if it's single digit
-        s = checkTime(s); // add a leading zero if it's single digit
-        document.getElementById("timer").innerHTML = m + ":" + s; // update the element where the timer will appear
-        var t = setTimeout(startTimeCounter, 500); // set a timeout to update the timer
-    }
-
-    function checkTime(i) {
-        if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
-        return i;
-    }
-
-  startTimeCounter();
 }
 
 function createRenderer() {
