@@ -28,9 +28,7 @@ export function generateTerrain(){
     
     let geometry, wireframegeometry;
     geometry = new THREE.PlaneBufferGeometry(gridWidth, gridHeight, gridWidth-1, gridHeight-1);
-    //let t2 = new THREE.TextureLoader().load('../assets/textures/grass.jpg' );
-    // t2.wrapS = t2.wrapT = THREE.RepeatWrapping;
-    // t2.repeat.set(16,16)
+
     positions = geometry.attributes.position.array;
     console.log(geometry.faces)
     let i1 = 0
@@ -40,9 +38,7 @@ export function generateTerrain(){
         positions[i] = Math.abs(positions[i] )
         i1++;
     }
-    // max = Math.max(...heightMap)
-    // min = Math.min(...heightMap)
-    //let material = new THREE.MeshLambertMaterial( { map:t2 } );
+
 
     geometry.computeFaceNormals();
 
@@ -51,8 +47,6 @@ export function generateTerrain(){
     let mesh = new THREE.Mesh( geometry, material);
 
     mesh.rotation.x = -90*3.14/180.0;
-    console.log(geometry)
-    console.log(mesh)
     
     return mesh
 }

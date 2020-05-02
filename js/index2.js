@@ -10,24 +10,19 @@ export let scene;
 export let isMouseDown;
 export let player;
 export let terrain;
-let width;
-let height;
+
 let camera;
-let cameraHUD;
-let sceneHUD;
+let container;
 let controls;
 let renderer;
-let keyboard = new THREEx.KeyboardState();
-let container;
-let stats;
+
 export let dynamicObjects = []
 export let loadingManager;
 export const mixers = []
 const clock = new THREE.Clock();
 const blocker = document.querySelector('#blocker')
 const menu = document.getElementById( 'menu')
-let raycaster;
-let gameStarted = false;
+
 
 function main() {
   loadingManager = new THREE.LoadingManager( () => {
@@ -46,17 +41,10 @@ function main() {
   container = document.body;
   scene = new THREE.Scene();
 
-  // Create also a custom scene for HUD.
-  sceneHUD = new THREE.Scene();
 
   // Create shortcuts for window size.
   var width = window.innerWidth;
   var height = window.innerHeight;
-
-  stats = new Stats();
-  // stats.domElement.style.position = 'absolute';
-  // stats.domElement.style.top = '0px';
-  // container.appendChild( stats.domElement );
 
   loadModels();
   createRenderer();
@@ -68,7 +56,6 @@ function main() {
   cameraHUD.position.z = 10;
 
 
-  // scene.add(camera)
   controls = controlsHelper.createControls(camera, renderer);
   scene.add(controls.getObject())
 
@@ -77,9 +64,7 @@ function main() {
   createLights();
   createFloor();
   createSkyBox();
-  //createHUD();
-  //createHealthBar();
-  //createSprites();
+
   initPhysics()
   var axesHelper = new THREE.AxesHelper( 1 );
   scene.add( axesHelper );
@@ -141,13 +126,13 @@ function createFloor(){
       flowMap: flowMap
 
   } );
-  water.position.y = -1;
+  water.position.y = 15;
   water.rotation.x = Math.PI * - 0.5;
           
   var helperGeometry = new THREE.PlaneBufferGeometry( 20, 20 );
   var helperMaterial = new THREE.MeshBasicMaterial( { map: flowMap } );
   var helper = new THREE.Mesh( helperGeometry, helperMaterial );
-  helper.position.y = 1.01;
+  helper.position.y = 15.01;
   helper.rotation.x = Math.PI * - 0.5;
   helper.visible = false;
 
@@ -214,7 +199,6 @@ function animate() {
   update()
   player = scene.getObjectByName("player")
   controlsHelper.updateControls()
-  stats.update()
   updatePhysics(clock.getDelta())
   renderer.render( scene, camera );
 
