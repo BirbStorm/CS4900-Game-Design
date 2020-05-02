@@ -1,5 +1,5 @@
-import { terrain, dynamicObjects, scene, player} from '../index2.js'
-import { heightMap, max, min } from './terrain.js';
+import { dynamicObjects, player} from '../index2.js'
+import { heightMap } from './terrain.js';
 import{playerExsists} from './modelLoader.js';
 import {died, activateAllActions} from './controls.js';
 //import{takeDamage} from 'index.html';
@@ -34,11 +34,7 @@ let test;
 let qt;
 export let groundExsists;
 groundExsists = false;
-let debug
 export function initPhysics() {
-    
-    // heightData = THREE.Terrain.toArray1D(terrain.children[0].geometry.vertices)
-    // console.log(heightData)
     heightData = heightMap
     // Physics configuration
     groundContact = new Ammo.ConcreteContactResultCallback();
@@ -71,7 +67,6 @@ export function initPhysics() {
     physicsWorld = new Ammo.btDiscreteDynamicsWorld( dispatcher, broadphase, solver, collisionConfiguration );
     //Gravity used for dropping
     physicsWorld.setGravity( new Ammo.btVector3( 0, -10000, 0 ) );
-    initDebug()
 
     physicsWorld.debugDrawWorld();
     // Create the terrain body
@@ -90,16 +85,7 @@ export function initPhysics() {
     groundExsists = true;
 }
 
-function initDebug() {
-    debug = new THREE.AmmoDebugDrawer(scene, physicsWorld);
-    debug.enable();
-    debug.setDebugMode(2);
 
-    //setInterval(() => {
-    //let mode = (this.debugDrawer.getDebugMode() + 1) % 3;
-    //this.debugDrawer.setDebugMode(mode);
-    //}, 1000);
-}
 function createTerrainShape() {
 
     // This parameter is not really used, since we are using PHY_FLOAT height data type and hence it is ignored
@@ -185,7 +171,6 @@ export function updatePhysics( deltaTime ) {
 
     }
 
-    debug.update()
 
 }
 
